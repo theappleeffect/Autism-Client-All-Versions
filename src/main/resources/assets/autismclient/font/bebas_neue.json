@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "autismclient:bebas_neue/bebasneue-regular.ttf",
+      "shift": [0, 0],
+      "size": 10.5,
+      "oversample": 2.0
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "required": true,
+  "package": "autismclient.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": [
+    "PackUtilClickableWidgetMixin",
+    "PackUtilHandledScreenMixin",
+    "PackUtilCreativeScreenMixin",
+    "PackUtilGameRendererMixin",
+    "PackUtilInGameHudMixin",
+    "PackUtilClientConnectionMixin",
+    "PackUtilClientConfigurationNetworkHandlerMixin",
+    "PackUtilClientCommonNetworkHandlerMixin",
+    "PackUtilMultiplayerScreenMixin",
+    "PackUtilSignEditScreenMixin",
+    "PackUtilScreenMixin",
+    "PackUtilLogoRendererMixin",
+    "PackUtilSplashRendererMixin",
+    "PackUtilSleepingChatScreenMixin",
+    "PackUtilBookScreenMixin",
+    "PackUtilBookEditScreenMixin",
+    "PackUtilBookSignScreenMixin",
+    "PackUtilChatScreenMixin",
+    "PackUtilRecipeBookScreenMixin",
+    "PackUtilCustomPayloadCodecMixin",
+    "PackUtilUnknownCustomPayloadMixin",
+    "PackUtilPacketEncoderMixin",
+    "PackUtilPacketDecoderMixin",
+    "PackUtilConnectionEncryptionMixin",
+    "PackUtilConnectionProxyMixin",
+    "accessor.PackUtilScreenAccessor",
+    "accessor.PackUtilHandledScreenAccessor",
+    "accessor.PackUtilClientConnectionAccessor",
+    "accessor.ClientCommonNetworkHandlerAccessor",
+    "accessor.PackUtilMinecraftAccessor",
+    "PackUtilMinecraftClientMixin",
+    "PackUtilClientPlayNetworkHandlerMixin",
+    "PackUtilRenderSystemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
