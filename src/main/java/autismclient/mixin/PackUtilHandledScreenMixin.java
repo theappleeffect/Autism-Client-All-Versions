@@ -2,7 +2,7 @@ package autismclient.mixin;
 
 import java.util.Locale;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -35,15 +35,16 @@ import autismclient.util.PackUtilUiScale;
 import autismclient.util.PackUtilSharedState;
 import org.lwjgl.glfw.GLFW;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.CharacterEvent;
 import org.spongepowered.asm.mixin.Shadow;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 
@@ -51,7 +52,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu> extends Screen {
     @Unique private static final PackUiTheme PACKUI_THEME = new PackUiTheme();
     @Shadow @Nullable protected Slot hoveredSlot;
-    @Shadow protected abstract void slotClicked(Slot slot, int slotId, int button, ContainerInput actionType);
+    @Shadow protected abstract void slotClicked(Slot slot, int slotId, int button, ClickType actionType);
     @Unique private static final Minecraft MC = Minecraft.getInstance();
     @Unique private Slot packutil$blockedFocusedSlot;
 
@@ -71,7 +72,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         super(title);
     }
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), require = 0)
     private void yang$init(CallbackInfo ci) {
 
         if (!isPackUtilActive()) return;
@@ -137,7 +138,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         manager.register(launcherOverlay);
 
         Screen screen = (Screen)(Object)this;
-        ScreenEvents.afterExtract(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
+        ScreenEvents.afterRender(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
             if (isPackUtilActive()) {
                 PackUtilOverlayManager.get().renderAll(drawContext, mouseX, mouseY, tickDelta);
                 PackUtilUiScale.pushOverlayScale(drawContext);
@@ -163,8 +164,8 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
 
     }
 
-    @Inject(method = "extractRenderState", at = @At("HEAD"))
-    private void yang$blockCoveredSlotHover(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("HEAD"), require = 0)
+    private void yang$blockCoveredSlotHover(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (!isPackUtilActive()) return;
 
         if (PackUtilOverlayManager.get().shouldBlockUnderlyingHover(mouseX, mouseY)) {
@@ -193,8 +194,8 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "extractTooltip", at = @At("HEAD"), cancellable = true, require = 0)
-    private void packutil$blockCoveredHandledTooltip(GuiGraphicsExtractor context, int x, int y, CallbackInfo ci) {
+    @Inject(method = "renderTooltip", at = @At("HEAD"), cancellable = true, require = 0)
+    private void packutil$blockCoveredHandledTooltip(GuiGraphics context, int x, int y, CallbackInfo ci) {
         if (!isPackUtilActive()) return;
 
         if (PackUtilOverlayManager.get().shouldBlockUnderlyingHover(x, y)) {
@@ -202,8 +203,8 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "extractRenderState", at = @At("TAIL"))
-    public void yang$render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("TAIL"), require = 0)
+    public void yang$render(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (packutil$blockedFocusedSlot != null) {
             hoveredSlot = packutil$blockedFocusedSlot;
             packutil$blockedFocusedSlot = null;
@@ -211,7 +212,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
     }
 
     @Unique
-    private void renderMacroCaptureBanner(GuiGraphicsExtractor context) {
+    private void renderMacroCaptureBanner(GuiGraphics context) {
         autismclient.gui.macro.editor.ActionEditorOverlay actionEditor =
                 autismclient.gui.macro.editor.ActionEditorOverlay.getSharedOverlayIfExists();
         boolean macroCapture = macroEditorOverlay != null && macroEditorOverlay.shouldRenderAbstractContainerScreenCaptureBanner();
@@ -255,7 +256,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "removed", at = @At("HEAD"))
+    @Inject(method = "removed", at = @At("HEAD"), require = 0)
     private void yang$removed(CallbackInfo ci) {
         if (!isPackUtilActive()) return;
         PackUtilInventoryMoveHelper.releaseMovementKeysIfSafe();
@@ -323,7 +324,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         return value ? "enabled" : "disabled";
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$mouseClicked(MouseButtonEvent click, boolean doubled, CallbackInfoReturnable<Boolean> cir) {
         if (!isPackUtilActive()) return;
 
@@ -366,7 +367,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$keyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!isPackUtilActive()) return;
 
@@ -417,7 +418,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseReleased", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$mouseReleased(MouseButtonEvent click, CallbackInfoReturnable<Boolean> cir) {
         if (!isPackUtilActive()) return;
 
@@ -427,7 +428,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$mouseDragged(MouseButtonEvent click, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
         if (!isPackUtilActive()) return;
 
@@ -437,7 +438,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
         }
     }
 
-    @Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseScrolled", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount, CallbackInfoReturnable<Boolean> cir) {
         if (!isPackUtilActive()) return;
 
@@ -448,7 +449,7 @@ public abstract class PackUtilHandledScreenMixin<T extends AbstractContainerMenu
     }
 
     @Override
-    public boolean charTyped(net.minecraft.client.input.CharacterEvent input) {
+    public boolean charTyped(CharacterEvent input) {
         if (!isPackUtilActive()) return super.charTyped(input);
 
         if (PackUtilOverlayManager.get().handleCharTyped((char) input.codepoint(), 0)) {

@@ -8,7 +8,7 @@ import autismclient.gui.packui.PackUiTone;
 import autismclient.util.PackUtilProxyManager;
 import autismclient.util.PackUtilUiScale;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -139,7 +139,7 @@ public class PackUtilProxyConfigScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         int virtualMouseX = PackUtilUiScale.toVirtualInt(mouseX);
         int virtualMouseY = PackUtilUiScale.toVirtualInt(mouseY);
         PackUtilUiScale.pushOverlayScale(graphics);
@@ -179,7 +179,7 @@ public class PackUtilProxyConfigScreen extends Screen {
         }
     }
 
-    private void renderRow(GuiGraphicsExtractor graphics, ConfigRow row, int panelX) {
+    private void renderRow(GuiGraphics graphics, ConfigRow row, int panelX) {
         int x = panelX + 12;
         int y = row.y();
         int w = PANEL_WIDTH - 24;
@@ -231,7 +231,7 @@ public class PackUtilProxyConfigScreen extends Screen {
         return 24 + 56 + (ROW_HEIGHT * 7) + 42;
     }
 
-    private void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int w, int h, int fill) {
+    private void drawPanel(GuiGraphics graphics, int x, int y, int w, int h, int fill) {
         graphics.fill(x, y, x + w, y + h, fill);
         graphics.fill(x, y, x + w, y + 1, BORDER);
         graphics.fill(x, y + h - 1, x + w, y + h, BORDER);
@@ -239,11 +239,11 @@ public class PackUtilProxyConfigScreen extends Screen {
         graphics.fill(x + w - 1, y, x + w, y + h, BORDER);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean right) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean right) {
         drawText(graphics, text, x, y, color, right, Integer.MAX_VALUE);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean right, int maxWidth) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean right, int maxWidth) {
         Font renderer = this.font;
         Identifier font = THEME.fontFor(PackUiTone.BODY);
         String display = maxWidth == Integer.MAX_VALUE ? text : PackUiText.trimToWidth(renderer, text, maxWidth, font, color);

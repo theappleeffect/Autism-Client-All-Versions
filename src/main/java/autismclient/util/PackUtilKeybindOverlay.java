@@ -18,7 +18,7 @@ import autismclient.gui.packui.PackUiViewport;
 import autismclient.gui.packui.PackUiWindowNode;
 import autismclient.modules.PackUtilModule;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class PackUtilKeybindOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         hoveredTooltip = null;
@@ -180,7 +180,7 @@ public class PackUtilKeybindOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderHeaderControls(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
+    private void renderHeaderControls(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
         closeVisibility = animate(closeVisibility, 1.0f, delta);
         closeHover = animate(closeHover, isOverCloseButton(uiMouseX, uiMouseY) ? 1.0f : 0.0f, delta);
         viewport.push(context);
@@ -197,15 +197,15 @@ public class PackUtilKeybindOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawCollapseArrow(GuiGraphicsExtractor context, int x, int y, boolean active) {
+    private void drawCollapseArrow(GuiGraphics context, int x, int y, boolean active) {
         PackUiHeaderControls.drawAnimatedArrow(context, x, y + iconYOffset(), headerArrowWidth(), collapsed ? 0.0f : 1.0f, active ? 1.0f : 0.56f);
     }
 
-    private void drawCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
+    private void drawCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
         PackUiHeaderControls.drawCloseButton(context, x, y, width, height, hover, active, visibility);
     }
 
-    private void renderTooltip(GuiGraphicsExtractor context, PackUiViewport viewport, String text, float uiX, float uiY) {
+    private void renderTooltip(GuiGraphics context, PackUiViewport viewport, String text, float uiX, float uiY) {
         List<String> lines = wrapTooltipText(text, tooltipMaxWidth());
         int lineH = theme.lineHeight(PackUiTone.BODY, 0);
         int maxW = 0;

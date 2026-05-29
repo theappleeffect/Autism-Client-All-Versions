@@ -13,7 +13,7 @@ import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.core.BlockPos;
 
 import java.util.ArrayList;
@@ -253,7 +253,7 @@ public class InventoryAuditAction implements MacroAction {
                                 slotCount++;
                                 items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                             }
-                            mc.gameMode.handleContainerInput(handler.containerId, handlerSlot, 0, ContainerInput.QUICK_MOVE, mc.player);
+                            mc.gameMode.handleInventoryMouseClick(handler.containerId, handlerSlot, 0, ClickType.QUICK_MOVE, mc.player);
                         }
                     }
                 }
@@ -272,7 +272,7 @@ public class InventoryAuditAction implements MacroAction {
                         firedSlots.add(i);
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
-                        mc.gameMode.handleContainerInput(handler.containerId, i, 0, ContainerInput.QUICK_MOVE, mc.player);
+                        mc.gameMode.handleInventoryMouseClick(handler.containerId, i, 0, ClickType.QUICK_MOVE, mc.player);
                     }
                 }
 
@@ -359,7 +359,7 @@ public class InventoryAuditAction implements MacroAction {
                     int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                     }
@@ -499,7 +499,7 @@ public class InventoryAuditAction implements MacroAction {
                     int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                     }
@@ -805,7 +805,7 @@ public class InventoryAuditAction implements MacroAction {
                     int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                     }
@@ -847,7 +847,7 @@ public class InventoryAuditAction implements MacroAction {
                     int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                     }
@@ -887,7 +887,7 @@ public class InventoryAuditAction implements MacroAction {
                     int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 1, ContainerInput.THROW)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 1, ClickType.THROW)) {
                         slotCount++;
                         items.merge(shortItemId(stack), stack.getCount(), Integer::sum);
                     }
@@ -901,7 +901,7 @@ public class InventoryAuditAction implements MacroAction {
         return result[0] != null ? result[0] : new TransferAttempt(0, new LinkedHashMap<>());
     }
 
-    private boolean clickContainerSlotExtracted(Minecraft mc, AbstractContainerMenu handler, int slotId, int button, ContainerInput input) {
+    private boolean clickContainerSlotExtracted(Minecraft mc, AbstractContainerMenu handler, int slotId, int button, ClickType input) {
         if (mc == null || mc.player == null || mc.gameMode == null || handler == null) return false;
         if (mc.player.containerMenu != handler) return false;
         if (slotId < 0 || slotId >= handler.slots.size()) return false;
@@ -912,7 +912,7 @@ public class InventoryAuditAction implements MacroAction {
         ItemStack beforeSlot = slot.getItem().copy();
         if (beforeSlot.isEmpty()) return false;
 
-        mc.gameMode.handleContainerInput(handler.containerId, slotId, button, input, mc.player);
+        mc.gameMode.handleInventoryMouseClick(handler.containerId, slotId, button, input, mc.player);
 
         if (slotId >= handler.slots.size()) return true;
         Slot afterSlot = handler.slots.get(slotId);
@@ -923,7 +923,7 @@ public class InventoryAuditAction implements MacroAction {
         return ItemStack.isSameItemSameComponents(beforeSlot, afterStack) && afterStack.getCount() < beforeSlot.getCount();
     }
 
-    private boolean clickPlayerSlotDeposited(Minecraft mc, AbstractContainerMenu handler, int slotId, int button, ContainerInput input) {
+    private boolean clickPlayerSlotDeposited(Minecraft mc, AbstractContainerMenu handler, int slotId, int button, ClickType input) {
         if (mc == null || mc.player == null || mc.gameMode == null || handler == null) return false;
         if (mc.player.containerMenu != handler) return false;
         if (slotId < 0 || slotId >= handler.slots.size()) return false;
@@ -934,7 +934,7 @@ public class InventoryAuditAction implements MacroAction {
         ItemStack beforeSlot = slot.getItem().copy();
         if (beforeSlot.isEmpty()) return false;
 
-        mc.gameMode.handleContainerInput(handler.containerId, slotId, button, input, mc.player);
+        mc.gameMode.handleInventoryMouseClick(handler.containerId, slotId, button, input, mc.player);
 
         if (slotId >= handler.slots.size()) return true;
         Slot afterSlot = handler.slots.get(slotId);
@@ -1072,7 +1072,7 @@ public class InventoryAuditAction implements MacroAction {
                     if (!isPlayerVisibleSlot(visibleSlot)) continue;
                     if (!targetItemsToTransfer.containsKey(shortItemId(stack))) continue;
 
-                    if (clickPlayerSlotDeposited(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickPlayerSlotDeposited(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         result[0] = true;
                         if (!multipleStacks) return;
                     }
@@ -1116,7 +1116,7 @@ public class InventoryAuditAction implements MacroAction {
                     if (!shouldTransferSlot(stack, visibleSlot)) continue;
                     if (!targetItemsToExtract.containsKey(shortItemId(stack))) continue;
 
-                    if (clickContainerSlotExtracted(mc, handler, i, 0, ContainerInput.QUICK_MOVE)) {
+                    if (clickContainerSlotExtracted(mc, handler, i, 0, ClickType.QUICK_MOVE)) {
                         result[0] = true;
                         if (!multipleStacks) return;
                     }

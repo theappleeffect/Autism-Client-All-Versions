@@ -2,7 +2,7 @@ package autismclient.util;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.item.ItemStack;
 
 public final class PackUtilDropHelper {
@@ -19,14 +19,14 @@ public final class PackUtilDropHelper {
 
         int syncId = handler.containerId;
         if (count <= 0 || count >= stack.getCount()) {
-            mc.gameMode.handleContainerInput(syncId, handlerSlotId, 1, ContainerInput.THROW, mc.player);
+            mc.gameMode.handleInventoryMouseClick(syncId, handlerSlotId, 1, ClickType.THROW, mc.player);
             return 1;
         }
 
         int sent = 0;
         int drops = Math.min(count, stack.getCount());
         for (int i = 0; i < drops; i++) {
-            mc.gameMode.handleContainerInput(syncId, handlerSlotId, 0, ContainerInput.THROW, mc.player);
+            mc.gameMode.handleInventoryMouseClick(syncId, handlerSlotId, 0, ClickType.THROW, mc.player);
             sent++;
         }
         return sent;

@@ -13,7 +13,7 @@ import autismclient.gui.packui.PackUiViewport;
 import autismclient.modules.PackUtilModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
@@ -193,7 +193,7 @@ public class PackUtilCustomFilterOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         buttons.clear();
@@ -248,7 +248,7 @@ public class PackUtilCustomFilterOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private int renderPacketSection(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta,
+    private int renderPacketSection(GuiGraphics context, int mouseX, int mouseY, float delta,
                                     int x, int y, int width, int sectionHeight, boolean c2s,
                                     PackUtilModule module, PackUiTextField searchField, PacketListState listState) {
         int sectionStartY = y;
@@ -384,7 +384,7 @@ public class PackUtilCustomFilterOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private int drawAction(GuiGraphicsExtractor context, int mouseX, int mouseY, int x, int y, int width, String label, Runnable action,
+    private int drawAction(GuiGraphics context, int mouseX, int mouseY, int x, int y, int width, String label, Runnable action,
                            PackUiOverlayButton.Variant variant, boolean enabled) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, width, actionHeight(), Component.literal(label), ignored -> action.run());
         button.setVariant(enabled ? variant : PackUiOverlayButton.Variant.GHOST);
@@ -682,7 +682,7 @@ public class PackUtilCustomFilterOverlay extends PackUtilOverlayBase {
         s2cSearchField.setFocused(false);
     }
 
-    private PackUiRenderContext renderContext(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    private PackUiRenderContext renderContext(GuiGraphics context, int mouseX, int mouseY, float delta) {
         PackUiViewport viewport = PackUiViewport.current(1.0f);
         return new PackUiRenderContext(context, textRenderer, viewport, theme, viewport.toUiX(mouseX), viewport.toUiY(mouseY), delta);
     }

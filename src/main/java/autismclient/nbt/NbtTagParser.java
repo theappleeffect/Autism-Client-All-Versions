@@ -2,7 +2,7 @@ package autismclient.nbt;
 
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 

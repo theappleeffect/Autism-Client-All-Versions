@@ -1,11 +1,11 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 public final class PackUiRenderContext {
-    private final GuiGraphicsExtractor drawContext;
+    private final GuiGraphics drawContext;
     private final Font textRenderer;
     private final PackUiViewport viewport;
     private final PackUiTheme theme;
@@ -14,11 +14,11 @@ public final class PackUiRenderContext {
     private final float delta;
     private final float alpha;
 
-    public PackUiRenderContext(GuiGraphicsExtractor drawContext, Font textRenderer, PackUiViewport viewport, PackUiTheme theme, float mouseX, float mouseY, float delta) {
+    public PackUiRenderContext(GuiGraphics drawContext, Font textRenderer, PackUiViewport viewport, PackUiTheme theme, float mouseX, float mouseY, float delta) {
         this(drawContext, textRenderer, viewport, theme, mouseX, mouseY, delta, 1.0f);
     }
 
-    public PackUiRenderContext(GuiGraphicsExtractor drawContext, Font textRenderer, PackUiViewport viewport, PackUiTheme theme, float mouseX, float mouseY, float delta, float alpha) {
+    public PackUiRenderContext(GuiGraphics drawContext, Font textRenderer, PackUiViewport viewport, PackUiTheme theme, float mouseX, float mouseY, float delta, float alpha) {
         this.drawContext = drawContext;
         this.textRenderer = textRenderer;
         this.viewport = viewport;
@@ -29,7 +29,7 @@ public final class PackUiRenderContext {
         this.alpha = Math.max(0.0f, Math.min(1.0f, alpha));
     }
 
-    public GuiGraphicsExtractor drawContext() {
+    public GuiGraphics drawContext() {
         return drawContext;
     }
 
@@ -71,17 +71,7 @@ public final class PackUiRenderContext {
 
     public void drawTexturedQuad(Identifier textureId, int x1, int y1, int x2, int y2) {
         if (drawContext == null || textureId == null) return;
-        drawContext.blit(
-            textureId,
-            x1,
-            y1,
-            x2,
-            y2,
-            0.0f,
-            1.0f,
-            0.0f,
-            1.0f
-        );
+        autismclient.util.PackUtilRender.iconBlit(drawContext, textureId, x1, y1, x2, y2);
         if (alpha < 0.999f) {
             int overlayAlpha = Math.max(0, Math.min(255, Math.round((1.0f - alpha) * 255.0f)));
             drawContext.fill(x1, y1, x2, y2, (overlayAlpha << 24) | 0x00070709);

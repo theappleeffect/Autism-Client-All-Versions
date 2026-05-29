@@ -2,7 +2,7 @@ package autismclient.util;
 
 import autismclient.gui.packui.PackUiText;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import java.util.ArrayList;
 import autismclient.util.PackUtilUiScale;
 import java.util.Comparator;
@@ -181,7 +181,7 @@ public class PackUtilOverlayManager {
     private double resizeStartMouseX = 0;
     private double resizeStartMouseY = 0;
 
-    public void renderAll(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void renderAll(GuiGraphics context, int mouseX, int mouseY, float delta) {
 
         Minecraft mc = Minecraft.getInstance();
         if (mc != null && mc.getWindow() != null) {

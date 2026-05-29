@@ -21,7 +21,7 @@ public abstract class PackUtilPacketEncoderMixin<T extends PacketListener> {
     @Shadow @Final private ProtocolInfo<T> protocolInfo;
 
     @Inject(method = "encode(Lio/netty/channel/ChannelHandlerContext;Lnet/minecraft/network/protocol/Packet;Lio/netty/buffer/ByteBuf;)V",
-        at = @At("TAIL"))
+        at = @At("TAIL"), require = 0)
     private void packutil$captureEncodedPlaintext(ChannelHandlerContext ctx, Packet<T> packet, ByteBuf output, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
         PackUtilPacketCapture.capturePlaintext(packet, "C2S", protocolInfo.id().id(), packet.type(), output);

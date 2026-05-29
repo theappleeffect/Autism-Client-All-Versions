@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "ttf",
+      "file": "autismclient:dm_sans/pack_ui_regular.ttf",
+      "shift": [0, 0.0],
+      "size": 12.0,
+      "oversample": 2.0
+    }
+  ]
+}

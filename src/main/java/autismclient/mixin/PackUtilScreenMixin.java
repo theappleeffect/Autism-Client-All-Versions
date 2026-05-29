@@ -10,7 +10,7 @@ import autismclient.util.PackUtilQueueEditorOverlay;
 import autismclient.util.PackUtilUiScale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.LecternScreen;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -28,7 +28,7 @@ public abstract class PackUtilScreenMixin {
     @Unique private PackUtilQueueEditorOverlay packutil$queueEditorOverlay;
     @Unique private PackUtilPacketLoggerOverlay packutil$packetLoggerOverlay;
 
-    @Inject(method = "init()V", at = @At("TAIL"))
+    @Inject(method = "init()V", at = @At("TAIL"), require = 0)
     private void packutil$onInit(CallbackInfo ci) {
         Screen screen = (Screen) (Object) this;
         if (!(screen instanceof LecternScreen) || !packutil$isModuleActive()) return;
@@ -56,8 +56,8 @@ public abstract class PackUtilScreenMixin {
         packutil$lecternInitialized = true;
     }
 
-    @Inject(method = "extractRenderState", at = @At("TAIL"))
-    private void packutil$render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("TAIL"), require = 0)
+    private void packutil$render(GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (!packutil$isModuleActive()) return;
 
         Screen screen = (Screen) (Object) this;
@@ -81,7 +81,7 @@ public abstract class PackUtilScreenMixin {
         }
     }
 
-    @Inject(method = "onClose", at = @At("HEAD"))
+    @Inject(method = "onClose", at = @At("HEAD"), require = 0)
     private void packutil$onClose(CallbackInfo ci) {
         Screen screen = (Screen) (Object) this;
         if (screen instanceof LecternScreen) {

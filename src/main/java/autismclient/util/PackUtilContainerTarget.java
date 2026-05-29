@@ -104,11 +104,11 @@ public final class PackUtilContainerTarget {
         if (entity == null) return false;
 
         if (kind == Kind.ENTITY_INTERACT_AT && hitPos != null) {
-            mc.getConnection().send(new ServerboundInteractPacket(entity.getId(), hand, hitPos, mc.player.isShiftKeyDown()));
+            mc.getConnection().send(ServerboundInteractPacket.createInteractionPacket(entity, mc.player.isShiftKeyDown(), hand, hitPos));
             return true;
         }
 
-        mc.getConnection().send(new ServerboundInteractPacket(entity.getId(), hand, Vec3.ZERO, mc.player.isShiftKeyDown()));
+        mc.getConnection().send(ServerboundInteractPacket.createInteractionPacket(entity, mc.player.isShiftKeyDown(), hand, Vec3.ZERO));
         return true;
     }
 

@@ -43,7 +43,7 @@ public final class PackUtilClientMessaging {
 
         MC.execute(() -> {
             if (MC.player != null) {
-                MC.player.sendSystemMessage(text);
+                MC.player.displayClientMessage(text, false);
             } else if (MC.getChatListener() != null) {
                 MC.getChatListener().handleSystemMessage(text, false);
             }

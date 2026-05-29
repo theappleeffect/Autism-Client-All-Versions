@@ -5,7 +5,9 @@ import com.mojang.blaze3d.textures.AddressMode;
 import com.mojang.blaze3d.textures.FilterMode;
 import com.mojang.blaze3d.textures.GpuTexture;
 import com.mojang.blaze3d.textures.GpuTextureView;
+//? if >=1.21.11 {
 import com.mojang.blaze3d.textures.GpuSampler;
+//?}
 import com.mojang.blaze3d.textures.TextureFormat;
 import net.minecraft.client.renderer.texture.AbstractTexture;
 import com.mojang.blaze3d.platform.NativeImage;
@@ -15,13 +17,20 @@ import java.nio.ByteBuffer;
 
 final class PackUiTextTexture extends AbstractTexture {
     private final GpuTexture texture;
+    //? if >=1.21.11 {
     private final GpuSampler sampler;
+    //?}
     private final GpuTextureView textureView;
     private static PackUiTextTexture whiteTexture;
 
     PackUiTextTexture(int width, int height) {
         texture = RenderSystem.getDevice().createTexture("", 15, TextureFormat.RED8, width, height, 1, 1);
+        //? if >=1.21.11 {
         sampler = RenderSystem.getSamplerCache().getSampler(AddressMode.REPEAT, AddressMode.REPEAT, FilterMode.LINEAR, FilterMode.LINEAR, false);
+        //?} else {
+        /*texture.setAddressMode(AddressMode.REPEAT, AddressMode.REPEAT);
+        texture.setTextureFilter(FilterMode.LINEAR, FilterMode.LINEAR, false);
+        *///?}
         textureView = RenderSystem.getDevice().createTextureView(texture);
     }
 
@@ -50,7 +59,9 @@ final class PackUiTextTexture extends AbstractTexture {
         return textureView;
     }
 
+    //? if >=1.21.11 {
     public GpuSampler getSampler() {
         return sampler;
     }
+    //?}
 }

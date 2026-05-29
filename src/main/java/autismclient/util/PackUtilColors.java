@@ -2,7 +2,7 @@ package autismclient.util;
 
 import autismclient.gui.packui.PackUiTheme;
 import autismclient.gui.packui.PackUiTone;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class PackUtilColors {
     private static final PackUiTheme PACK_UI_THEME = new PackUiTheme();
@@ -119,18 +119,18 @@ public class PackUtilColors {
     public static int slotSelectedB() { return 0xFF8D3838; }
     public static int slotBorder() { return 0xFF67737D; }
 
-    public static void drawBorder(GuiGraphicsExtractor ctx, int x, int y, int w, int h, int c) {
+    public static void drawBorder(GuiGraphics ctx, int x, int y, int w, int h, int c) {
         ctx.fill(x, y, x + w, y + 1, c);
         ctx.fill(x, y + h - 1, x + w, y + h, c);
         ctx.fill(x, y, x + 1, y + h, c);
         ctx.fill(x + w - 1, y, x + w, y + h, c);
     }
 
-    public static void drawDivider(GuiGraphicsExtractor ctx, int x, int y, int width, int color) {
+    public static void drawDivider(GuiGraphics ctx, int x, int y, int width, int color) {
         ctx.fill(x, y, x + width, y + 1, color);
     }
 
-    public static void drawResizeHandle(GuiGraphicsExtractor ctx, int x, int y, int size, int color) {
+    public static void drawResizeHandle(GuiGraphics ctx, int x, int y, int size, int color) {
         for (int i = 0; i < 3; i++) {
             int start = x + size - 3 - (i * 4);
             ctx.fill(start, y + size - 2, start + 2, y + size, color);
@@ -138,7 +138,7 @@ public class PackUtilColors {
         }
     }
 
-    public static void drawInsetPanel(GuiGraphicsExtractor ctx, int x, int y, int w, int h, boolean focused) {
+    public static void drawInsetPanel(GuiGraphics ctx, int x, int y, int w, int h, boolean focused) {
         ctx.fill(x, y, x + w, y + h, listBg());
         drawBorder(ctx, x, y, w, h, focused ? accent() : subPanelBorder());
     }

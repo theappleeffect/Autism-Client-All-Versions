@@ -52,7 +52,7 @@ public abstract class PackUtilBookEditScreenMixin extends Screen implements Pack
         super(title);
     }
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), require = 0)
     private void yang$init(CallbackInfo ci) {
         if (!yang$isPackUtilActive()) return;
 
@@ -105,7 +105,7 @@ public abstract class PackUtilBookEditScreenMixin extends Screen implements Pack
         manager.register(launcherOverlay);
 
         Screen screen = (Screen) (Object) this;
-        ScreenEvents.afterExtract(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
+        ScreenEvents.afterRender(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
             if (yang$isPackUtilActive()) {
                 PackUtilOverlayManager.get().renderAll(drawContext, mouseX, mouseY, tickDelta);
             }
@@ -162,7 +162,7 @@ public abstract class PackUtilBookEditScreenMixin extends Screen implements Pack
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$keyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!yang$isPackUtilActive()) return;
         if (PackUtilOverlayManager.get().handleKeyPressed(input.key(), input.scancode(), input.modifiers())) {
@@ -225,6 +225,22 @@ public abstract class PackUtilBookEditScreenMixin extends Screen implements Pack
         if (notify) PackUtilClientMessaging.sendPrefixed("Book update packet sent; GUI intentionally stays open.");
     }
 
+    // BookEditScreen.saveChanges took a boolean (publish) before 1.21.6; 0-arg from 1.21.6.
+    // Gate the @Invoker signature and route call sites through a uniform wrapper.
+    //? if >=1.21.6 {
     @Invoker("saveChanges")
-    protected abstract void packutil$invokeSaveChanges();
+    protected abstract void packutil$saveChangesRaw();
+    //?} else {
+    /*@Invoker("saveChanges")
+    protected abstract void packutil$saveChangesRaw(boolean publish);
+    *///?}
+
+    @org.spongepowered.asm.mixin.Unique
+    private void packutil$invokeSaveChanges() {
+        //? if >=1.21.6 {
+        packutil$saveChangesRaw();
+        //?} else {
+        /*packutil$saveChangesRaw(false);
+        *///?}
+    }
 }

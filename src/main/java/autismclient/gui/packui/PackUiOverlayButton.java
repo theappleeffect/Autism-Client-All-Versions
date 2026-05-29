@@ -3,7 +3,7 @@ package autismclient.gui.packui;
 import autismclient.util.PackUtilText;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -91,7 +91,7 @@ public final class PackUiOverlayButton {
         return true;
     }
 
-    public static void renderStyled(GuiGraphicsExtractor context, Font textRenderer, PackUiOverlayButton button, int mouseX, int mouseY) {
+    public static void renderStyled(GuiGraphics context, Font textRenderer, PackUiOverlayButton button, int mouseX, int mouseY) {
         if (button == null || !button.visible) return;
 
         String label = PackUtilText.sanitizeUiLabel(button.message.getString());

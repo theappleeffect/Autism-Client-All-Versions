@@ -12,7 +12,7 @@ import autismclient.util.PackUtilProxyManager;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.components.Button;
@@ -63,7 +63,7 @@ public abstract class PackUtilMultiplayerScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "repositionElements", at = @At("TAIL"))
+    @Inject(method = "repositionElements", at = @At("TAIL"), require = 0)
     private void packutil$repositionElements(CallbackInfo ci) {
         packutil$suppressMeteorWidgets();
         packutil$layoutButtons();
@@ -77,7 +77,7 @@ public abstract class PackUtilMultiplayerScreenMixin extends Screen {
         packutil$layoutButtons();
         if (packutil$afterExtractRegistered) return;
         packutil$afterExtractRegistered = true;
-        ScreenEvents.afterExtract(this).register((screen, graphics, mouseX, mouseY, tickDelta) -> packutil$renderAfterExtract(graphics, mouseX, mouseY, tickDelta));
+        ScreenEvents.afterRender(this).register((screen, graphics, mouseX, mouseY, tickDelta) -> packutil$renderAfterExtract(graphics, mouseX, mouseY, tickDelta));
     }
 
     @Unique
@@ -130,7 +130,7 @@ public abstract class PackUtilMultiplayerScreenMixin extends Screen {
     }
 
     @Unique
-    private void packutil$renderAfterExtract(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float deltaTicks) {
+    private void packutil$renderAfterExtract(GuiGraphics graphics, int mouseX, int mouseY, float deltaTicks) {
         packutil$suppressMeteorWidgets();
         packutil$layoutButtons();
 
@@ -174,7 +174,7 @@ public abstract class PackUtilMultiplayerScreenMixin extends Screen {
     }
 
     @Unique
-    private static void packutil$renderCornerButton(GuiGraphicsExtractor graphics, Font renderer, PackUiOverlayButton button, int mouseX, int mouseY) {
+    private static void packutil$renderCornerButton(GuiGraphics graphics, Font renderer, PackUiOverlayButton button, int mouseX, int mouseY) {
         int x = button.getX();
         int y = button.getY();
         int w = button.getWidth();

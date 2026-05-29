@@ -16,7 +16,7 @@ import autismclient.modules.PackUtilModule;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -529,15 +529,15 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         return Math.max(rowPitch, contentHeight);
     }
 
-    private void drawUiText(GuiGraphicsExtractor ctx, String text, PackUiTone tone, int color, int x, int y) {
+    private void drawUiText(GuiGraphics ctx, String text, PackUiTone tone, int color, int x, int y) {
         PackUiText.draw(ctx, textRenderer, text, PACKUI_THEME.fontFor(tone), color, x, y, false);
     }
 
-    private void drawOverlayButton(GuiGraphicsExtractor ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mx, int my) {
+    private void drawOverlayButton(GuiGraphics ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mx, int my) {
         drawOverlayButton(ctx, x, y, w, h, label, variant, enabled, PackUiTone.BODY, mx, my);
     }
 
-    private void drawOverlayButton(GuiGraphicsExtractor ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, PackUiTone tone, int mx, int my) {
+    private void drawOverlayButton(GuiGraphics ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, PackUiTone tone, int mx, int my) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, w, h, Component.literal(label), ignored -> {});
         button.setWidth(w);
         button.setVariant(variant);
@@ -550,7 +550,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         return value == null || value.isBlank() ? null : value;
     }
 
-    public void render(GuiGraphicsExtractor ctx, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics ctx, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         PackUtilLANSync sync = PackUtilLANSync.getInstance();
@@ -617,13 +617,13 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderNotRunning(GuiGraphicsExtractor ctx, int mx, int my, int y) {
+    private void renderNotRunning(GuiGraphics ctx, int mx, int my, int y) {
         int lx = panelX + CONTENT_PADDING;
         drawUiText(ctx, "Not running", PackUiTone.LABEL, 0xFFFF5555, lx, y + 8);
         drawUiText(ctx, "LAN Sync is currently stopped", PackUiTone.MUTED, PackUtilColors.textSecondary(), lx, y + 22);
     }
 
-    private void renderNoSession(GuiGraphicsExtractor ctx, int mx, int my, int y) {
+    private void renderNoSession(GuiGraphics ctx, int mx, int my, int y) {
         int lx = panelX + CONTENT_PADDING;
         drawUiText(ctx, "Quick Start", PackUiTone.LABEL, PACKUI_THEME.color(PackUiTone.BODY), lx, y + 6);
         drawUiText(ctx, "Host creates, others search & join", PackUiTone.MUTED, PackUtilColors.textSecondary(), lx, y + 20);
@@ -642,7 +642,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         }));
     }
 
-    private void renderSearching(GuiGraphicsExtractor ctx, int mx, int my, int y) {
+    private void renderSearching(GuiGraphics ctx, int mx, int my, int y) {
         int secondsLeft = PackUtilLANSync.getInstance().getSearchSecondsRemaining();
         String text = "Searching... " + secondsLeft + "s";
         int tw = PackUiText.width(textRenderer, text, PACKUI_THEME.fontFor(PackUiTone.LABEL), 0xFFFFAA00);
@@ -678,7 +678,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderLanChatField(GuiGraphicsExtractor ctx, int mouseX, int mouseY) {
+    private void renderLanChatField(GuiGraphics ctx, int mouseX, int mouseY) {
         if (lanChatField == null) return;
 
         int labelY = lanChatField.getY() - 10;
@@ -686,7 +686,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         lanChatField.render(ctx, mouseX, mouseY, 0.0f);
     }
 
-    private void renderTabBar(GuiGraphicsExtractor ctx, int mx, int my, int y) {
+    private void renderTabBar(GuiGraphics ctx, int mx, int my, int y) {
         int tabW = PANEL_WIDTH / TAB_NAMES.length;
         for (int i = 0; i < TAB_NAMES.length; i++) {
             int tx = panelX + (i * tabW);
@@ -707,7 +707,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderDashboard(GuiGraphicsExtractor ctx, int mx, int my, int y, int h) {
+    private void renderDashboard(GuiGraphics ctx, int mx, int my, int y, int h) {
         PackUtilLANSync sync = PackUtilLANSync.getInstance();
         int lx = panelX + CONTENT_PADDING;
         int cy = y + 4;
@@ -771,7 +771,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         }));
     }
 
-    private void renderPeers(GuiGraphicsExtractor ctx, int mx, int my, int y, int h) {
+    private void renderPeers(GuiGraphics ctx, int mx, int my, int y, int h) {
         PackUtilLANSync sync = PackUtilLANSync.getInstance();
         int lx = panelX + CONTENT_PADDING;
         int cy = y + 4;
@@ -906,7 +906,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         clampScrollOffset();
     }
 
-    private void renderQueue(GuiGraphicsExtractor ctx, int mx, int my, int y, int h) {
+    private void renderQueue(GuiGraphics ctx, int mx, int my, int y, int h) {
         PackUtilLANSync sync = PackUtilLANSync.getInstance();
         int lx = panelX + CONTENT_PADDING;
         int cy = y + 6;
@@ -940,7 +940,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         maxScroll = 0;
     }
 
-    private void renderExecute(GuiGraphicsExtractor ctx, int mx, int my, int y, int h) {
+    private void renderExecute(GuiGraphics ctx, int mx, int my, int y, int h) {
         PackUtilLANSync sync = PackUtilLANSync.getInstance();
         int lx = panelX + CONTENT_PADDING;
         int cy = y + 4;
@@ -1010,7 +1010,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         clampScrollOffset();
     }
 
-    private int renderExecuteSameMacro(GuiGraphicsExtractor ctx, int mx, int my, int cy, int lx, int btnW, PackUtilLANSync sync) {
+    private int renderExecuteSameMacro(GuiGraphics ctx, int mx, int my, int cy, int lx, int btnW, PackUtilLANSync sync) {
         PackUiListRenderer.drawHeader(ctx, textRenderer, "Local Macros", lx, cy);
         cy += 14;
 
@@ -1131,7 +1131,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         return cy;
     }
 
-    private int renderExecutePerUser(GuiGraphicsExtractor ctx, int mx, int my, int cy, int lx, int btnW, PackUtilLANSync sync) {
+    private int renderExecutePerUser(GuiGraphics ctx, int mx, int my, int cy, int lx, int btnW, PackUtilLANSync sync) {
         syncPerUserAssignments(sync);
 
         int rowW = getContentWidth() + 4;
@@ -1468,7 +1468,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
         return String.join(", ", parts);
     }
 
-    private int renderPickerRowClipped(GuiGraphicsExtractor ctx, int mx, int my, int cy,
+    private int renderPickerRowClipped(GuiGraphics ctx, int mx, int my, int cy,
             int detailLx, int detailRx, int rowW,
             String macroName, String assigned, String badge,
             String peerKey, PackUtilLANSync sync, boolean allowImport,
@@ -1745,7 +1745,7 @@ public class PackUtilLANSyncOverlay extends PackUtilOverlayBase {
     @Override
     public boolean charTyped(char chr, int modifiers) {
         if (lanChatField != null && lanChatField.isFocused()) {
-            return lanChatField.charTyped(new CharacterEvent(chr));
+            return lanChatField.charTyped(new CharacterEvent(chr, 0));
         }
         return false;
     }

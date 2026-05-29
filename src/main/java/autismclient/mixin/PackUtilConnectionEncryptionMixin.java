@@ -21,7 +21,7 @@ import javax.crypto.Cipher;
 public abstract class PackUtilConnectionEncryptionMixin {
     @Shadow private Channel channel;
 
-    @Inject(method = "setEncryptionKey", at = @At("TAIL"))
+    @Inject(method = "setEncryptionKey", at = @At("TAIL"), require = 0)
     private void packutil$observeEncryptionBoundary(Cipher decryptCipher, Cipher encryptCipher, CallbackInfo ci) {
         if (channel == null) return;
         PackUtilPacketCapture.markEncryptionEnabled(channel);

@@ -8,7 +8,7 @@ import autismclient.gui.packui.PackUiViewport;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.chat.Component;
@@ -170,7 +170,7 @@ public class PackUtilChatField {
         return field.isFocused() && field.charTyped(inputContext(), (char) charInput.codepoint(), 0);
     }
 
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         syncBounds();
         field.render(renderContext(context, mouseX, mouseY, delta));
     }
@@ -255,7 +255,7 @@ public class PackUtilChatField {
         return new PackUiRenderContext(null, textRenderer, PackUiViewport.current(PackUiTheme.DEFAULT_DENSITY), THEME, 0, 0, 0);
     }
 
-    private PackUiRenderContext renderContext(GuiGraphicsExtractor drawContext, int mouseX, int mouseY, float delta) {
+    private PackUiRenderContext renderContext(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
         return new PackUiRenderContext(
             drawContext,
             textRenderer,

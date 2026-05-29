@@ -1,7 +1,7 @@
 package autismclient.util;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class PackUtilUiScale {
     public static final int FIXED_GUI_SCALE = 2;
@@ -50,7 +50,7 @@ public final class PackUtilUiScale {
         return Math.max(0, (int) Math.ceil(size * (double) FIXED_GUI_SCALE));
     }
 
-    public static void pushOverlayScale(GuiGraphicsExtractor context) {
+    public static void pushOverlayScale(GuiGraphics context) {
         if (context == null) return;
         context.pose().pushMatrix();
         if (overlayScaleDepth == 0) {
@@ -60,13 +60,13 @@ public final class PackUtilUiScale {
         overlayScaleDepth++;
     }
 
-    public static void popOverlayScale(GuiGraphicsExtractor context) {
+    public static void popOverlayScale(GuiGraphics context) {
         if (context == null) return;
         if (overlayScaleDepth > 0) overlayScaleDepth--;
         context.pose().popMatrix();
     }
 
-    public static void enableOverlayScissor(GuiGraphicsExtractor context, int x1, int y1, int x2, int y2) {
+    public static void enableOverlayScissor(GuiGraphics context, int x1, int y1, int x2, int y2) {
         context.enableScissor(x1, y1, x2, y2);
     }
 }

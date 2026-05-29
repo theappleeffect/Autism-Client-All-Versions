@@ -2,7 +2,7 @@ package autismclient.gui.packui;
 
 import autismclient.util.PackUtilText;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 import java.util.List;
@@ -35,12 +35,12 @@ public final class PackUiDropdown {
         this.onSelect = onSelect;
     }
 
-    public static void renderAll(GuiGraphicsExtractor context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
+    public static void renderAll(GuiGraphics context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
         renderButtons(context, font, dropdowns, mouseX, mouseY);
         renderOpenMenu(context, font, dropdowns, mouseX, mouseY);
     }
 
-    public static void renderButtons(GuiGraphicsExtractor context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
+    public static void renderButtons(GuiGraphics context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
         if (dropdowns == null) return;
         boolean menuOpen = isMenuOpen(dropdowns);
         boolean suppressPointer = shouldSuppressUnderlyingPointer();
@@ -53,7 +53,7 @@ public final class PackUiDropdown {
         }
     }
 
-    public static void renderOpenMenu(GuiGraphicsExtractor context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
+    public static void renderOpenMenu(GuiGraphics context, Font font, List<PackUiDropdown> dropdowns, int mouseX, int mouseY) {
         if (dropdowns == null) return;
         for (PackUiDropdown dropdown : dropdowns) {
             if (dropdown != null && dropdown.visible && dropdown.open) {
@@ -118,7 +118,7 @@ public final class PackUiDropdown {
         open = false;
     }
 
-    private void renderButton(GuiGraphicsExtractor context, Font font, int mouseX, int mouseY) {
+    private void renderButton(GuiGraphics context, Font font, int mouseX, int mouseY) {
         boolean hovered = active && contains(mouseX, mouseY);
         int bg = hovered ? 0xFF241016 : 0xFF1B0D12;
         int border = hovered ? THEME.overlayButtonBorderGlow(PackUiOverlayButton.Variant.PRIMARY) : THEME.overlayButtonBorder(PackUiOverlayButton.Variant.PRIMARY, active);
@@ -135,7 +135,7 @@ public final class PackUiDropdown {
         PackUiText.draw(context, font, arrow, fontId, textColor, x + width - arrowWidth - 7, textY, false);
     }
 
-    private void renderMenu(GuiGraphicsExtractor context, Font font, int mouseX, int mouseY) {
+    private void renderMenu(GuiGraphics context, Font font, int mouseX, int mouseY) {
         if (!open || options.isEmpty()) return;
         int menuY = y + height + 2;
         int menuHeight = options.size() * OPTION_HEIGHT;
@@ -174,7 +174,7 @@ public final class PackUiDropdown {
         return false;
     }
 
-    private void drawBox(GuiGraphicsExtractor context, int x, int y, int width, int height, int fill, int border) {
+    private void drawBox(GuiGraphics context, int x, int y, int width, int height, int fill, int border) {
         drawFill(context, x, y, x + width, y + height, fill);
         drawFill(context, x, y, x + width, y + 1, border);
         drawFill(context, x, y + height - 1, x + width, y + height, border);
@@ -182,7 +182,7 @@ public final class PackUiDropdown {
         drawFill(context, x + width - 1, y, x + width, y + height, border);
     }
 
-    private void drawFill(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1, int color) {
+    private void drawFill(GuiGraphics context, int x0, int y0, int x1, int y1, int color) {
         if (open) PackUiText.fill(context, x0, y0, x1, y1, color);
         else context.fill(x0, y0, x1, y1, color);
     }

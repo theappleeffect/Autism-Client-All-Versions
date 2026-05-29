@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public final class PackUiScreenButton {
@@ -34,7 +34,7 @@ public final class PackUiScreenButton {
         return this;
     }
 
-    public void render(GuiGraphicsExtractor context, Font textRenderer, int mouseX, int mouseY) {
+    public void render(GuiGraphics context, Font textRenderer, int mouseX, int mouseY) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, width, height, label, ignored -> {
             if (action != null) action.run();
         });

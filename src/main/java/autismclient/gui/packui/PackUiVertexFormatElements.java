@@ -3,7 +3,7 @@ package autismclient.gui.packui;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 
 final class PackUiVertexFormatElements {
-    static final VertexFormatElement POS2 = VertexFormatElement.register(nextId(), 0, VertexFormatElement.Type.FLOAT, false, 2);
+    static final VertexFormatElement POS2 = VertexFormatElement.register(nextId(), 0, VertexFormatElement.Type.FLOAT, VertexFormatElement.Usage.POSITION, 2);
 
     private PackUiVertexFormatElements() {
     }

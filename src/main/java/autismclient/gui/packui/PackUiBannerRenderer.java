@@ -1,12 +1,12 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class PackUiBannerRenderer {
     private PackUiBannerRenderer() {}
 
-    public static void drawPopupFrame(GuiGraphicsExtractor context, PackUiTheme theme, int x, int y, int width, int height) {
+    public static void drawPopupFrame(GuiGraphics context, PackUiTheme theme, int x, int y, int width, int height) {
         context.fill(x, y, x + width, y + height, theme.windowFill());
         context.fill(x + 1, y + 1, x + width - 1, y + theme.headerHeight() - 1, theme.headerFill());
         context.fill(x, y + theme.headerHeight() - 1, x + width, y + theme.headerHeight(), theme.headerAccent());
@@ -18,7 +18,7 @@ public final class PackUiBannerRenderer {
         context.fill(x + 1, y + 1, x + 2, y + height - 1, 0x24FFFFFF);
     }
 
-    public static void drawInlineBanner(GuiGraphicsExtractor context, Font textRenderer, PackUiTheme theme,
+    public static void drawInlineBanner(GuiGraphics context, Font textRenderer, PackUiTheme theme,
                                         int x, int y, int width, String message, int accentColor) {
         int padX = 5;
         int textHeight = theme.lineHeight(PackUiTone.BODY, 2);
@@ -34,7 +34,7 @@ public final class PackUiBannerRenderer {
         PackUiText.draw(context, textRenderer, trimmed, theme.fontFor(PackUiTone.BODY), theme.color(PackUiTone.BODY), x + padX, textY, false);
     }
 
-    public static void drawFloatingBanner(GuiGraphicsExtractor context, Font textRenderer, PackUiTheme theme,
+    public static void drawFloatingBanner(GuiGraphics context, Font textRenderer, PackUiTheme theme,
                                           int x, int y, int width, String title, String message, String detail, int accentColor) {
         int padX = 6;
         int headerH = Math.max(theme.headerHeight(), theme.lineHeight(PackUiTone.LABEL, 2));

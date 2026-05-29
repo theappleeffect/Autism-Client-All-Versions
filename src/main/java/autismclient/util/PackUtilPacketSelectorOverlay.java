@@ -20,7 +20,7 @@ import autismclient.gui.packui.PackUiViewportSlot;
 import autismclient.gui.packui.PackUiWindowNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.protocol.Packet;
 import org.lwjgl.glfw.GLFW;
 
@@ -265,7 +265,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         rebuildUi();
     }
 
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible || MC == null || MC.font == null) return;
 
         rebuildUi();
@@ -293,7 +293,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         renderHeaderControls(context, viewport, uiMouseX, uiMouseY, delta);
     }
 
-    private void renderlistViewport(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
+    private void renderlistViewport(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
         int viewX = Math.round(listSlot.x());
         int viewY = Math.round(listSlot.y());
         int viewW = Math.round(listSlot.width());
@@ -321,7 +321,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         renderScrollbar(context, viewX, viewY, viewW, viewH, uiMouseX, uiMouseY);
     }
 
-    private void renderPacketRowSimple(GuiGraphicsExtractor context, Class<? extends Packet<?>> packetClass, int x, int y, int width, int index) {
+    private void renderPacketRowSimple(GuiGraphics context, Class<? extends Packet<?>> packetClass, int x, int y, int width, int index) {
         boolean c2s = PackUtilPacketRegistry.getC2SPackets().contains(packetClass);
         boolean selected = toggleMode && selectedPackets.contains(packetClass);
         int rowColor = selected ? PackUtilColors.packetRowSelectedBg(false) : PackUtilColors.packetRowBg(c2s, index, false);
@@ -336,7 +336,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         PackUiText.fill(context, x + 4, y + rowHeight() - 1, x + width - 4, y + rowHeight(), PackUtilColors.packetRowDivider());
     }
 
-    private void renderPacketRow(GuiGraphicsExtractor context, PackUiRenderContext rowContext, Class<? extends Packet<?>> packetClass, int x, int y, int width, int index) {
+    private void renderPacketRow(GuiGraphics context, PackUiRenderContext rowContext, Class<? extends Packet<?>> packetClass, int x, int y, int width, int index) {
         boolean c2s = PackUtilPacketRegistry.getC2SPackets().contains(packetClass);
         boolean hovered = uiContains(x, y, width, rowHeight(), rowContext.mouseX(), rowContext.mouseY());
         boolean selected = toggleMode && selectedPackets.contains(packetClass);
@@ -355,7 +355,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         PackUiText.fill(context, x + 4, y + rowHeight() - 1, x + width - 4, y + rowHeight(), PackUtilColors.packetRowDivider());
     }
 
-    private void renderScrollbar(GuiGraphicsExtractor context, int viewX, int viewY, int viewW, int viewH, float uiMouseX, float uiMouseY) {
+    private void renderScrollbar(GuiGraphics context, int viewX, int viewY, int viewW, int viewH, float uiMouseX, float uiMouseY) {
         if (listViewport != null) {
             listViewport.renderScrollbar(context, uiMouseX, uiMouseY);
         }
@@ -550,7 +550,7 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         return PackUiHeaderControls.animate(current, target, delta);
     }
 
-    private void renderHeaderControls(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
+    private void renderHeaderControls(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
         closeVisibility = animate(closeVisibility, 1.0f, delta);
         closeHover = animate(closeHover, isOverCloseButton(uiMouseX, uiMouseY) ? 1.0f : 0.0f, delta);
         viewport.push(context);
@@ -565,11 +565,11 @@ public class PackUtilPacketSelectorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawCollapseArrow(GuiGraphicsExtractor context, int x, int y) {
+    private void drawCollapseArrow(GuiGraphics context, int x, int y) {
         PackUiHeaderControls.drawAnimatedArrow(context, x, y + 1, headerArrowWidth(), collapsed ? 0.0f : 1.0f, 1.0f);
     }
 
-    private void drawCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, float visibility) {
+    private void drawCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, float visibility) {
         PackUiHeaderControls.drawCloseButton(context, x, y, width, height, hover, true, visibility);
     }
 

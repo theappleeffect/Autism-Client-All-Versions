@@ -21,7 +21,7 @@ public abstract class PackUtilRecipeBookScreenMixin {
         return module != null && module.isActive();
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$handleOverlayClick(MouseButtonEvent click, boolean doubled, CallbackInfoReturnable<Boolean> cir) {
         if (!packutil$isActive()) return;
 
@@ -31,7 +31,7 @@ public abstract class PackUtilRecipeBookScreenMixin {
         }
     }
 
-    @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseDragged", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$handleOverlayDrag(MouseButtonEvent click, double deltaX, double deltaY, CallbackInfoReturnable<Boolean> cir) {
         if (!packutil$isActive()) return;
 
@@ -40,7 +40,7 @@ public abstract class PackUtilRecipeBookScreenMixin {
         }
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$handleOverlayKeys(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!packutil$isActive()) return;
 
@@ -49,7 +49,7 @@ public abstract class PackUtilRecipeBookScreenMixin {
         }
     }
 
-    @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$handleOverlayChars(CharacterEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!packutil$isActive()) return;
 

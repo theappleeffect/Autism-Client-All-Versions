@@ -44,12 +44,12 @@ public class PackUtilMinecraftClientMixin {
         return new PackUtilLoadingOverlay(minecraft, reload, onFinish, fadeIn);
     }
 
-    @Inject(method = "createTitle", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "createTitle", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$createCustomWindowTitle(CallbackInfoReturnable<String> cir) {
         cir.setReturnValue(PACKUTIL_WINDOW_TITLE);
     }
 
-    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$replaceTitleScreen(Screen screen, CallbackInfo ci) {
         if (screen instanceof TitleScreen) {
             ((Minecraft) (Object) this).setScreen(new PackUtilTitleScreen());
@@ -57,12 +57,12 @@ public class PackUtilMinecraftClientMixin {
         }
     }
 
-    @Inject(method = "tick", at = @At("HEAD"))
+    @Inject(method = "tick", at = @At("HEAD"), require = 0)
     private void packutil$onTickHead(CallbackInfo ci) {
         PackUtilSharedState.get().onClientTickStart();
     }
 
-    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$onDoAttack(CallbackInfoReturnable<Boolean> cir) {
         if (PackUtilSharedState.get().hasAttackCaptureCallback()) {
             PackUtilSharedState.get().consumeAttackCaptureCallback();
@@ -70,7 +70,7 @@ public class PackUtilMinecraftClientMixin {
         }
     }
 
-    @Inject(method = "handleKeybinds", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "handleKeybinds", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$cancelCaptureOnEscape(CallbackInfo ci) {
         Minecraft client = (Minecraft) (Object) this;
         if (client.getWindow() == null) return;
@@ -95,10 +95,10 @@ public class PackUtilMinecraftClientMixin {
         }
     }
 
-    @Inject(method = "pauseGame", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "pauseGame", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$cancelLostFocusPause(boolean suppressPauseMenuIfWeReallyArePausing, CallbackInfo ci) {
         Minecraft client = (Minecraft) (Object) this;
-        if (client.getWindow() != null && !client.getWindow().isFocused()) {
+        if (!client.isWindowActive()) {
             PackUtilModule module = PackUtilModule.get();
             if (module != null && module.isActive() && module.isNoPauseOnLostFocus()) {
                 ci.cancel();

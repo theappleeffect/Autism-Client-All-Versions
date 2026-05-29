@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientConfigurationPacketListenerImpl.class)
 public abstract class PackUtilClientConfigurationNetworkHandlerMixin {
-    @Inject(method = "handleSelectKnownPacks", at = @At("HEAD"))
+    @Inject(method = "handleSelectKnownPacks", at = @At("HEAD"), require = 0)
     private void yang$onSelectKnownPacks(ClientboundSelectKnownPacks packet, CallbackInfo ci) {
         if (packet == null || packet.knownPacks() == null) return;
 

@@ -48,7 +48,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.input.CharacterEvent;
@@ -1018,7 +1018,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
         frameDelta = delta;
 
@@ -1059,7 +1059,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderBody(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta,
+    private void renderBody(GuiGraphics context, int mouseX, int mouseY, float delta,
                             int bodyTop, int bodyBtm) {
 
         if (itemAction != null) {
@@ -1255,7 +1255,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderFooter(context, bodyBtm - FOOTER_H, mouseX, mouseY);
     }
 
-    private void renderItemPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderItemPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font   = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         int headerBtnW = 44;
@@ -1589,7 +1589,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         if (addF != null) addF.setText(target.editorText());
     }
 
-    private void renderInlineToggle(GuiGraphicsExtractor ctx, Identifier font, String stateKey, String label,
+    private void renderInlineToggle(GuiGraphics ctx, Identifier font, String stateKey, String label,
                                     int x, int y, int w, int mx, int my) {
         boolean val = toggleStates.getOrDefault(stateKey, false);
         int lw = labelWidth(w, label, font, 34);
@@ -1611,7 +1611,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderCraftPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w,
+    private void renderCraftPanel(GuiGraphics ctx, int x, int bodyTop, int w,
                                   int mx, int my, float delta) {
         Identifier font   = theme.fontFor(PackUiTone.BODY);
         int removeW       = 13;
@@ -1857,7 +1857,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         });
     }
 
-    private void renderDropPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderDropPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         int headerBtnW = 44;
@@ -2280,7 +2280,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderLanStepPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderLanStepPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         boolean filterByUser = toggleStates.getOrDefault("lan_filterByUser", false);
@@ -2408,7 +2408,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderPacketActionButtons(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private void renderPacketActionButtons(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int btnH = 14;
         int halfW = (w - 4) / 2;
@@ -2444,7 +2444,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         });
     }
 
-    private void renderWaitPacketPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitPacketPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         boolean filterByUser = toggleStates.getOrDefault("lan_filterByUser", false);
@@ -2507,7 +2507,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderSendPacketPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderSendPacketPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -2602,7 +2602,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
                 });
     }
 
-    private int renderQueuedPacketList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my, float delta,
+    private int renderQueuedPacketList(GuiGraphics ctx, int x, int y, int w, int mx, int my, float delta,
                                        String listKey, List<PackUtilSharedState.QueuedPacket> packets,
                                        boolean removable, java.util.function.IntConsumer rowAction) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
@@ -2658,7 +2658,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return y + listH;
     }
 
-    private void renderSendPacketButtons(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private void renderSendPacketButtons(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int btnH = 14;
         int halfW = (w - 4) / 2;
@@ -2904,7 +2904,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderCleanPayloadPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderCleanPayloadPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -2960,7 +2960,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, payloadEditorHint());
     }
 
-    private int renderPayloadStatus(GuiGraphicsExtractor ctx, int x, int y, int w) {
+    private int renderPayloadStatus(GuiGraphics ctx, int x, int y, int w) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         String status = payloadReplayStatus();
         String transport = "Transport: normal encoder";
@@ -3089,7 +3089,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return action;
     }
 
-    private void renderPayloadPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderPayloadPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         if (payloadAction != null || targetAction != null) {
             renderCleanPayloadPanel(ctx, x, bodyTop, w, mx, my, delta);
             return;
@@ -3419,7 +3419,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         rawField.setText(PackUtilPayloadSupport.toHex(textField.getText().getBytes(StandardCharsets.UTF_8)));
     }
 
-    private void renderDelayPacketsPresetButtons(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private void renderDelayPacketsPresetButtons(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         int btnH = 14;
         int halfW = (w - 4) / 2;
         int x2 = x + halfW + 4;
@@ -3438,7 +3438,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
     }
 
     private PackUiOverlayButton renderOverlayButton(
-            GuiGraphicsExtractor ctx,
+            GuiGraphics ctx,
             int x,
             int y,
             int w,
@@ -3458,7 +3458,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return button;
     }
 
-    private void renderIconDeleteButton(GuiGraphicsExtractor ctx, int x, int y, int size, int mx, int my, Runnable action) {
+    private void renderIconDeleteButton(GuiGraphics ctx, int x, int y, int size, int mx, int my, Runnable action) {
         boolean hovered = mx >= x && mx < x + size && my >= y && my < y + size;
         PackUiListRenderer.drawIconButton(ctx, x, y, size, PackUiAssets.ICON_WINDOW_CLOSE, hovered, true);
         hitRegions.add(new HitRegion(x, y, size, size, (mouseX, mouseY, mouseButton) -> {
@@ -3470,16 +3470,16 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }));
     }
 
-    private void renderActionButton(GuiGraphicsExtractor ctx, int x, int y, int w, int h,
+    private void renderActionButton(GuiGraphics ctx, int x, int y, int w, int h,
                                     String label, int mx, int my, Runnable action) {
         renderOverlayButton(ctx, x, y, w, h, label, PackUiOverlayButton.Variant.SECONDARY, true, mx, my, action);
     }
 
-    private int renderEditorHint(GuiGraphicsExtractor ctx, int x, int y, int w, String text) {
+    private int renderEditorHint(GuiGraphics ctx, int x, int y, int w, String text) {
         return renderEditorHint(ctx, x, y, w, text, PackUtilColors.textDim());
     }
 
-    private int renderEditorHint(GuiGraphicsExtractor ctx, int x, int y, int w, String text, int color) {
+    private int renderEditorHint(GuiGraphics ctx, int x, int y, int w, String text, int color) {
         String hint = formatEditorHint(text);
         if (hint.isEmpty()) return y;
         Identifier font = theme.fontFor(PackUiTone.BODY);
@@ -3671,7 +3671,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return normalized.substring(0, Math.max(1, cutoff)).trim() + "...";
     }
 
-    private void renderRow(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderRow(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                            int mx, int my, float delta) {
         switch (field.type()) {
             case TOGGLE      -> renderToggle   (ctx, field, x, y, w, mx, my);
@@ -3691,7 +3691,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderToggle(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderToggle(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                               int mx, int my) {
         String key = field.key();
         boolean val = toggleStates.getOrDefault(key, false);
@@ -3723,7 +3723,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         });
     }
 
-    private void renderTextField(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderTextField(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                                  int mx, int my, float delta) {
         String key = field.key();
         PackUtilChatField tf = textFields.get(key);
@@ -3789,7 +3789,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderMacroSelector(GuiGraphicsExtractor ctx, FieldDef field, PackUtilChatField backingField,
+    private void renderMacroSelector(GuiGraphics ctx, FieldDef field, PackUtilChatField backingField,
                                      int x, int y, int w, int mx, int my) {
         List<String> macros = availableMacroNames(backingField.getText());
         Identifier font = theme.fontFor(PackUiTone.BODY);
@@ -3857,7 +3857,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
                 && targetAction.getType() == MacroActionType.WAIT_CHAT;
     }
 
-    private void renderEnum(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderEnum(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                             int mx, int my) {
         String key = field.key();
         List<String> opts = field.enumOptions();
@@ -3911,7 +3911,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderBlockPos(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderBlockPos(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                                 int mx, int my, float delta) {
         String key  = field.key();
         Identifier font = theme.fontFor(PackUiTone.BODY);
@@ -3952,7 +3952,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderStringList(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderStringList(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                                   int mx, int my, float delta) {
         String key        = field.key();
         List<String> lst  = stringLists.getOrDefault(key, Collections.emptyList());
@@ -4158,7 +4158,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return null;
     }
 
-    private void renderStringListCatalog(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private void renderStringListCatalog(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                                          int mx, int my, float delta) {
         String key        = field.key();
         List<String> sel  = stringLists.getOrDefault(key, Collections.emptyList());
@@ -4290,7 +4290,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         catViewport.endRender(ctx);
     }
 
-    private void renderFooter(GuiGraphicsExtractor ctx, int footerY, int mx, int my) {
+    private void renderFooter(GuiGraphics ctx, int footerY, int mx, int my) {
         int btnH  = 16;
         int btnY  = footerY + (FOOTER_H - btnH) / 2;
         if (standalonePayloadEditor) {
@@ -4442,7 +4442,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return !captureToasts.isEmpty();
     }
 
-    public void renderAbstractContainerScreenCaptureToasts(GuiGraphicsExtractor context, int anchorX, int anchorY, int anchorWidth) {
+    public void renderAbstractContainerScreenCaptureToasts(GuiGraphics context, int anchorX, int anchorY, int anchorWidth) {
         if (context == null || textRenderer == null || anchorWidth <= 0) return;
 
         long nowNanos = System.nanoTime();
@@ -4987,7 +4987,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
     public boolean charTyped(char chr, int modifiers) {
         if (!visible) return false;
         if (packetSelectorOverlay.isVisible()) return packetSelectorOverlay.charTyped(chr, modifiers);
-        CharacterEvent ci = new CharacterEvent(chr);
+        CharacterEvent ci = new CharacterEvent(chr, 0);
         for (PackUtilChatField f : textFields.values()) {
             if (f.isFocused() && f.charTyped(ci)) return true;
         }
@@ -5943,7 +5943,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }));
     }
 
-    private void renderWaitSoundPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitSoundPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -5992,7 +5992,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderWaitEntityPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitEntityPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -6079,7 +6079,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderOpenContainerPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderOpenContainerPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -6122,7 +6122,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderNearbyContainerList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my,
+    private void renderNearbyContainerList(GuiGraphics ctx, int x, int y, int w, int mx, int my,
                                            String listKey, String fieldKey) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         PackUiText.draw(ctx, textRenderer, "Nearby Containers", font, PackUtilColors.textSecondary(), x, y + 2, false);
@@ -6144,7 +6144,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderStoreItemPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderStoreItemPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         int cy = bodyTop + PAD;
 
         cy = renderFieldByKey(ctx, "mode", x, cy, w, mx, my, delta);
@@ -6276,7 +6276,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderFieldByKey(ctx, "closeSendPkt", x, cy, w, mx, my, delta);
     }
 
-    private void renderInventoryAuditPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderInventoryAuditPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         int cy = bodyTop + PAD;
 
         cy = renderFieldByKey(ctx, "mode", x, cy, w, mx, my, delta);
@@ -6408,7 +6408,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderFieldByKey(ctx, "spamDelayMs", x, cy, w, mx, my, delta);
     }
 
-    private void renderPayPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderPayPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -6474,7 +6474,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint);
     }
 
-    private void renderToggleModulePanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderToggleModulePanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         List<autismclient.util.macro.ToggleModuleAction.ModuleEntry> selected =
@@ -6584,7 +6584,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint);
     }
 
-    private void renderRegistryPlaceholder(GuiGraphicsExtractor ctx, int x, int y, int w, String listKey, int visibleRows, String message) {
+    private void renderRegistryPlaceholder(GuiGraphics ctx, int x, int y, int w, String listKey, int visibleRows, String message) {
         int listH = visibleRows * CATALOG_ITEM_H;
         int itemW = w - SCROLLBAR_W - 1;
         catalogListBounds.put(listKey, new int[]{y, listH});
@@ -6697,7 +6697,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         };
     }
 
-    private void renderWaitSlotChangePanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitSlotChangePanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         int headerBtnW = 44;
@@ -6867,7 +6867,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
                         : "Click a row to edit. ALL entries must match before proceeding.");
     }
 
-    private void renderUseItemPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderUseItemPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -6892,7 +6892,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint);
     }
 
-    private void renderRotatePanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderRotatePanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         int cy = bodyTop + PAD;
 
         cy = renderFieldByKey(ctx, "yaw", x, cy, w, mx, my, delta);
@@ -6913,7 +6913,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
                         : "Capture View fills in your current yaw and pitch.");
     }
 
-    private void renderLookAtPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderLookAtPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         int cy = bodyTop + PAD;
 
         cy = renderFieldByKey(ctx, "targetMode", x, cy, w, mx, my, delta);
@@ -6946,7 +6946,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint);
     }
 
-    private int renderLookAtEntitySelector(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my, float delta) {
+    private int renderLookAtEntitySelector(GuiGraphics ctx, int x, int y, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = y;
 
@@ -7028,7 +7028,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return cy + 3 * CATALOG_ITEM_H + 4;
     }
 
-    private void renderGoToPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderGoToPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         FieldDef posField = getField("pos");
@@ -7041,7 +7041,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, "Wait for Arrival continues only after Baritone finishes.");
     }
 
-    private void renderSwapSlotsPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderSwapSlotsPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7064,7 +7064,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, buildSwapSlotsSummary());
     }
 
-    private void renderClickPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderClickPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7076,7 +7076,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, buildClickSummary());
     }
 
-    private void renderDisconnectPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderDisconnectPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7105,7 +7105,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint, "DISCONNECT".equals(mode) ? PackUtilColors.textDim() : 0xFFFFB36B);
     }
 
-    private void renderWaitGuiPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitGuiPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7119,7 +7119,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, hint);
     }
 
-    private void renderSelectSlotPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderSelectSlotPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7138,7 +7138,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, buildSelectSlotSummary());
     }
 
-    private int renderSelectSlotHotbarPicker(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private int renderSelectSlotHotbarPicker(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int selectedSlot = getSelectSlotHotbarIndex();
         int slotGap = 2;
@@ -7159,7 +7159,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return y + 18;
     }
 
-    private void renderWaitCooldownPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderWaitCooldownPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7176,7 +7176,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderEditorHint(ctx, x, cy, w, buildWaitCooldownSummary());
     }
 
-    private void renderWaitChatPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int contentBottom, int w, int mx, int my, float delta) {
+    private void renderWaitChatPanel(GuiGraphics ctx, int x, int bodyTop, int contentBottom, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
 
@@ -7221,7 +7221,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         renderWaitChatHistoryList(ctx, x, cy, w, availableListHeight, mx, my, history);
     }
 
-    private int renderWaitChatFuzzySlider(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private int renderWaitChatFuzzySlider(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int percent = getWaitChatFuzzyPercent();
         PackUiText.draw(ctx, textRenderer, "Match Strength", font, PackUtilColors.textSecondary(), x, y + 2, false);
@@ -7304,7 +7304,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         setWaitChatFuzzyPercent(40 + stepIndex * 10);
     }
 
-    private int renderRotateSmoothnessSlider(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my) {
+    private int renderRotateSmoothnessSlider(GuiGraphics ctx, int x, int y, int w, int mx, int my) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int smoothness = getRotateSmoothness();
         PackUiText.draw(ctx, textRenderer, "Smoothness", font, PackUtilColors.textSecondary(), x, y + 2, false);
@@ -7553,7 +7553,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return entry.displayText() == null ? "" : entry.displayText();
     }
 
-    private void renderWaitChatHistoryList(GuiGraphicsExtractor ctx, int x, int y, int w, int listH, int mx, int my,
+    private void renderWaitChatHistoryList(GuiGraphics ctx, int x, int y, int w, int listH, int mx, int my,
                                            List<autismclient.util.macro.MacroExecutor.RecentChatMessage> values) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int desiredListH = values.isEmpty()
@@ -7604,7 +7604,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
             } else {
                 for (FormattedCharSequence line : wrapped) {
                     if (textY + 8 > iy + itemH) break;
-                    ctx.text(textRenderer, line, x + 3, textY, 0xFFFFFFFF, false);
+                    ctx.drawString(textRenderer, line, x + 3, textY, 0xFFFFFFFF, false);
                     textY += 9;
                 }
             }
@@ -7679,7 +7679,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return trimmed.length() < (text == null ? 0 : text.length()) ? trimmed + "..." : trimmed;
     }
 
-    private void renderDelayPacketsPanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderDelayPacketsPanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         int cy = bodyTop + PAD;
         int halfW = (w - 4) / 2;
         List<String> c2sTargets = getDelayPacketTargets(true);
@@ -7839,7 +7839,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return summary;
     }
 
-    private int renderDelayPacketPicker(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my, float delta, boolean c2s) {
+    private int renderDelayPacketPicker(GuiGraphics ctx, int x, int y, int w, int mx, int my, float delta, boolean c2s) {
         String key = c2s ? "c2sPackets" : "s2cPackets";
         String searchKey = c2s ? "_delay_packets_c2s_search" : "_delay_packets_s2c_search";
         String title = c2s ? "C2S Packets" : "S2C Packets";
@@ -7883,7 +7883,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return y + 5 * CATALOG_ITEM_H + 4;
     }
 
-    private void renderMinePanel(GuiGraphicsExtractor ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
+    private void renderMinePanel(GuiGraphics ctx, int x, int bodyTop, int w, int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         int cy = bodyTop + PAD;
         cy = renderFieldByKey(ctx, "targetBlocks", x, cy, w, mx, my, delta);
@@ -8060,7 +8060,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         };
     }
 
-    private int renderFieldByKey(GuiGraphicsExtractor ctx, String key, int x, int y, int w, int mx, int my, float delta) {
+    private int renderFieldByKey(GuiGraphics ctx, String key, int x, int y, int w, int mx, int my, float delta) {
         FieldDef field = getField(key);
         if (field == null || !isFieldVisible(field)) return y;
         renderRow(ctx, field, x, y, w, mx, my, delta);
@@ -8075,7 +8075,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return null;
     }
 
-    private <T> int renderSimpleSelectedList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my,
+    private <T> int renderSimpleSelectedList(GuiGraphics ctx, int x, int y, int w, int mx, int my,
                                              String listKey, String label, List<T> values,
                                              java.util.function.Consumer<T> removeAction,
                                              java.util.function.Function<T, String> formatter,
@@ -8083,7 +8083,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return renderSimpleSelectedList(ctx, x, y, w, mx, my, listKey, label, values, removeAction, formatter, ignored -> null, values::clear, emptyLabel, false);
     }
 
-    private <T> int renderSimpleSelectedList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my,
+    private <T> int renderSimpleSelectedList(GuiGraphics ctx, int x, int y, int w, int mx, int my,
                                              String listKey, String label, List<T> values,
                                              java.util.function.Consumer<T> removeAction,
                                              java.util.function.Function<T, String> formatter,
@@ -8092,7 +8092,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return renderSimpleSelectedList(ctx, x, y, w, mx, my, listKey, label, values, removeAction, formatter, richFormatter, values::clear, emptyLabel, false);
     }
 
-    private <T> int renderSimpleSelectedList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my,
+    private <T> int renderSimpleSelectedList(GuiGraphics ctx, int x, int y, int w, int mx, int my,
                                              String listKey, String label, List<T> values,
                                              java.util.function.Consumer<T> removeAction,
                                              java.util.function.Function<T, String> formatter,
@@ -8102,7 +8102,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return renderSimpleSelectedList(ctx, x, y, w, mx, my, listKey, label, values, removeAction, formatter, richFormatter, clearAction, emptyLabel, false);
     }
 
-    private <T> int renderSimpleSelectedList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my,
+    private <T> int renderSimpleSelectedList(GuiGraphics ctx, int x, int y, int w, int mx, int my,
                                              String listKey, String label, List<T> values,
                                              java.util.function.Consumer<T> removeAction,
                                              java.util.function.Function<T, String> formatter,
@@ -8216,14 +8216,14 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return y + listH + 4;
     }
 
-    private <T> void renderSearchRegistryList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my, String listKey,
+    private <T> void renderSearchRegistryList(GuiGraphics ctx, int x, int y, int w, int mx, int my, String listKey,
                                               List<T> values, int visibleRows,
                                               java.util.function.Consumer<T> clickAction,
                                               java.util.function.Function<T, String> formatter) {
         renderSearchRegistryList(ctx, x, y, w, mx, my, listKey, values, visibleRows, clickAction, ignored -> false, formatter);
     }
 
-    private <T> void renderSearchRegistryList(GuiGraphicsExtractor ctx, int x, int y, int w, int mx, int my, String listKey,
+    private <T> void renderSearchRegistryList(GuiGraphics ctx, int x, int y, int w, int mx, int my, String listKey,
                                               List<T> values, int visibleRows,
                                               java.util.function.Consumer<T> clickAction,
                                               java.util.function.Predicate<T> selectedPredicate,
@@ -8664,7 +8664,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return names;
     }
 
-    private int renderBlockPosWithoutCapture(GuiGraphicsExtractor ctx, FieldDef field, int x, int y, int w,
+    private int renderBlockPosWithoutCapture(GuiGraphics ctx, FieldDef field, int x, int y, int w,
                                              int mx, int my, float delta) {
         Identifier font = theme.fontFor(PackUiTone.BODY);
         drawLabel(ctx, field.label(), x, y, w, font);
@@ -9086,7 +9086,7 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return h;
     }
 
-    private void drawLabel(GuiGraphicsExtractor ctx, String text, int x, int y, int maxW,
+    private void drawLabel(GuiGraphics ctx, String text, int x, int y, int maxW,
                            Identifier font) {
         String trimmed = PackUiText.trimToWidth(textRenderer, text, maxW - 4, font, -1);
         PackUiText.draw(
@@ -9133,14 +9133,14 @@ public class ActionEditorOverlay extends PackUtilOverlayBase {
         return Math.max(28, totalWidth - labelWidth - FIELD_GAP);
     }
 
-    private void fillBorder(GuiGraphicsExtractor ctx, int x, int y, int w, int h, int color) {
+    private void fillBorder(GuiGraphics ctx, int x, int y, int w, int h, int color) {
         ctx.fill(x,       y,       x + w, y + 1,   color);
         ctx.fill(x,       y+h-1,   x + w, y + h,   color);
         ctx.fill(x,       y,       x + 1, y + h,   color);
         ctx.fill(x+w-1,   y,       x + w, y + h,   color);
     }
 
-    private void drawScrollbar(GuiGraphicsExtractor ctx, int trackX, int trackY, int trackH,
+    private void drawScrollbar(GuiGraphics ctx, int trackX, int trackY, int trackH,
                                int totalCount, int visibleCount, int itemH, int scrollOffset) {
         if (totalCount <= visibleCount) return;
         int viewPixels = Math.max(1, Math.min(trackH, visibleCount * itemH));

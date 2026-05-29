@@ -17,19 +17,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
 public abstract class PackUtilClientPlayNetworkHandlerMixin {
-    @Inject(method = "handleContainerContent", at = @At("RETURN"))
+    @Inject(method = "handleContainerContent", at = @At("RETURN"), require = 0)
     private void yang$onInventory(ClientboundContainerSetContentPacket packet, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
         MacroConditionRegistry.onInventorySync(Minecraft.getInstance());
     }
 
-    @Inject(method = "handleContainerSetSlot", at = @At("RETURN"))
+    @Inject(method = "handleContainerSetSlot", at = @At("RETURN"), require = 0)
     private void yang$onSlotUpdate(ClientboundContainerSetSlotPacket packet, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
         MacroConditionRegistry.onSlotUpdate(packet.getSlot());
     }
 
-    @Inject(method = "handleSoundEvent", at = @At("RETURN"))
+    @Inject(method = "handleSoundEvent", at = @At("RETURN"), require = 0)
     private void yang$onPlaySound(ClientboundSoundPacket packet, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
         try {
@@ -39,7 +39,7 @@ public abstract class PackUtilClientPlayNetworkHandlerMixin {
         }
     }
 
-    @Inject(method = "handleSetTime", at = @At("RETURN"))
+    @Inject(method = "handleSetTime", at = @At("RETURN"), require = 0)
     private void yang$onWorldTimeUpdate(ClientboundSetTimePacket packet, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
         PackUtilSharedState.get().onServerTimeSyncReceived();

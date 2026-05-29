@@ -14,7 +14,7 @@ import autismclient.modules.PackUtilModule;
 import autismclient.util.PackUtilSharedState.QueuedPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
 
@@ -321,7 +321,7 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
         return queue;
     }
 
-    private int drawAutoToolbarButton(GuiGraphicsExtractor context, int x, int y, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
+    private int drawAutoToolbarButton(GuiGraphics context, int x, int y, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
         int width = PackUiLegacyLayout.fitOverlayButtonWidth(textRenderer, theme, PackUiTone.BODY, label, 5, 24, 96);
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, width, h, Component.literal(label), ignored -> action.run());
         button.setVariant(active ? PackUiOverlayButton.Variant.SUCCESS : PackUiOverlayButton.Variant.GHOST);
@@ -332,11 +332,11 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
         return x + width;
     }
 
-    private int drawAutoToolbarButton(GuiGraphicsExtractor context, int x, int y, int h, String label, int mouseX, int mouseY, String tip, Runnable action) {
+    private int drawAutoToolbarButton(GuiGraphics context, int x, int y, int h, String label, int mouseX, int mouseY, String tip, Runnable action) {
         return drawAutoToolbarButton(context, x, y, h, label, false, mouseX, mouseY, tip, action);
     }
 
-    private int drawAutoToolbarStatusButton(GuiGraphicsExtractor context, int x, int y, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
+    private int drawAutoToolbarStatusButton(GuiGraphics context, int x, int y, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
         int width = PackUiLegacyLayout.fitOverlayButtonWidth(textRenderer, theme, PackUiTone.BODY, label, 5, 24, 112);
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, width, h, Component.literal(label), ignored -> action.run());
         button.setVariant(active ? PackUiOverlayButton.Variant.SUCCESS : PackUiOverlayButton.Variant.GHOST);
@@ -347,11 +347,11 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
         return x + width;
     }
 
-    private void drawFixedToolbarButton(GuiGraphicsExtractor context, int x, int y, int w, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
+    private void drawFixedToolbarButton(GuiGraphics context, int x, int y, int w, int h, String label, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
         drawFixedToolbarButton(context, x, y, w, h, label, PackUiOverlayButton.Variant.SECONDARY, active, mouseX, mouseY, tip, action);
     }
 
-    private void drawFixedToolbarButton(GuiGraphicsExtractor context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
+    private void drawFixedToolbarButton(GuiGraphics context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean active, int mouseX, int mouseY, String tip, Runnable action) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, w, h, Component.literal(label), ignored -> action.run());
         button.setVariant(variant);
         button.active = active;
@@ -360,11 +360,11 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
         checkBtnHover(x, y, w, h, mouseX, mouseY, tip);
     }
 
-    private void drawFixedToolbarButton(GuiGraphicsExtractor context, int x, int y, int w, int h, String label, int mouseX, int mouseY, String tip, Runnable action) {
+    private void drawFixedToolbarButton(GuiGraphics context, int x, int y, int w, int h, String label, int mouseX, int mouseY, String tip, Runnable action) {
         drawFixedToolbarButton(context, x, y, w, h, label, false, mouseX, mouseY, tip, action);
     }
 
-    private void drawFixedToolbarStateButton(GuiGraphicsExtractor context, int x, int y, int w, int h, String label, boolean enabled, int mouseX, int mouseY, String tip, Runnable action) {
+    private void drawFixedToolbarStateButton(GuiGraphics context, int x, int y, int w, int h, String label, boolean enabled, int mouseX, int mouseY, String tip, Runnable action) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, w, h, Component.literal(label), ignored -> action.run());
         button.setVariant(enabled ? PackUiOverlayButton.Variant.SUCCESS : PackUiOverlayButton.Variant.DANGER);
         PackUiOverlayButton.renderStyled(context, textRenderer, button, mouseX, mouseY);
@@ -445,7 +445,7 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         PackUtilSharedState shared = PackUtilSharedState.get();
@@ -909,7 +909,7 @@ public class PackUtilQueueEditorOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawTooltip(GuiGraphicsExtractor ctx, String text, int x, int y) {
+    private void drawTooltip(GuiGraphics ctx, String text, int x, int y) {
         List<String> lines = wrapTooltipText(text, 200);
         int lineH = theme.lineHeight(PackUiTone.MUTED, 2);
         int maxW = 0;

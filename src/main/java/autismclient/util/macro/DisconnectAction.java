@@ -20,7 +20,7 @@ import net.minecraft.network.protocol.game.ServerboundInteractPacket;
 import net.minecraft.network.protocol.game.ServerboundUseItemPacket;
 import net.minecraft.network.protocol.game.ServerboundSetCarriedItemPacket;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.resources.Identifier;
@@ -354,7 +354,7 @@ public class DisconnectAction implements MacroAction {
             case CLICK_SLOT -> {
                 for (int i = 0; i < packetCount; i++) {
                     mc.getConnection().send(
-                        new ServerboundContainerClickPacket(0, 0, (short) 0, (byte) 0, ContainerInput.PICKUP, new Int2ObjectArrayMap<>(), HashedStack.EMPTY));
+                        new ServerboundContainerClickPacket(0, 0, (short) 0, (byte) 0, ClickType.PICKUP, new Int2ObjectArrayMap<>(), HashedStack.EMPTY));
                 }
             }
             case BOAT_NBT -> {
@@ -368,7 +368,7 @@ public class DisconnectAction implements MacroAction {
                     Entity target = ehr.getEntity();
                     for (int i = 0; i < packetCount; i++) {
                         mc.getConnection().send(
-                            new ServerboundInteractPacket(target.getId(), InteractionHand.MAIN_HAND, new net.minecraft.world.phys.Vec3(target.getX(), target.getY(), target.getZ()), true));
+                            ServerboundInteractPacket.createInteractionPacket(target, true, InteractionHand.MAIN_HAND, new net.minecraft.world.phys.Vec3(target.getX(), target.getY(), target.getZ())));
                     }
                 }
             }
@@ -378,7 +378,7 @@ public class DisconnectAction implements MacroAction {
     private void sendKickPacket(Minecraft mc) {
         switch (kickMethod) {
             case HURT -> mc.getConnection().send(
-                new ServerboundInteractPacket(mc.player.getId(), InteractionHand.MAIN_HAND, net.minecraft.world.phys.Vec3.ZERO, false));
+                ServerboundInteractPacket.createInteractionPacket(mc.player, false, InteractionHand.MAIN_HAND, net.minecraft.world.phys.Vec3.ZERO));
             case CLIENT_SETTINGS -> {
                 ClientInformation opts = new ClientInformation(
                     mc.options.languageCode,

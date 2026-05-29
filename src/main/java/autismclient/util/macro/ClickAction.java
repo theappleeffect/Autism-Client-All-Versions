@@ -41,7 +41,7 @@ public class ClickAction implements MacroAction, WaitsForGui {
             if (mc.hitResult == null || mc.hitResult.getType() == HitResult.Type.MISS) {
                 mc.gameMode.useItem(mc.player, InteractionHand.MAIN_HAND);
             } else if (mc.hitResult.getType() == HitResult.Type.ENTITY) {
-                mc.gameMode.interact(mc.player, ((EntityHitResult) mc.hitResult).getEntity(), (EntityHitResult) mc.hitResult, InteractionHand.MAIN_HAND);
+                mc.gameMode.interactAt(mc.player, ((EntityHitResult) mc.hitResult).getEntity(), (EntityHitResult) mc.hitResult, InteractionHand.MAIN_HAND);
             } else if (mc.hitResult.getType() == HitResult.Type.BLOCK) {
                 mc.gameMode.useItemOn(mc.player, InteractionHand.MAIN_HAND, (BlockHitResult) mc.hitResult);
             }

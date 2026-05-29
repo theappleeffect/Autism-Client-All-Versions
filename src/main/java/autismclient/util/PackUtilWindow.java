@@ -8,7 +8,7 @@ import autismclient.gui.packui.PackUiText;
 import autismclient.gui.packui.PackUiTheme;
 import autismclient.gui.packui.PackUiTone;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public abstract class PackUtilWindow {
     protected static final int HEADER_HEIGHT = 16;
@@ -50,7 +50,7 @@ public abstract class PackUtilWindow {
         return new PackUtilWindowLayout(x, y, width, height, bounds.visible, bounds.collapsed);
     }
 
-    protected void renderWindowFrame(GuiGraphicsExtractor context, int mouseX, int mouseY, PackUtilWindowLayout bounds, String title, boolean collapsed, boolean activeDrag) {
+    protected void renderWindowFrame(GuiGraphics context, int mouseX, int mouseY, PackUtilWindowLayout bounds, String title, boolean collapsed, boolean activeDrag) {
         boolean active = activeDrag || isWindowActive();
         int frameHeight = getRenderedFrameHeight(bounds, collapsed);
         int frameFill = active ? THEME.windowFill() : THEME.windowFillInactive();
@@ -94,20 +94,20 @@ public abstract class PackUtilWindow {
 
     }
 
-    protected boolean beginWindowBodyClip(GuiGraphicsExtractor context, PackUtilWindowLayout bounds, boolean collapsed) {
+    protected boolean beginWindowBodyClip(GuiGraphics context, PackUtilWindowLayout bounds, boolean collapsed) {
         int frameHeight = getRenderedFrameHeight(bounds, collapsed);
         if (frameHeight <= HEADER_HEIGHT + 1 || getBodyFadeAlpha(collapsed) <= 0.001f) return false;
         PackUtilUiScale.enableOverlayScissor(context, bounds.x + 1, bounds.y + HEADER_HEIGHT, bounds.x + bounds.width - 1, bounds.y + frameHeight - 1);
         return true;
     }
 
-    protected void endWindowBodyClip(GuiGraphicsExtractor context, boolean clipped) {
+    protected void endWindowBodyClip(GuiGraphics context, boolean clipped) {
         if (clipped) {
             context.disableScissor();
         }
     }
 
-    protected void renderWindowInactiveOverlay(GuiGraphicsExtractor context, PackUtilWindowLayout bounds, boolean collapsed, boolean activeDrag) {
+    protected void renderWindowInactiveOverlay(GuiGraphics context, PackUtilWindowLayout bounds, boolean collapsed, boolean activeDrag) {
         int frameHeight = getRenderedFrameHeight(bounds, collapsed);
         int bodyTop = bounds.y + HEADER_HEIGHT;
         int bodyBottom = bounds.y + frameHeight - 1;
@@ -173,7 +173,7 @@ public abstract class PackUtilWindow {
         return isOverCloseButton(mouseX, mouseY, bounds) || isOverCollapseButton(mouseX, mouseY, bounds);
     }
 
-    private void drawWindowControls(GuiGraphicsExtractor context, int mouseX, int mouseY, PackUtilWindowLayout bounds, boolean collapsed, boolean active) {
+    private void drawWindowControls(GuiGraphics context, int mouseX, int mouseY, PackUtilWindowLayout bounds, boolean collapsed, boolean active) {
         int controlTop = getControlTop(bounds);
         int closeX = getCloseButtonLeft(bounds);
         int collapseX = getCollapseButtonLeft(bounds);

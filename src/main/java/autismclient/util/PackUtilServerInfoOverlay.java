@@ -26,7 +26,7 @@ import autismclient.gui.packui.PackUiViewportSlot;
 import autismclient.gui.packui.PackUiWindowNode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
@@ -398,8 +398,8 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
         String diff = MC.level != null ? MC.level.getDifficulty().getDisplayName().getString() : "--";
         String time = "--";
         if (MC.level != null) {
-            long dayCount = MC.level.getOverworldClockTime() / 24000L;
-            long timeOfDay = MC.level.getOverworldClockTime() % 24000L;
+            long dayCount = MC.level.getDayTime() / 24000L;
+            long timeOfDay = MC.level.getDayTime() % 24000L;
             int hours = (int) ((timeOfDay / 1000 + 6) % 24);
             int minutes = (int) ((timeOfDay % 1000) * 60 / 1000);
             time = "Day " + dayCount + " (" + String.format("%02d:%02d", hours, minutes) + ")";
@@ -1188,7 +1188,7 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
         return pluginScanInProgress;
     }
 
-    public void renderBackgroundProbeBanner(GuiGraphicsExtractor ctx) {
+    public void renderBackgroundProbeBanner(GuiGraphics ctx) {
         if (!shouldRenderBackgroundProbeBanner() || MC == null || MC.getWindow() == null || textRenderer == null) return;
 
         PackUiViewport viewport = surface.viewport();
@@ -1509,7 +1509,7 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor ctx, int mx, int my, float delta) {
+    public void render(GuiGraphics ctx, int mx, int my, float delta) {
         if (!visible) return;
 
         syncScanStateForCurrentServer();
@@ -1593,7 +1593,7 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
         return null;
     }
 
-    private void renderHeaderControls(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
+    private void renderHeaderControls(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
         closeVisibility = animate(closeVisibility, 1.0f, delta);
         closeHover = animate(closeHover, isOverCloseButton(uiMouseX, uiMouseY) ? 1.0f : 0.0f, delta);
         viewport.push(context);
@@ -1612,15 +1612,15 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
         return PackUiHeaderControls.animate(current, target, delta);
     }
 
-    private void drawCollapseArrow(GuiGraphicsExtractor context, int x, int y, boolean active) {
+    private void drawCollapseArrow(GuiGraphics context, int x, int y, boolean active) {
         PackUiHeaderControls.drawAnimatedArrow(context, x, y + 1, headerArrowWidth(), collapsed ? 0.0f : 1.0f, active ? 1.0f : 0.56f);
     }
 
-    private void drawCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
+    private void drawCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
         PackUiHeaderControls.drawCloseButton(context, x, y, width, height, hover, active, visibility);
     }
 
-    private void renderPluginResultsViewport(GuiGraphicsExtractor ctx, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
+    private void renderPluginResultsViewport(GuiGraphics ctx, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta) {
         int x = Math.round(pluginListSlot.x());
         int y = Math.round(pluginListSlot.y());
         int rowW = Math.round(pluginListSlot.width());
@@ -2401,8 +2401,8 @@ public class PackUtilServerInfoOverlay extends PackUtilOverlayBase {
         sb.append("Difficulty: ").append(MC.level != null ? MC.level.getDifficulty().getDisplayName().getString() : "--").append("\n");
         sb.append("World:      ").append(getCurrentWorldName()).append("\n");
         if (MC.level != null) {
-            long dayCount = MC.level.getOverworldClockTime() / 24000L;
-            long timeOfDay = MC.level.getOverworldClockTime() % 24000L;
+            long dayCount = MC.level.getDayTime() / 24000L;
+            long timeOfDay = MC.level.getDayTime() % 24000L;
             int hours = (int) ((timeOfDay / 1000 + 6) % 24);
             int minutes = (int) ((timeOfDay % 1000) * 60 / 1000);
             sb.append("Time:       Day ").append(dayCount).append(" (").append(String.format("%02d:%02d", hours, minutes)).append(")\n");

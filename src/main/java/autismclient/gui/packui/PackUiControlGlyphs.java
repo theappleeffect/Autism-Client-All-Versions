@@ -1,6 +1,6 @@
 package autismclient.gui.packui;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 public final class PackUiControlGlyphs {
@@ -23,20 +23,20 @@ public final class PackUiControlGlyphs {
             || PackUiAssets.ICON_WINDOW_CHEVRON_UP.equals(icon);
     }
 
-    public static void drawKnownIcon(GuiGraphicsExtractor context, Identifier icon, int x, int y, int size, int color, int shadowColor, float alpha) {
+    public static void drawKnownIcon(GuiGraphics context, Identifier icon, int x, int y, int size, int color, int shadowColor, float alpha) {
         if (icon == null || context == null || size <= 0) return;
         drawTexture(context, icon, x, y, size, alpha);
     }
 
-    public static void drawClose(GuiGraphicsExtractor context, int x, int y, int size, int color, int shadowColor, float alpha) {
+    public static void drawClose(GuiGraphics context, int x, int y, int size, int color, int shadowColor, float alpha) {
         drawTexture(context, PackUiAssets.ICON_WINDOW_CLOSE, x, y, size, alpha);
     }
 
-    public static void drawChevron(GuiGraphicsExtractor context, int x, int y, int size, ChevronDirection direction, int color, int shadowColor, float alpha) {
+    public static void drawChevron(GuiGraphics context, int x, int y, int size, ChevronDirection direction, int color, int shadowColor, float alpha) {
         drawTexture(context, chevronIcon(direction), x, y, size, alpha);
     }
 
-    public static void drawChevronProgress(GuiGraphicsExtractor context, int x, int y, int size, float progress, int color, int shadowColor, float alpha) {
+    public static void drawChevronProgress(GuiGraphics context, int x, int y, int size, float progress, int color, int shadowColor, float alpha) {
         float clamped = Math.max(0.0f, Math.min(1.0f, progress));
         drawTexture(
             context,
@@ -56,7 +56,7 @@ public final class PackUiControlGlyphs {
         };
     }
 
-    private static void drawLineCloseFallback(GuiGraphicsExtractor context, int x, int y, int size, int color, int shadowColor, float alpha) {
+    private static void drawLineCloseFallback(GuiGraphics context, int x, int y, int size, int color, int shadowColor, float alpha) {
         if (context == null || size <= 0 || alpha <= 0.001f) return;
         int stroke = Math.max(1, size / 7);
         int inset = Math.max(2, Math.round(size * 0.25f));
@@ -72,7 +72,7 @@ public final class PackUiControlGlyphs {
         drawLine(context, right, top, left, bottom, stroke, fg);
     }
 
-    private static void drawLineChevronFallback(GuiGraphicsExtractor context, int x, int y, int size, ChevronDirection direction, int color, int shadowColor, float alpha) {
+    private static void drawLineChevronFallback(GuiGraphics context, int x, int y, int size, ChevronDirection direction, int color, int shadowColor, float alpha) {
         if (context == null || size <= 0 || alpha <= 0.001f) return;
         int stroke = Math.max(1, size / 7);
         int inset = Math.max(2, Math.round(size * 0.25f));
@@ -113,7 +113,7 @@ public final class PackUiControlGlyphs {
         return (outAlpha << 24) | (color & 0x00FFFFFF);
     }
 
-    private static void drawLine(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1, int thickness, int color) {
+    private static void drawLine(GuiGraphics context, int x0, int y0, int x1, int y1, int thickness, int color) {
         int dx = Math.abs(x1 - x0);
         int dy = Math.abs(y1 - y0);
         int sx = x0 < x1 ? 1 : -1;
@@ -136,9 +136,9 @@ public final class PackUiControlGlyphs {
         }
     }
 
-    private static void drawTexture(GuiGraphicsExtractor context, Identifier icon, int x, int y, int size, float alpha) {
+    private static void drawTexture(GuiGraphics context, Identifier icon, int x, int y, int size, float alpha) {
         if (context == null || icon == null || size <= 0 || alpha <= 0.001f) return;
-        context.blit(icon, x, y, x + size, y + size, 0.0f, 1.0f, 0.0f, 1.0f);
+        autismclient.util.PackUtilRender.iconBlit(context, icon, x, y, x + size, y + size);
         if (alpha < 0.999f) {
             int overlayAlpha = Math.max(0, Math.min(255, Math.round((1.0f - alpha) * 255.0f)));
             context.fill(x, y, x + size, y + size, (overlayAlpha << 24) | 0x00070709);

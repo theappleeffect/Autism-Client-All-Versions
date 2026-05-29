@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import autismclient.modules.PackUtilModule;
 import autismclient.util.PackUtilOverlayManager;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
@@ -19,13 +19,19 @@ import net.minecraft.world.item.CreativeModeTab;
 
 @Mixin(CreativeModeInventoryScreen.class)
 public abstract class PackUtilCreativeScreenMixin {
-    @Shadow protected abstract void extractTabButton(GuiGraphicsExtractor graphics, int mouseX, int mouseY, CreativeModeTab tab);
+    // renderTabButton gained (mouseX, mouseY) params in 1.21.11; before that it is 2-arg
+    // (GuiGraphics, CreativeModeTab) with no mouse coords, so the cursor-suppression recall below
+    // can't be expressed. Gate the whole sub-feature to 1.21.11 (checkTabHovering still blocks the
+    // hover on all versions).
+    //? if >=1.21.11 {
+    @Shadow protected abstract void renderTabButton(GuiGraphics graphics, int mouseX, int mouseY, CreativeModeTab tab);
 
     @org.spongepowered.asm.mixin.Unique
     private static final ThreadLocal<Boolean> packutil$inSafeRecall = ThreadLocal.withInitial(() -> Boolean.FALSE);
+    //?}
 
     @Inject(method = "checkTabHovering", at = @At("HEAD"), cancellable = true, require = 0)
-    private void packutil$blockCoveredTabHover(GuiGraphicsExtractor graphics, CreativeModeTab tab, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> cir) {
+    private void packutil$blockCoveredTabHover(GuiGraphics graphics, CreativeModeTab tab, int mouseX, int mouseY, CallbackInfoReturnable<Boolean> cir) {
         PackUtilModule module = PackUtilModule.get();
         if (module == null || !module.isActive()) return;
         if (PackUtilOverlayManager.get().shouldBlockUnderlyingHover(mouseX, mouseY)) {
@@ -33,8 +39,9 @@ public abstract class PackUtilCreativeScreenMixin {
         }
     }
 
-    @Inject(method = "extractTabButton", at = @At("HEAD"), cancellable = true, require = 0)
-    private void packutil$blockCoveredTabCursor(GuiGraphicsExtractor graphics, int mouseX, int mouseY, CreativeModeTab tab, CallbackInfo ci) {
+    //? if >=1.21.11 {
+    @Inject(method = "renderTabButton", at = @At("HEAD"), cancellable = true, require = 0)
+    private void packutil$blockCoveredTabCursor(GuiGraphics graphics, int mouseX, int mouseY, CreativeModeTab tab, CallbackInfo ci) {
         if (packutil$inSafeRecall.get()) return;
         PackUtilModule module = PackUtilModule.get();
         if (module == null || !module.isActive()) return;
@@ -42,12 +49,13 @@ public abstract class PackUtilCreativeScreenMixin {
 
         packutil$inSafeRecall.set(Boolean.TRUE);
         try {
-            this.extractTabButton(graphics, PackUtilOverlayManager.HOVER_BLOCKED_MOUSE, PackUtilOverlayManager.HOVER_BLOCKED_MOUSE, tab);
+            this.renderTabButton(graphics, PackUtilOverlayManager.HOVER_BLOCKED_MOUSE, PackUtilOverlayManager.HOVER_BLOCKED_MOUSE, tab);
         } finally {
             packutil$inSafeRecall.set(Boolean.FALSE);
         }
         ci.cancel();
     }
+    //?}
 
     @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, require = 0)
     private void packutil$mouseClicked(MouseButtonEvent event, boolean doubleClick, CallbackInfoReturnable<Boolean> cir) {

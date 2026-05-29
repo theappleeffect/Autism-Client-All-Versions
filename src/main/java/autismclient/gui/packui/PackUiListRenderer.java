@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
@@ -22,7 +22,7 @@ public final class PackUiListRenderer {
     private PackUiListRenderer() {
     }
 
-    public static void drawFrame(GuiGraphicsExtractor context, int x, int y, int width, int height, boolean focused) {
+    public static void drawFrame(GuiGraphics context, int x, int y, int width, int height, boolean focused) {
         int bg = focused ? THEME.listFillFocused() : THEME.listFill();
         int border = focused ? THEME.headerAccent() : THEME.borderColor();
         context.fill(x, y, x + width, y + height, bg);
@@ -33,12 +33,12 @@ public final class PackUiListRenderer {
         context.fill(x + 1, y + 1, x + width - 1, y + 2, 0x16FFFFFF);
     }
 
-    public static void drawHeader(GuiGraphicsExtractor context, Font textRenderer, String title, int x, int y) {
+    public static void drawHeader(GuiGraphics context, Font textRenderer, String title, int x, int y) {
         PackUiText.draw(context, textRenderer, title, THEME.fontFor(PackUiTone.LABEL), THEME.color(PackUiTone.MUTED), x, y, false);
     }
 
     public static void drawHeaderAction(
-        GuiGraphicsExtractor context,
+        GuiGraphics context,
         Font textRenderer,
         String label,
         boolean enabled,
@@ -58,14 +58,14 @@ public final class PackUiListRenderer {
         PackUiOverlayButton.renderStyled(context, textRenderer, button, mouseX, mouseY);
     }
 
-    public static void drawEmptyState(GuiGraphicsExtractor context, Font textRenderer, String text, int x, int y, int width) {
+    public static void drawEmptyState(GuiGraphics context, Font textRenderer, String text, int x, int y, int width) {
         String trimmed = PackUiText.trimToWidth(textRenderer, text, Math.max(1, width - 10), THEME.fontFor(PackUiTone.MUTED), THEME.color(PackUiTone.MUTED));
         int textY = PackUiSizing.alignTextY(y, 14, THEME.fontHeight(PackUiTone.MUTED), THEME.bodyTextNudge());
         PackUiText.draw(context, textRenderer, trimmed, THEME.fontFor(PackUiTone.MUTED), THEME.color(PackUiTone.MUTED), x + 6, textY, false);
     }
 
     public static void drawRow(
-        GuiGraphicsExtractor context,
+        GuiGraphics context,
         Font textRenderer,
         String label,
         int x,
@@ -80,7 +80,7 @@ public final class PackUiListRenderer {
     }
 
     public static void drawRow(
-        GuiGraphicsExtractor context,
+        GuiGraphics context,
         Font textRenderer,
         Component label,
         int x,
@@ -109,19 +109,19 @@ public final class PackUiListRenderer {
         if (useMinecraftText) {
             List<FormattedCharSequence> wrapped = textRenderer.split(label == null ? Component.empty() : label, textWidth);
             FormattedCharSequence line = wrapped.isEmpty() ? Component.empty().getVisualOrderText() : wrapped.get(0);
-            context.text(textRenderer, line, textX, textY, fg, false);
+            context.drawString(textRenderer, line, textX, textY, fg, false);
         } else {
             String trimmed = PackUiText.trimToWidth(textRenderer, label == null ? "" : label.getString(), textWidth, THEME.fontFor(PackUiTone.BODY), fg);
             PackUiText.draw(context, textRenderer, trimmed, THEME.fontFor(PackUiTone.BODY), fg, textX, textY, false);
         }
     }
 
-    public static void drawDivider(GuiGraphicsExtractor context, int x, int y, int width) {
+    public static void drawDivider(GuiGraphics context, int x, int y, int width) {
         context.fill(x + 5, y, x + width - 5, y + 1, 0x2AFFFFFF);
     }
 
     public static void drawIconButton(
-        GuiGraphicsExtractor context,
+        GuiGraphics context,
         int x,
         int y,
         int size,
@@ -171,7 +171,7 @@ public final class PackUiListRenderer {
             int iconShadow = danger ? 0xD6491A1F : 0xB83A1418;
             PackUiControlGlyphs.drawKnownIcon(context, icon, x + iconInset, y + iconInset, iconSize, iconColor, iconShadow, 1.0f);
         } else {
-            context.blit(icon, x + iconInset, y + iconInset, x + size - iconInset, y + size - iconInset, 0.0f, 1.0f, 0.0f, 1.0f);
+            autismclient.util.PackUtilRender.iconBlit(context, icon, x + iconInset, y + iconInset, x + size - iconInset, y + size - iconInset);
         }
     }
 

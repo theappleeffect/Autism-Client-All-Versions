@@ -1,6 +1,6 @@
 package autismclient.gui.packui;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class PackUiScrollbar {
     public record Metrics(int trackX, int trackY, int trackWidth, int trackHeight, int thumbY, int thumbHeight, int maxScroll) {
@@ -46,7 +46,7 @@ public final class PackUiScrollbar {
         return new Metrics(trackX, trackY, trackWidth, trackHeight, thumbY, thumbHeight, maxScroll);
     }
 
-    public static void draw(GuiGraphicsExtractor context, Metrics metrics, boolean hovered, boolean dragging) {
+    public static void draw(GuiGraphics context, Metrics metrics, boolean hovered, boolean dragging) {
         if (metrics == null || !metrics.hasScroll()) return;
 
         int trackColor = THEME.overlaySurfaceSoft(0x00101114);

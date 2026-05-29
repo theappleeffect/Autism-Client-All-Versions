@@ -1,7 +1,7 @@
 {
   "required": true,
   "package": "autismclient.mixin",
-  "compatibilityLevel": "JAVA_25",
+  "compatibilityLevel": "${java}",
   "client": [
     "PackUtilClickableWidgetMixin",
     "PackUtilHandledScreenMixin",
@@ -33,6 +33,7 @@
     "accessor.PackUtilClientConnectionAccessor",
     "accessor.ClientCommonNetworkHandlerAccessor",
     "accessor.PackUtilMinecraftAccessor",
+    "accessor.PackUtilInteractPacketAccessor",
     "PackUtilMinecraftClientMixin",
     "PackUtilClientPlayNetworkHandlerMixin",
     "PackUtilRenderSystemMixin"

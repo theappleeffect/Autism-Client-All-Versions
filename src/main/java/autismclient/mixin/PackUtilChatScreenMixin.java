@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ChatScreen.class)
 public abstract class PackUtilChatScreenMixin {
-    @Inject(method = "handleChatInput", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "handleChatInput", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$onSendMessage(String message, boolean addToHistory, CallbackInfo ci) {
         if (!"^togglepackutil".equalsIgnoreCase(message.trim())) return;
 

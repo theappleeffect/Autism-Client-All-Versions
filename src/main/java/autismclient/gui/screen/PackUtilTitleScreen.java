@@ -10,9 +10,11 @@ import autismclient.gui.packui.PackUiTone;
 import autismclient.util.PackUtilColors;
 import autismclient.util.PackUtilUiScale;
 import com.mojang.authlib.minecraft.BanDetails;
+//? if >=1.21.9 {
 import com.mojang.blaze3d.platform.cursor.CursorTypes;
+//?}
 import com.mojang.realmsclient.RealmsMainScreen;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.multiplayer.JoinMultiplayerScreen;
 import net.minecraft.client.gui.screens.multiplayer.SafetyScreen;
@@ -79,12 +81,16 @@ public class PackUtilTitleScreen extends Screen {
     }
 
     @Override
-    public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
-        this.minecraft.gameRenderer.getPanorama().extractRenderState(graphics, this.width, this.height, this.panoramaShouldSpin());
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
+        //? if >=1.21.6 {
+        this.minecraft.gameRenderer.getPanorama().render(graphics, this.width, this.height, true);
+        //?} else {
+        /*this.renderPanorama(graphics, delta);
+        *///?}
 
         float uiMouseX = (float) PackUtilUiScale.toVirtual(mouseX);
         float uiMouseY = (float) PackUtilUiScale.toVirtual(mouseY);
@@ -99,7 +105,9 @@ public class PackUtilTitleScreen extends Screen {
             for (MenuButton button : buttons) {
                 button.render(graphics, uiMouseX, uiMouseY, delta);
                 if (button.contains(uiMouseX, uiMouseY)) {
+                    //? if >=1.21.9 {
                     graphics.requestCursor(button.enabled ? CursorTypes.POINTING_HAND : CursorTypes.NOT_ALLOWED);
+                    //?}
                     if (button.tooltip != null) {
                         hoveredTooltip = button.tooltip;
                     }
@@ -136,10 +144,12 @@ public class PackUtilTitleScreen extends Screen {
         PackUiText.discardPendingOverlayText();
     }
 
+    //? if >=1.21.9 {
     @Override
     protected boolean panoramaShouldSpin() {
         return true;
     }
+    //?}
 
     private void layout() {
         int screenW = PackUtilUiScale.getVirtualScreenWidth();
@@ -172,7 +182,7 @@ public class PackUtilTitleScreen extends Screen {
         buttons.add(new MenuButton(centerX - 124, bottomY, 20, 20, Component.translatable("options.language"), LANGUAGE_ICON, null, 0, 0, 0, 0, true,
             () -> this.minecraft.setScreen(new LanguageSelectScreen(this, this.minecraft.options, this.minecraft.getLanguageManager()))).withTooltip(Component.literal("Language")));
         buttons.add(new MenuButton(centerX - 100, bottomY, halfW, rowH, Component.translatable("menu.options"), null, TEXT_OPTIONS, 138, 24, 69, 12, true,
-            () -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options, false))));
+            () -> this.minecraft.setScreen(new OptionsScreen(this, this.minecraft.options))));
         buttons.add(new MenuButton(centerX + 2, bottomY, halfW, rowH, Component.translatable("menu.quit"), null, TEXT_QUIT, 74, 24, 37, 12, true,
             () -> this.minecraft.stop()));
         buttons.add(new MenuButton(centerX + 104, bottomY, 20, 20, Component.translatable("options.accessibility"), ACCESSIBILITY_ICON, null, 0, 0, 0, 0, true,
@@ -199,7 +209,7 @@ public class PackUtilTitleScreen extends Screen {
         return Component.translatable("title.multiplayer.disabled");
     }
 
-    private void renderLogo(GuiGraphicsExtractor graphics) {
+    private void renderLogo(GuiGraphics graphics) {
         int screenW = PackUtilUiScale.getVirtualScreenWidth();
         int screenH = PackUtilUiScale.getVirtualScreenHeight();
         int menuTop = Math.max(82, screenH / 4 + 48);
@@ -227,11 +237,11 @@ public class PackUtilTitleScreen extends Screen {
         );
     }
 
-    private void renderFooter(GuiGraphicsExtractor graphics, float mouseX, float mouseY) {
+    private void renderFooter(GuiGraphics graphics, float mouseX, float mouseY) {
         PackUiText.draw(graphics, this.font, modCountText, PackUiAssets.FONT_BODY, theme.color(PackUiTone.MUTED), 2, footerY, false);
     }
 
-    private void renderMeteorCredits(GuiGraphicsExtractor graphics) {
+    private void renderMeteorCredits(GuiGraphics graphics) {
         List<MeteorCreditLine> credits = getMeteorCredits();
         if (credits.isEmpty()) return;
 
@@ -336,7 +346,7 @@ public class PackUtilTitleScreen extends Screen {
         }
     }
 
-    private void renderCustomTooltip(GuiGraphicsExtractor graphics, Component tooltip, float uiMouseX, float uiMouseY) {
+    private void renderCustomTooltip(GuiGraphics graphics, Component tooltip, float uiMouseX, float uiMouseY) {
         String text = tooltip.getString();
         int textColor = theme.color(PackUiTone.BODY);
         Identifier font = theme.fontFor(PackUiTone.BODY);
@@ -431,7 +441,7 @@ public class PackUtilTitleScreen extends Screen {
             return true;
         }
 
-        private void render(GuiGraphicsExtractor graphics, float mouseX, float mouseY, float delta) {
+        private void render(GuiGraphics graphics, float mouseX, float mouseY, float delta) {
             boolean hovered = enabled && contains(mouseX, mouseY);
             PackUiButton.Variant variant = enabled ? PackUiButton.Variant.SECONDARY : PackUiButton.Variant.GHOST;
             PackUiButtonFeedback feedback = feedback();
@@ -498,7 +508,7 @@ public class PackUtilTitleScreen extends Screen {
                 int textW = PackUtilTitleScreen.this.font.width(label);
                 int textX = x + (width - textW) / 2;
                 int textY = y + (height - PackUtilTitleScreen.this.font.lineHeight) / 2 + 1;
-                graphics.text(PackUtilTitleScreen.this.font, label, textX, textY, textColor, false);
+                graphics.drawString(PackUtilTitleScreen.this.font, label, textX, textY, textColor, false);
             }
         }
 
@@ -507,7 +517,7 @@ public class PackUtilTitleScreen extends Screen {
         }
     }
 
-    private static void drawBorder(GuiGraphicsExtractor graphics, int x, int y, int width, int height, int color) {
+    private static void drawBorder(GuiGraphics graphics, int x, int y, int width, int height, int color) {
         graphics.fill(x, y, x + width, y + 1, color);
         graphics.fill(x, y + height - 1, x + width, y + height, color);
         graphics.fill(x, y, x + 1, y + height, color);

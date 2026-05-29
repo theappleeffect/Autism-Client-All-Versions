@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
@@ -36,7 +36,7 @@ public final class PackUiToastStack {
         toasts.clear();
     }
 
-    public void render(GuiGraphicsExtractor graphics, Font font, PackUiTheme theme, int anchorX, int anchorY, int anchorWidth) {
+    public void render(GuiGraphics graphics, Font font, PackUiTheme theme, int anchorX, int anchorY, int anchorWidth) {
         if (graphics == null || font == null || theme == null || anchorWidth <= 0) return;
         long nowNanos = System.nanoTime();
         prune(nowNanos);

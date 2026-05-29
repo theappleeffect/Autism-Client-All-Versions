@@ -59,7 +59,7 @@ public abstract class PackUtilSignEditScreenMixin extends Screen implements Pack
         super(title);
     }
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), require = 0)
     private void yang$init(CallbackInfo ci) {
         if (!yang$isPackUtilActive()) return;
 
@@ -112,14 +112,14 @@ public abstract class PackUtilSignEditScreenMixin extends Screen implements Pack
         manager.register(launcherOverlay);
 
         Screen screen = (Screen) (Object) this;
-        ScreenEvents.afterExtract(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
+        ScreenEvents.afterRender(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
             if (yang$isPackUtilActive()) {
                 PackUtilOverlayManager.get().renderAll(drawContext, mouseX, mouseY, tickDelta);
             }
         });
     }
 
-    @Inject(method = "removed", at = @At("HEAD"))
+    @Inject(method = "removed", at = @At("HEAD"), require = 0)
     private void yang$removed(CallbackInfo ci) {
         if (yang$isPackUtilActive()) {
             if (lanSyncOverlay != null) lanSyncOverlay.saveState();
@@ -168,7 +168,7 @@ public abstract class PackUtilSignEditScreenMixin extends Screen implements Pack
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$keyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!yang$isPackUtilActive()) return;
         if (PackUtilOverlayManager.get().handleKeyPressed(input.key(), input.scancode(), input.modifiers())) {
@@ -176,7 +176,7 @@ public abstract class PackUtilSignEditScreenMixin extends Screen implements Pack
         }
     }
 
-    @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$charTyped(CharacterEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!yang$isPackUtilActive()) return;
         if (PackUtilOverlayManager.get().handleCharTyped((char) input.codepoint(), 0)) {

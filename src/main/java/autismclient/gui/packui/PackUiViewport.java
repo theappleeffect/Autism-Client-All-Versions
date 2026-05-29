@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import autismclient.util.PackUtilUiScale;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class PackUiViewport {
     private final float uiWidth;
@@ -43,15 +43,15 @@ public final class PackUiViewport {
         return (float) screenY;
     }
 
-    public void push(GuiGraphicsExtractor context) {
+    public void push(GuiGraphics context) {
         PackUtilUiScale.pushOverlayScale(context);
     }
 
-    public void pop(GuiGraphicsExtractor context) {
+    public void pop(GuiGraphics context) {
         PackUtilUiScale.popOverlayScale(context);
     }
 
-    public void enableScissor(GuiGraphicsExtractor context, float x1, float y1, float x2, float y2) {
+    public void enableScissor(GuiGraphics context, float x1, float y1, float x2, float y2) {
         PackUtilUiScale.enableOverlayScissor(
             context,
             Math.round(x1),
@@ -61,7 +61,7 @@ public final class PackUiViewport {
         );
     }
 
-    public void disableScissor(GuiGraphicsExtractor context) {
+    public void disableScissor(GuiGraphics context) {
         context.disableScissor();
     }
 }

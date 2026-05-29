@@ -7,7 +7,7 @@ import autismclient.gui.packui.PackUiTone;
 import autismclient.util.macro.MacroAction;
 import autismclient.util.macro.MacroExecutor;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public final class PackUtilMacroProgressRenderer {
     private PackUtilMacroProgressRenderer() {
     }
 
-    public static void render(GuiGraphicsExtractor context, Font textRenderer, int x, int y, int width, int maxLines) {
+    public static void render(GuiGraphics context, Font textRenderer, int x, int y, int width, int maxLines) {
         if (textRenderer == null || !MacroExecutor.isRunning()) return;
 
         List<MacroExecutor.MacroRunSnapshot> runs = MacroExecutor.getActiveRunSnapshots();

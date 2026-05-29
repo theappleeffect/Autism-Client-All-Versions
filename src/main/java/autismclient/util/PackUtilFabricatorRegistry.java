@@ -1,6 +1,6 @@
 package autismclient.util;
 
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.Nullable;
 
 public class PackUtilFabricatorRegistry {
     private static volatile PackUtilFabricatorOverlay activeOverlay = null;

@@ -13,7 +13,7 @@ import autismclient.gui.packui.PackUiTone;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.network.protocol.Packet;
@@ -517,7 +517,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
     @Override public void clearTextFieldFocus() { if (searchField != null) searchField.setFocused(false); }
     @Override public int getZLevel() { return 10; }
 
-    private void drawUiText(GuiGraphicsExtractor context, String text, PackUiTone tone, int color, int x, int y) {
+    private void drawUiText(GuiGraphics context, String text, PackUiTone tone, int color, int x, int y) {
         PackUiText.draw(context, textRenderer, text, theme.fontFor(tone), color, x, y, false);
     }
 
@@ -539,7 +539,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor ctx, int mx, int my, float delta) {
+    public void render(GuiGraphics ctx, int mx, int my, float delta) {
         if (!visible) return;
         maybeFlushPending();
         if (dirty) { rebuildDisplay(); dirty = false; }
@@ -620,7 +620,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderTabs(GuiGraphicsExtractor ctx, int mx, int my, int y, int total) {
+    private void renderTabs(GuiGraphics ctx, int mx, int my, int y, int total) {
         int x = panelX + 4;
         for (Category cat : Category.values()) {
             int w = PackUiLegacyLayout.fitOverlayButtonWidth(textRenderer, theme, PackUiTone.BODY, cat.label, 5, 32, 64);
@@ -659,7 +659,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         return PackUiScrollbar.compute(contentHeight, viewHeight, panelX + PANEL_WIDTH - 5, contentAreaY(), 3, viewHeight, contentScrollState.tick(0.0f, maxScroll));
     }
 
-    private void renderFilterBar(GuiGraphicsExtractor ctx, int mx, int my, int y) {
+    private void renderFilterBar(GuiGraphics ctx, int mx, int my, int y) {
         int gap = 2;
         int row1Y = y;
         int row2Y = y + filterRowHeight() + filterRowGap();
@@ -714,7 +714,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawOverlayButton(GuiGraphicsExtractor ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean active, int mx, int my) {
+    private void drawOverlayButton(GuiGraphics ctx, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean active, int mx, int my) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, w, h, Component.literal(label), ignored -> {});
         button.setWidth(w);
         button.setVariant(variant);
@@ -722,7 +722,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         PackUiOverlayButton.renderStyled(ctx, textRenderer, button, mx, my);
     }
 
-    private void renderGroup(GuiGraphicsExtractor ctx, DisplayRow row, int y, int mx, int my) {
+    private void renderGroup(GuiGraphics ctx, DisplayRow row, int y, int mx, int my) {
         int x = panelX + 4;
         boolean exp = expandedGroups.contains(row.groupKey);
         boolean hov = mx >= panelX && mx <= panelX + PANEL_WIDTH && my >= y && my < y + lineHeight();
@@ -758,7 +758,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         drawUiText(ctx, "BLK", PackUiTone.MUTED, hb ? 0xFFFF4444 : PackUtilColors.textDim(), bx, y + 1);
     }
 
-    private void renderEntry(GuiGraphicsExtractor ctx, LogEntry e, int y, int mx, int my) {
+    private void renderEntry(GuiGraphics ctx, LogEntry e, int y, int mx, int my) {
         int x = panelX + 4;
         boolean hov = mx >= panelX && mx <= panelX + PANEL_WIDTH && my >= y && my < y + lineHeight();
         if (hov) PackUiText.fill(ctx, panelX + 2, y, panelX + PANEL_WIDTH - 2, y + lineHeight(), theme.rowFillHovered());
@@ -790,7 +790,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         drawUiText(ctx, "=", PackUiTone.MUTED, hb ? 0xFFFFDD55 : PackUtilColors.textDim(), bx, y + 1);
     }
 
-    private void renderBlocked(GuiGraphicsExtractor ctx, int mx, int my, int startY, int endY) {
+    private void renderBlocked(GuiGraphics ctx, int mx, int my, int startY, int endY) {
         PackUiText.fill(ctx, panelX + 4, startY, panelX + PANEL_WIDTH - 4, startY + 1, PackUtilColors.secondary());
         int y = startY + 3;
         boolean hh = mx >= panelX + 4 && mx <= panelX + 150 && my >= y && my < y + lineHeight();
@@ -1141,7 +1141,7 @@ public class PackUtilPacketLoggerOverlay extends PackUtilOverlayBase {
         return searchField.isFocused() && searchField.keyPressed(new KeyEvent(key, scan, mods));
     }
     @Override public boolean charTyped(char c, int mods) {
-        return searchField.isFocused() && searchField.charTyped(new CharacterEvent(c));
+        return searchField.isFocused() && searchField.charTyped(new CharacterEvent(c, 0));
     }
 
     private List<LogEntry> getActiveBuffer() {

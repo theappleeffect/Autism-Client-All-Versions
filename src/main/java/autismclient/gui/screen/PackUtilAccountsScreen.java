@@ -23,7 +23,7 @@ import com.mojang.blaze3d.Blaze3D;
 import com.mojang.util.UndashedUuid;
 import net.minecraft.client.User;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -448,7 +448,7 @@ public class PackUtilAccountsScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         int virtualMouseX = PackUtilUiScale.toVirtualInt(mouseX);
         int virtualMouseY = PackUtilUiScale.toVirtualInt(mouseY);
         PackUtilUiScale.pushOverlayScale(graphics);
@@ -489,7 +489,7 @@ public class PackUtilAccountsScreen extends Screen {
             PackUiText.endManagedLayer(graphics);
         }
 
-        super.extractRenderState(graphics, virtualMouseX, virtualMouseY, delta);
+        super.render(graphics, virtualMouseX, virtualMouseY, delta);
         PackUiText.beginManagedLayer(graphics);
         try {
             toastStack.render(graphics, this.font, THEME, listX(), 8, listWidth());
@@ -507,7 +507,7 @@ public class PackUtilAccountsScreen extends Screen {
         super.removed();
     }
 
-    private void renderRow(GuiGraphicsExtractor graphics, AccountRow row, int mouseX, int mouseY) {
+    private void renderRow(GuiGraphics graphics, AccountRow row, int mouseX, int mouseY) {
         PackUtilAccount account = row.account;
         boolean active = row.defaultAccount ? isCurrentDefaultAccount() : isCurrentAccount(account);
         boolean selected = account.equals(selectedAccount);
@@ -538,7 +538,7 @@ public class PackUtilAccountsScreen extends Screen {
         if (row.deleteButton != null) PackUiOverlayButton.renderStyled(graphics, this.font, row.deleteButton, mouseX, mouseY);
     }
 
-    private void renderPreview(GuiGraphicsExtractor graphics, int x, int mouseX, int mouseY, float delta) {
+    private void renderPreview(GuiGraphics graphics, int x, int mouseX, int mouseY, float delta) {
         PackUtilAccount account = previewAccount();
         drawText(graphics, "Skin preview", x + 12, 31, TEXT, false);
         if (account == null) {
@@ -562,7 +562,7 @@ public class PackUtilAccountsScreen extends Screen {
         if (active) drawText(graphics, "CURRENT", x + PREVIEW_WIDTH - 66, 31, SUCCESS, false, 54);
     }
 
-    private void render3dSkin(GuiGraphicsExtractor graphics, PlayerSkin skin, int x0, int y0, int x1, int y1) {
+    private void render3dSkin(GuiGraphics graphics, PlayerSkin skin, int x0, int y0, int x1, int y1) {
         if (widePlayerModel == null || slimPlayerModel == null) return;
         PlayerModel model = skin.model().name().equalsIgnoreCase("slim") ? slimPlayerModel : widePlayerModel;
         float drawScale = PackUtilUiScale.getOverlayDrawScale();
@@ -571,7 +571,7 @@ public class PackUtilAccountsScreen extends Screen {
         int scaledX1 = Math.round(x1 * drawScale);
         int scaledY1 = Math.round(y1 * drawScale);
         float scale = 0.97F * Math.max(1, scaledY1 - scaledY0) / 2.125F;
-        graphics.skin(model, skin.body().texturePath(), scale, previewRotationX, currentPreviewRotationY(), -1.0625F, scaledX0, scaledY0, scaledX1, scaledY1);
+        graphics.submitSkinRenderState(model, skin.body().texturePath(), scale, previewRotationX, currentPreviewRotationY(), -1.0625F, scaledX0, scaledY0, scaledX1, scaledY1);
     }
 
     private float currentPreviewRotationY() {
@@ -579,7 +579,7 @@ public class PackUtilAccountsScreen extends Screen {
         return previewRotationY + (float) ((Blaze3D.getTime() - previewAutoRotationStartTime) * 18.0D);
     }
 
-    private void drawHead(GuiGraphicsExtractor graphics, PlayerSkin skin, int x, int y, int size) {
+    private void drawHead(GuiGraphics graphics, PlayerSkin skin, int x, int y, int size) {
         Identifier texture = skin.body().texturePath();
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 8, 8, size, size, 8, 8, 64, 64);
         graphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 40, 8, size, size, 8, 8, 64, 64);
@@ -722,6 +722,7 @@ public class PackUtilAccountsScreen extends Screen {
         }
 
         if (account != null && !name.isBlank() && this.minecraft != null && isDefaultAccount(account)) {
+            //? if >=1.21.9 {
             UUID offlineId = UUIDUtil.createOfflinePlayerUUID(name);
             PlayerSkin defaultSkin = DefaultPlayerSkin.get(id == null ? offlineId : id);
             ResolvableProfile profile = id == null ? ResolvableProfile.createUnresolved(name) : ResolvableProfile.createUnresolved(id);
@@ -740,6 +741,23 @@ public class PackUtilAccountsScreen extends Screen {
             } catch (Exception ignored) {
                 return new SkinLookup(() -> defaultSkin, CompletableFuture.completedFuture(Optional.empty()), defaultSkin);
             }
+            //?} else {
+            /*UUID offlineId = UUIDUtil.createOfflinePlayerUUID(name);
+            PlayerSkin defaultSkin = DefaultPlayerSkin.get(id == null ? offlineId : id);
+            GameProfile profile = new GameProfile(id == null ? offlineId : id, name);
+            try {
+                CompletableFuture<Optional<PlayerSkin>> future = this.minecraft.getSkinManager().get(profile);
+                return new SkinLookup(() -> {
+                    try {
+                        return future.getNow(Optional.empty()).orElse(defaultSkin);
+                    } catch (Exception ignored) {
+                        return defaultSkin;
+                    }
+                }, future, defaultSkin);
+            } catch (Exception ignored) {
+                return new SkinLookup(() -> defaultSkin, CompletableFuture.completedFuture(Optional.empty()), defaultSkin);
+            }
+            *///?}
         }
 
         if (id == null) {
@@ -1063,7 +1081,7 @@ public class PackUtilAccountsScreen extends Screen {
         return Math.max(0, Math.min(maxScroll, rounded));
     }
 
-    private void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int w, int h, int fill) {
+    private void drawPanel(GuiGraphics graphics, int x, int y, int w, int h, int fill) {
         graphics.fill(x, y, x + w, y + h, fill);
         graphics.fill(x, y, x + w, y + 1, BORDER);
         graphics.fill(x, y + h - 1, x + w, y + h, BORDER);
@@ -1071,11 +1089,11 @@ public class PackUtilAccountsScreen extends Screen {
         graphics.fill(x + w - 1, y, x + w, y + h, BORDER);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean center) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean center) {
         drawText(graphics, text, x, y, color, center, Integer.MAX_VALUE);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean center, int maxWidth) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean center, int maxWidth) {
         Font renderer = this.font;
         Identifier font = THEME.fontFor(PackUiTone.BODY);
         String value = text == null ? "" : text;

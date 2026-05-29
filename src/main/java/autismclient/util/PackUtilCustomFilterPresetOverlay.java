@@ -13,7 +13,7 @@ import autismclient.gui.packui.PackUiTone;
 import autismclient.gui.packui.PackUiViewport;
 import autismclient.modules.PackUtilModule;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -147,7 +147,7 @@ public class PackUtilCustomFilterPresetOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         buttons.clear();
@@ -199,7 +199,7 @@ public class PackUtilCustomFilterPresetOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private int renderPresetSection(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, int x, int y, int width, int sectionHeight) {
+    private int renderPresetSection(GuiGraphics context, int mouseX, int mouseY, float delta, int x, int y, int width, int sectionHeight) {
         PackUiListRenderer.drawHeader(context, textRenderer, "Saved Presets", x, y);
         y += sectionHeaderHeight();
 
@@ -410,13 +410,13 @@ public class PackUtilCustomFilterPresetOverlay extends PackUtilOverlayBase {
         return canOverwriteSelected();
     }
 
-    private int drawAction(GuiGraphicsExtractor context, int mouseX, int mouseY, int x, int y, int width, String label, Runnable action, boolean enabled) {
+    private int drawAction(GuiGraphics context, int mouseX, int mouseY, int x, int y, int width, String label, Runnable action, boolean enabled) {
         drawActionButton(context, mouseX, mouseY, x, y, width, label, enabled);
         buttons.add(new ActionButton(x, y, width, actionHeight(), action, enabled));
         return y + actionHeight() + actionGap();
     }
 
-    private int drawActionRow(GuiGraphicsExtractor context, int mouseX, int mouseY, int x, int y, int buttonWidth,
+    private int drawActionRow(GuiGraphics context, int mouseX, int mouseY, int x, int y, int buttonWidth,
                               String leftLabel, Runnable leftAction, boolean leftEnabled,
                               String rightLabel, Runnable rightAction, boolean rightEnabled) {
         drawActionButton(context, mouseX, mouseY, x, y, buttonWidth, leftLabel, leftEnabled);
@@ -429,7 +429,7 @@ public class PackUtilCustomFilterPresetOverlay extends PackUtilOverlayBase {
         return y + actionHeight() + actionGap();
     }
 
-    private void drawActionButton(GuiGraphicsExtractor context, int mouseX, int mouseY, int x, int y, int width, String label, boolean enabled) {
+    private void drawActionButton(GuiGraphics context, int mouseX, int mouseY, int x, int y, int width, String label, boolean enabled) {
         if (enabled) {
             PackUiOverlayButton enabledButton = PackUiOverlayButton.create(x, y, width, actionHeight(), net.minecraft.network.chat.Component.literal(label), ignored -> {});
             enabledButton.setVariant(PackUiOverlayButton.Variant.SECONDARY);
@@ -627,7 +627,7 @@ public class PackUtilCustomFilterPresetOverlay extends PackUtilOverlayBase {
         nameField.setFocused(false);
     }
 
-    private PackUiRenderContext renderContext(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    private PackUiRenderContext renderContext(GuiGraphics context, int mouseX, int mouseY, float delta) {
         PackUiViewport viewport = PackUiViewport.current(1.0f);
         return new PackUiRenderContext(context, textRenderer, viewport, theme, viewport.toUiX(mouseX), viewport.toUiY(mouseY), delta);
     }

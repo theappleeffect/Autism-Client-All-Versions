@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PackUtilClickableWidgetMixin {
     @Shadow protected boolean isHovered;
 
-    @Inject(method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IIF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/AbstractWidget;isHovered:Z", shift = At.Shift.AFTER))
-    private void packutil$suppressHoverWhenOverlayBlocks(net.minecraft.client.gui.GuiGraphicsExtractor context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+    @Inject(method = "render(Lnet/minecraft/client/gui/GuiGraphics;IIF)V", at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/components/AbstractWidget;isHovered:Z", shift = At.Shift.AFTER), require = 0)
+    private void packutil$suppressHoverWhenOverlayBlocks(net.minecraft.client.gui.GuiGraphics context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
         if (PackUtilOverlayManager.get().shouldBlockUnderlyingHover(mouseX, mouseY)) {
             isHovered = false;
         }

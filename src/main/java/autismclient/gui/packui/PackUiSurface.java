@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public final class PackUiSurface {
     private final PackUiTheme theme;
@@ -22,7 +22,7 @@ public final class PackUiSurface {
         return PackUiViewport.current(density);
     }
 
-    public void render(GuiGraphicsExtractor drawContext, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics drawContext, int mouseX, int mouseY, float delta) {
         if (root == null) return;
         Minecraft mc = Minecraft.getInstance();
         if (mc == null || mc.font == null) return;

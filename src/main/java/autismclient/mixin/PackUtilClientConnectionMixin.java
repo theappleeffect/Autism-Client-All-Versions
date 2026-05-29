@@ -37,7 +37,7 @@ import net.minecraft.client.Minecraft;
 @Mixin(Connection.class)
 public abstract class PackUtilClientConnectionMixin {
 
-    @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;Lio/netty/channel/ChannelFutureListener;)V", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;Lio/netty/channel/ChannelFutureListener;)V", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$onSendPacket(Packet<?> packet, ChannelFutureListener listener, CallbackInfo ci) {
         PacketListener packetListener = ((Connection) (Object) this).getPacketListener();
         PackUtilModule module = PackUtilModule.get();
@@ -59,8 +59,8 @@ public abstract class PackUtilClientConnectionMixin {
         if (packet instanceof ServerboundInteractPacket entityPacket) {
             net.minecraft.world.entity.Entity targeted = Minecraft.getInstance().crosshairPickEntity;
             if (targeted != null && targeted != Minecraft.getInstance().player) {
-                net.minecraft.world.InteractionHand capturedHand = entityPacket.hand();
-                net.minecraft.world.phys.Vec3 capturedHitPos = entityPacket.location();
+                net.minecraft.world.InteractionHand capturedHand = autismclient.util.PackUtilInteractPackets.hand(entityPacket);
+                net.minecraft.world.phys.Vec3 capturedHitPos = autismclient.util.PackUtilInteractPackets.location(entityPacket);
                 PackUtilSharedState.get().setLastContainerTarget(
                     capturedHitPos != null
                         ? PackUtilContainerTarget.forEntityAt(targeted, capturedHand, capturedHitPos)
@@ -182,7 +182,7 @@ public abstract class PackUtilClientConnectionMixin {
         }
     }
 
-    @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;Lio/netty/channel/ChannelFutureListener;)V", at = @At("TAIL"))
+    @Inject(method = "send(Lnet/minecraft/network/protocol/Packet;Lio/netty/channel/ChannelFutureListener;)V", at = @At("TAIL"), require = 0)
     private void yang$afterSendPacket(Packet<?> packet, ChannelFutureListener listener, CallbackInfo ci) {
         if (!isPackUtilActive()) return;
         if (!isPlayConnectionActive()) return;
@@ -203,7 +203,7 @@ public abstract class PackUtilClientConnectionMixin {
             || packet instanceof ServerboundChatCommandSignedPacket;
     }
 
-    @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "channelRead0", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$onReceivePacket(ChannelHandlerContext ctx, Packet<?> packet, CallbackInfo ci) {
         PacketListener listener = ((Connection) (Object) this).getPacketListener();
         PackUtilModule module = PackUtilModule.get();

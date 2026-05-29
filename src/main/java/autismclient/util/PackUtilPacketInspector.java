@@ -290,9 +290,9 @@ public final class PackUtilPacketInspector {
         if (packet instanceof ServerboundInteractPacket interactEntity) {
             wrote = true;
             complete = true;
-            int entityId = interactEntity.entityId();
+            int entityId = PackUtilInteractPackets.entityId(interactEntity);
             appendEntityIdLine(builder, "Entity Id", entityId);
-            builder.line("Player Sneaking: " + interactEntity.usingSecondaryAction(), PackUtilColors.textPrimary());
+            builder.line("Player Sneaking: " + interactEntity.isUsingSecondaryAction(), PackUtilColors.textPrimary());
             InteractionCapture capture = captureInteraction(interactEntity);
             if (capture.kind != null) {
                 builder.line("Interaction: " + capture.kind, PackUtilColors.textPrimary());
@@ -2448,8 +2448,8 @@ public final class PackUtilPacketInspector {
         InteractionCapture capture = new InteractionCapture();
         try {
             capture.kind = "Interact At";
-            capture.hand = packet.hand();
-            capture.hitPos = packet.location();
+            capture.hand = PackUtilInteractPackets.hand(packet);
+            capture.hitPos = PackUtilInteractPackets.location(packet);
         } catch (Throwable ignored) {
             Object interactionType = getField(packet, "type");
             if (interactionType != null && interactionType != INACCESSIBLE) {

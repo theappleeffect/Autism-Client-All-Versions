@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public final class PackUiHudPanelRenderer {
     private PackUiHudPanelRenderer() {
     }
 
-    public static int render(GuiGraphicsExtractor context, Font textRenderer, int x, int y, int width, String title, List<Row> rows, int accentColor) {
+    public static int render(GuiGraphics context, Font textRenderer, int x, int y, int width, String title, List<Row> rows, int accentColor) {
         String titleTrimmed = PackUiText.trimToWidth(textRenderer, title, width - (6 * 2), THEME.fontFor(PackUiTone.LABEL), THEME.color(PackUiTone.BODY));
         java.util.ArrayList<Row> trimmedRows = new java.util.ArrayList<>(rows.size());
         for (Row row : rows) {
@@ -35,7 +35,7 @@ public final class PackUiHudPanelRenderer {
         return renderPreTrimmed(context, textRenderer, x, y, width, titleTrimmed, trimmedRows, accentColor);
     }
 
-    public static int renderPreTrimmed(GuiGraphicsExtractor context, Font textRenderer, int x, int y, int width, String title, List<Row> rows, int accentColor) {
+    public static int renderPreTrimmed(GuiGraphics context, Font textRenderer, int x, int y, int width, String title, List<Row> rows, int accentColor) {
         int headerHeight = Math.max(THEME.headerHeight(), THEME.lineHeight(PackUiTone.LABEL, 2));
         int rowHeight = THEME.lineHeight(PackUiTone.BODY, 2);
         int bodyPadding = 6;

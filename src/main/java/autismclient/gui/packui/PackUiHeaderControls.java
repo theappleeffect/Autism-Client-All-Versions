@@ -1,6 +1,6 @@
 package autismclient.gui.packui;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 
 public final class PackUiHeaderControls {
@@ -37,7 +37,7 @@ public final class PackUiHeaderControls {
             && mouseY >= y && mouseY <= y + controlSize;
     }
 
-    public static void drawAnimatedArrow(GuiGraphicsExtractor context, int x, int y, int size, float expandedProgress, float alpha) {
+    public static void drawAnimatedArrow(GuiGraphics context, int x, int y, int size, float expandedProgress, float alpha) {
         PackUiControlGlyphs.drawChevron(
             context,
             x,
@@ -50,7 +50,7 @@ public final class PackUiHeaderControls {
         );
     }
 
-    public static void drawCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
+    public static void drawCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
         float shownVisibility = COLLAPSED_CLOSE_VISIBILITY + ((1.0f - COLLAPSED_CLOSE_VISIBILITY) * clamp01(visibility));
         float alpha = clamp01((active ? 1.0f : 0.56f) * shownVisibility);
         int bg = active ? THEME.headerControlFillActive() : THEME.headerControlFill();
@@ -67,13 +67,13 @@ public final class PackUiHeaderControls {
         PackUiControlGlyphs.drawClose(context, x + 1, y + 1, Math.max(1, Math.min(width, height) - 2), 0xFFF6EEEE, 0xD64A1A1F, alpha);
     }
 
-    private static void drawIcon(GuiGraphicsExtractor context, Identifier icon, int x, int y, int size, float alpha) {
+    private static void drawIcon(GuiGraphics context, Identifier icon, int x, int y, int size, float alpha) {
         if (context == null || icon == null || size <= 0 || alpha <= 0.001f) return;
         if (PackUiControlGlyphs.isCloseIcon(icon) || PackUiControlGlyphs.isChevronIcon(icon)) {
             PackUiControlGlyphs.drawKnownIcon(context, icon, x, y, size, 0xFFF4EDED, 0xC43D171B, alpha);
             return;
         }
-        context.blit(icon, x, y, x + size, y + size, 0.0f, 1.0f, 0.0f, 1.0f);
+        autismclient.util.PackUtilRender.iconBlit(context, icon, x, y, x + size, y + size);
         if (alpha < 0.999f) {
             int overlayAlpha = Math.max(0, Math.min(255, Math.round((1.0f - alpha) * 255.0f)));
             context.fill(x, y, x + size, y + size, (overlayAlpha << 24) | 0x00070709);

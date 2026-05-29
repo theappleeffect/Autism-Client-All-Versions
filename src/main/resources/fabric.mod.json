@@ -29,8 +29,8 @@
     "packutil.mixins.json"
   ],
   "depends": {
-    "java": ">=25",
-    "minecraft": "${mc_version}",
+    "java": ">=${java}",
+    "minecraft": "${minecraft}",
     "fabricloader": ">=0.18.4",
     "fabric-api": "*"
   }

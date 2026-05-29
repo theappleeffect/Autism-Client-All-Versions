@@ -10,7 +10,7 @@ import autismclient.gui.packui.PackUiTheme;
 import autismclient.gui.packui.PackUiTone;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
@@ -86,7 +86,7 @@ public class PackUtilPacketInspectOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
 
         PackUtilWindowLayout bounds = getBounds();
@@ -255,7 +255,7 @@ public class PackUtilPacketInspectOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawInspectionLine(GuiGraphicsExtractor context, WrappedInspectionLine line, int x, int y) {
+    private void drawInspectionLine(GuiGraphics context, WrappedInspectionLine line, int x, int y) {
         if (line == null || line.valueText() == null) return;
         if (line.prefixText() != null && !line.prefixText().isEmpty()) {
             PackUiText.draw(context, textRenderer, line.prefixText(), theme.fontFor(PackUiTone.BODY), line.prefixColor(), x, y, false);

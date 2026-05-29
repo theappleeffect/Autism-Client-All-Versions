@@ -21,7 +21,7 @@ import autismclient.gui.packui.PackUiWindowNode;
 import autismclient.util.macro.MacroExecutor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -313,7 +313,7 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible || MC == null || MC.font == null) return;
 
         int currentMacroCount = PackUtilMacroManager.get().getAll().size();
@@ -351,7 +351,7 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         renderHeaderControls(context, viewport, uiMouseX, uiMouseY, delta, active);
     }
 
-    private void renderHeaderControls(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
+    private void renderHeaderControls(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
         closeVisibility = animate(closeVisibility, 1.0f, delta);
         closeHover = animate(closeHover, isOverCloseButton(uiMouseX, uiMouseY) ? 1.0f : 0.0f, delta);
         viewport.push(context);
@@ -366,7 +366,7 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void renderlistViewport(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
+    private void renderlistViewport(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
         clickRegions.clear();
 
         int viewX = Math.round(listSlot.x());
@@ -410,13 +410,13 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         return PackUiScrollbar.compute(contentHeight, Math.max(0, viewH - (VIEWPORT_BORDER * 2)), viewX + viewW - 5, viewY + VIEWPORT_BORDER, 3, Math.max(0, viewH - (VIEWPORT_BORDER * 2)), listScroll.tick(0.0f, Math.max(0, contentHeight - Math.max(0, viewH - (VIEWPORT_BORDER * 2)))));
     }
 
-    private void renderScrollbar(GuiGraphicsExtractor context, int viewX, int viewY, int viewW, int viewH, float uiMouseX, float uiMouseY, float alpha) {
+    private void renderScrollbar(GuiGraphics context, int viewX, int viewY, int viewW, int viewH, float uiMouseX, float uiMouseY, float alpha) {
         PackUiScrollbar.Metrics metrics = getScrollbarMetrics(viewX, viewY, viewW, viewH);
         if (!metrics.hasScroll()) return;
         PackUiScrollbar.draw(context, metrics, metrics.contains(uiMouseX, uiMouseY), scrollbarDragging);
     }
 
-    private void renderSectionHeader(GuiGraphicsExtractor context, PackUiRenderContext rowContext, DisplayItem item, int x, int y, int width) {
+    private void renderSectionHeader(GuiGraphics context, PackUiRenderContext rowContext, DisplayItem item, int x, int y, int width) {
         int textY = PackUiSizing.alignTextY(y, rowHeight(), theme.fontHeight(PackUiTone.LABEL), theme.bodyTextNudge());
         PackUiText.fill(context, x + sectionHeaderInset(), y + rowHeight() - 2, x + width - sectionHeaderInset(), y + rowHeight() - 1, rowContext.applyAlpha(0x42FFFFFF));
         PackUiText.draw(
@@ -431,7 +431,7 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         );
     }
 
-    private void renderMacroRow(GuiGraphicsExtractor context, PackUiRenderContext rowContext, DisplayItem item, int x, int y, int width) {
+    private void renderMacroRow(GuiGraphics context, PackUiRenderContext rowContext, DisplayItem item, int x, int y, int width) {
         boolean hovered = uiContains(x, y, width, rowHeight(), rowContext.mouseX(), rowContext.mouseY());
         if (hovered) {
             PackUiText.fill(context, x, y, x + width, y + rowHeight(), rowContext.applyAlpha(0x1AFF4A4A));
@@ -502,7 +502,7 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         }
     }
 
-    private void drawRowButton(GuiGraphicsExtractor context, PackUiRenderContext rowContext, int x, int y, int width, RowButton button) {
+    private void drawRowButton(GuiGraphics context, PackUiRenderContext rowContext, int x, int y, int width, RowButton button) {
         PackUiButton node = new PackUiButton(button.label, button.variant, button.action)
             .setButtonHeight(rowButtonHeight())
             .setPreferredWidth(width)
@@ -870,11 +870,11 @@ public class PackUtilMacroListOverlay extends PackUtilOverlayBase {
         return PackUiHeaderControls.animate(current, target, delta);
     }
 
-    private void drawCollapseArrow(GuiGraphicsExtractor context, int x, int y, boolean active) {
+    private void drawCollapseArrow(GuiGraphics context, int x, int y, boolean active) {
         PackUiHeaderControls.drawAnimatedArrow(context, x, y + 1, headerArrowWidth(), collapsed ? 0.0f : 1.0f, active ? 1.0f : 0.56f);
     }
 
-    private void drawCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
+    private void drawCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
         PackUiHeaderControls.drawCloseButton(context, x, y, width, height, hover, active, visibility);
     }
 

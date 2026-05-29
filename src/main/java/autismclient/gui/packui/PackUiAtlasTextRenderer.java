@@ -1,8 +1,9 @@
 package autismclient.gui.packui;
 
+//? if >=1.21.6 {
 import autismclient.util.PackUtilUiScale;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.stb.STBTTFontinfo;
@@ -30,7 +31,7 @@ final class PackUiAtlasTextRenderer {
     private static final int[] RANGE_STARTS = {32, 160, 256, 880, 1024, 8734};
     private static final int[] RANGE_COUNTS = {95, 96, 128, 144, 256, 1};
     private static final Map<FontRole, PackUiAtlasFont> FONT_CACHE = new ConcurrentHashMap<>();
-    private static GuiGraphicsExtractor managedContext;
+    private static GuiGraphics managedContext;
     private static int managedLayerDepth;
 
     private static PackUiTextMeshBuilder frameMesh = new PackUiTextMeshBuilder();
@@ -134,7 +135,7 @@ final class PackUiAtlasTextRenderer {
         return bestFit.isEmpty() ? "" : bestFit + suffix;
     }
 
-    public static void draw(GuiGraphicsExtractor context, String value, Identifier fontId, int color, int x, int y, boolean shadow) {
+    public static void draw(GuiGraphics context, String value, Identifier fontId, int color, int x, int y, boolean shadow) {
         if (context == null || value == null || value.isEmpty()) return;
         if (!supports(fontId)) return;
         capturePose(context);
@@ -156,7 +157,7 @@ final class PackUiAtlasTextRenderer {
         }
     }
 
-    public static void fill(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1, int color) {
+    public static void fill(GuiGraphics context, int x0, int y0, int x1, int y1, int color) {
         if (context == null) return;
         capturePose(context);
         if (!batching) beginBatch();
@@ -164,7 +165,7 @@ final class PackUiAtlasTextRenderer {
         hasFills = true;
     }
 
-    public static void addTextOccluder(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1) {
+    public static void addTextOccluder(GuiGraphics context, int x0, int y0, int x1, int y1) {
         if (context == null) return;
         capturePose(context);
         if (!batching) beginBatch();
@@ -176,7 +177,7 @@ final class PackUiAtlasTextRenderer {
         textOccluders.add(new TextOccluder(new GuiRect(minX, minY, maxX, maxY), overlaySlices.size()));
     }
 
-    private static void capturePose(GuiGraphicsExtractor context) {
+    private static void capturePose(GuiGraphics context) {
         if (context != null) {
             savedPose.set(context.pose());
         }
@@ -198,7 +199,7 @@ final class PackUiAtlasTextRenderer {
 
     }
 
-    static void endBatch(GuiGraphicsExtractor context) {
+    static void endBatch(GuiGraphics context) {
         if (!batching) return;
         batching = false;
 
@@ -213,7 +214,7 @@ final class PackUiAtlasTextRenderer {
         enqueueCurrentBatch();
     }
 
-    static void interOverlayFlush(GuiGraphicsExtractor context) {
+    static void interOverlayFlush(GuiGraphics context) {
         if (!batching) beginBatch();
         if (batchTexture != null || hasFills) {
             overlaySlices.add(new OverlaySlice(frameMesh.snapshotIndicesCount(), batchTexture));
@@ -221,7 +222,7 @@ final class PackUiAtlasTextRenderer {
         }
     }
 
-    static void beginManagedLayer(GuiGraphicsExtractor context) {
+    static void beginManagedLayer(GuiGraphics context) {
         if (context == null) return;
 
         if (managedContext == context) {
@@ -241,7 +242,7 @@ final class PackUiAtlasTextRenderer {
         beginBatch();
     }
 
-    static void endManagedLayer(GuiGraphicsExtractor context) {
+    static void endManagedLayer(GuiGraphics context) {
         if (context == null || managedContext != context) return;
 
         managedLayerDepth--;
@@ -648,3 +649,72 @@ final class PackUiAtlasTextRenderer {
     private record Glyph(float x0, float y0, float x1, float y1, float u0, float v0, float u1, float v1, float advance) {
     }
 }
+//?} else {
+/*import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.resources.Identifier;
+
+// Pre-1.21.6 stub: the GPU text engine needs the 1.21.6+ render API, so PackUiText
+// routes through vanilla Font instead (isReady()/supports() report false). These no-ops
+// keep PackUiText and the rest of the UI compiling.
+final class PackUiAtlasTextRenderer {
+    private PackUiAtlasTextRenderer() {
+    }
+
+    public static void eagerInit() {
+    }
+
+    public static boolean isReady() {
+        return false;
+    }
+
+    public static boolean supports(Identifier fontId) {
+        return false;
+    }
+
+    public static int width(String value, Identifier fontId) {
+        return 0;
+    }
+
+    public static int height(Identifier fontId) {
+        return 0;
+    }
+
+    public static String trimToWidth(String value, int maxWidth, Identifier fontId) {
+        return value == null ? "" : value;
+    }
+
+    public static void draw(GuiGraphics context, String value, Identifier fontId, int color, int x, int y, boolean shadow) {
+    }
+
+    public static void fill(GuiGraphics context, int x0, int y0, int x1, int y1, int color) {
+        context.fill(x0, y0, x1, y1, color);
+    }
+
+    public static void addTextOccluder(GuiGraphics context, int x0, int y0, int x1, int y1) {
+    }
+
+    static void beginBatch() {
+    }
+
+    static void endBatch(GuiGraphics context) {
+    }
+
+    static void interOverlayFlush(GuiGraphics context) {
+    }
+
+    static void beginManagedLayer(GuiGraphics context) {
+    }
+
+    static void endManagedLayer(GuiGraphics context) {
+    }
+
+    public static void flushPendingOverlayText() {
+    }
+
+    public static void discardPendingOverlayText() {
+    }
+
+    public static void resetFrameUploadGate() {
+    }
+}
+*///?}

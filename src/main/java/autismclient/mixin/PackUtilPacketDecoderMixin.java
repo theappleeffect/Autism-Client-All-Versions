@@ -24,14 +24,14 @@ public abstract class PackUtilPacketDecoderMixin<T extends PacketListener> {
     @Shadow @Final private ProtocolInfo<T> protocolInfo;
     @Unique private byte[] packutil$incomingPlaintext = new byte[0];
 
-    @Inject(method = "decode", at = @At("HEAD"))
+    @Inject(method = "decode", at = @At("HEAD"), require = 0)
     private void packutil$captureIncomingPlaintext(ChannelHandlerContext ctx, ByteBuf input, List<Object> out, CallbackInfo ci) {
         packutil$incomingPlaintext = packutil$packetHooksActive()
             ? PackUtilPacketCapture.copyReadableBytes(input)
             : new byte[0];
     }
 
-    @Inject(method = "decode", at = @At("TAIL"))
+    @Inject(method = "decode", at = @At("TAIL"), require = 0)
     private void packutil$attachIncomingPlaintext(ChannelHandlerContext ctx, ByteBuf input, List<Object> out, CallbackInfo ci) {
         if (!packutil$packetHooksActive() || packutil$incomingPlaintext.length == 0 || out.isEmpty()) return;
         Object decoded = out.get(out.size() - 1);

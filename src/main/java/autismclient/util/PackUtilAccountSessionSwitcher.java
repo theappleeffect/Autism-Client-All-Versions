@@ -42,7 +42,12 @@ public final class PackUtilAccountSessionSwitcher {
             UserApiService apiService = authService.createUserApiService(user.getAccessToken());
             Path skinCachePath = mc.gameDirectory.toPath().resolve("assets").resolve("skins");
 
+            //? if >=1.21.9 {
             accessor.packutil$setServices(services);
+            //?}
+            //? if <1.21.9 {
+            /*accessor.packutil$setMinecraftSessionService(services.sessionService());
+            *///?}
             accessor.packutil$setUser(user);
             accessor.packutil$setUserApiService(apiService);
             accessor.packutil$setPlayerSocialManager(new PlayerSocialManager(mc, apiService));

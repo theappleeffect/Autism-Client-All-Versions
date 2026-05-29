@@ -84,7 +84,7 @@ import java.util.Locale;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.input.MouseButtonInfo;
 import net.minecraft.client.input.CharacterEvent;
@@ -232,7 +232,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
    }
 
    private void drawOverlayButton(
-      GuiGraphicsExtractor context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mouseX, int mouseY
+      GuiGraphics context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mouseX, int mouseY
    ) {
       PackUiOverlayButton button = this.createOverlayButton(x, y, w, h, label, variant, enabled, null);
       PackUiOverlayButton.renderStyled(context, this.textRenderer, button, mouseX, mouseY);
@@ -2070,7 +2070,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
    }
 
    @Override
-   public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+   public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
       if (this.saveBtnDirty) {
          this.saveBtnDirty = false;
          this.recreateComponents();
@@ -2350,7 +2350,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       }
    }
 
-   private void renderPackUiHeaderControls(GuiGraphicsExtractor context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
+   private void renderPackUiHeaderControls(GuiGraphics context, PackUiViewport viewport, float uiMouseX, float uiMouseY, float delta, boolean active) {
       this.closeVisibility = this.animateHeader(this.closeVisibility, 1.0F, delta);
       this.closeHover = this.animateHeader(this.closeHover, this.isOverCloseButtonUi(uiMouseX, uiMouseY) ? 1.0F : 0.0F, delta);
       viewport.push(context);
@@ -2370,20 +2370,20 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       return PackUiHeaderControls.animate(current, target, delta);
    }
 
-   private void drawPackUiPopupFrame(GuiGraphicsExtractor context, int x, int y, int width, int height) {
+   private void drawPackUiPopupFrame(GuiGraphics context, int x, int y, int width, int height) {
       PackUiBannerRenderer.drawPopupFrame(context, this.theme, x, y, width, height);
    }
 
-   private void drawPackUiCollapseArrow(GuiGraphicsExtractor context, int x, int y, boolean active) {
+   private void drawPackUiCollapseArrow(GuiGraphics context, int x, int y, boolean active) {
       PackUiHeaderControls.drawAnimatedArrow(context, x, y + 1, 10, this.collapsed ? 0.0F : 1.0F, active ? 1.0F : 0.56F);
    }
 
-   private void drawPackUiCloseButton(GuiGraphicsExtractor context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
+   private void drawPackUiCloseButton(GuiGraphics context, int x, int y, int width, int height, float hover, boolean active, float visibility) {
       PackUiHeaderControls.drawCloseButton(context, x, y, width, height, hover, active, visibility);
    }
 
    private void drawStepRowControlButton(
-      GuiGraphicsExtractor context, int x, int y, int width, int height, boolean hovered, boolean danger, Identifier icon, String label
+      GuiGraphics context, int x, int y, int width, int height, boolean hovered, boolean danger, Identifier icon, String label
    ) {
       PackUiOverlayButton button = this.createStepRowControlButtonView(x, y, width, height, danger, icon == null ? label : "");
       PackUiOverlayButton.renderStyled(
@@ -2409,7 +2409,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
                1.0f
             );
          } else {
-            context.blit(icon, iconX, iconY, iconX + iconSize, iconY + iconSize, 0.0f, 1.0f, 0.0f, 1.0f);
+            autismclient.util.PackUtilRender.iconBlit(context, icon, iconX, iconY, iconX + iconSize, iconY + iconSize);
          }
       }
    }
@@ -2420,7 +2420,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
    }
 
    private void drawStepPickerCard(
-      GuiGraphicsExtractor context,
+      GuiGraphics context,
       PackUtilMacroEditorOverlay.StepPickerCategory category,
       PackUtilMacroEditorOverlay.StepPickerEntry entry,
       int x,
@@ -2478,7 +2478,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
    }
 
    private void renderStepListRow(
-      GuiGraphicsExtractor context,
+      GuiGraphics context,
       MacroAction action,
       String label,
       boolean conditional,
@@ -2611,19 +2611,19 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       PackUiOverlayButton.fireIfHit(preview, mouseX, mouseY, button);
    }
 
-   private void drawEditorListText(GuiGraphicsExtractor context, String text, int x, int y, int color) {
+   private void drawEditorListText(GuiGraphics context, String text, int x, int y, int color) {
       PackUiText.draw(context, this.textRenderer, text, this.theme.fontFor(PackUiTone.BODY), color, x, y, false);
    }
 
-   private void drawEditorListLabel(GuiGraphicsExtractor context, String text, int x, int y, int color) {
+   private void drawEditorListLabel(GuiGraphics context, String text, int x, int y, int color) {
       PackUiText.draw(context, this.textRenderer, text, this.theme.fontFor(PackUiTone.LABEL), color, x, y, false);
    }
 
-   private void drawEditorListDeleteButton(GuiGraphicsExtractor context, int x, int y, boolean hovered) {
+   private void drawEditorListDeleteButton(GuiGraphics context, int x, int y, boolean hovered) {
       this.drawStepRowControlButton(context, x, y, 14, 12, hovered, true, PackUiAssets.ICON_WINDOW_CLOSE, null);
    }
 
-   private void drawEditorSelectableRegistryRow(GuiGraphicsExtractor context, int x, int y, int width, String label, boolean hovered, boolean selected) {
+   private void drawEditorSelectableRegistryRow(GuiGraphics context, int x, int y, int width, String label, boolean hovered, boolean selected) {
       int bg = selected ? PackUtilColors.rowSelected() : (hovered ? PackUtilColors.rowHover() : PackUtilColors.rowNormal());
       PackUiText.fill(context, x, y, x + width, y + 12, bg);
       int textX = x + 3;
@@ -2662,7 +2662,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       }
    }
 
-   private void renderWindowBodyFadeCover(GuiGraphicsExtractor context, int bodyClipTop, int bodyClipBottom) {
+   private void renderWindowBodyFadeCover(GuiGraphics context, int bodyClipTop, int bodyClipBottom) {
       if (bodyClipBottom <= bodyClipTop) {
          return;
       }
@@ -2683,7 +2683,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       );
    }
 
-   private void renderStepPicker(GuiGraphicsExtractor context, int mouseX, int mouseY) {
+   private void renderStepPicker(GuiGraphics context, int mouseX, int mouseY) {
       int pickerX = this.getStepPickerX();
       int pickerY = this.getStepPickerY();
       int pickerW = this.getStepPickerWidth();
@@ -3150,7 +3150,7 @@ public class PackUtilMacroEditorOverlay extends PackUtilOverlayBase {
       } else if (this.isStepPickerOpen()) {
          return true;
       } else {
-         CharacterEvent charInput = new CharacterEvent(chr);
+         CharacterEvent charInput = new CharacterEvent(chr, 0);
          if (this.nameField.charTyped(charInput)) {
             return true;
          } else if (this.nameField.isFocused()) {

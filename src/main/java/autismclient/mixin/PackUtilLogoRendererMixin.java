@@ -1,6 +1,6 @@
 package autismclient.mixin;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.LogoRenderer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -26,8 +26,8 @@ public class PackUtilLogoRendererMixin {
     @Unique
     private static final int PACKUTIL_LOGO_Y_OFFSET = 0;
 
-    @Inject(method = "extractRenderState(Lnet/minecraft/client/gui/GuiGraphicsExtractor;IFI)V", at = @At("HEAD"), cancellable = true)
-    private void packutil$renderHighResolutionLogo(GuiGraphicsExtractor graphics, int width, float alpha, int heightOffset, CallbackInfo ci) {
+    @Inject(method = "renderLogo(Lnet/minecraft/client/gui/GuiGraphics;IFI)V", at = @At("HEAD"), cancellable = true, require = 0)
+    private void packutil$renderHighResolutionLogo(GuiGraphics graphics, int width, float alpha, int heightOffset, CallbackInfo ci) {
         int maxWidth = Math.min(PACKUTIL_LOGO_MAX_WIDTH, Math.max(180, width - 40));
         float scale = Math.min(
             maxWidth / (float) PACKUTIL_LOGO_TEXTURE_WIDTH,

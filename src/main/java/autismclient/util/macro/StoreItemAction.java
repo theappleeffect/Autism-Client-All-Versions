@@ -9,7 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class StoreItemAction implements MacroAction {
             if (stack.isEmpty()) continue;
             int visibleSlot = PackUtilInventoryHelper.toUserVisibleSlot(mc, slot.index);
             if (matchesAny(stack, visibleSlot)) {
-                mc.gameMode.handleContainerInput(h.containerId, i, 0, ContainerInput.QUICK_MOVE, mc.player);
+                mc.gameMode.handleInventoryMouseClick(h.containerId, i, 0, ClickType.QUICK_MOVE, mc.player);
             }
         }
 

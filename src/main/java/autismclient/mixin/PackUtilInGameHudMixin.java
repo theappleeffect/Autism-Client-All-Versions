@@ -19,18 +19,23 @@ import autismclient.util.PackUtilUiScale;
 import autismclient.util.macro.MacroExecutor;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.DeltaTracker;
 
 @Mixin(Gui.class)
 public abstract class PackUtilInGameHudMixin {
-    @Unique private static final Minecraft MC = Minecraft.getInstance();
+    // NOTE: not captured as a constant — Gui (class_329) can be class-initialized before
+    // the Minecraft singleton is assigned, which would freeze a null here forever. Lazily
+    // (re)resolved at the render entry point below, where the instance is always live.
+    @Unique private static Minecraft MC = Minecraft.getInstance();
     @Unique private static final PackUiTheme PACKUI_THEME = new PackUiTheme();
     @Unique private static final int PACKUTIL_RIGHT_PANEL_Y = 20;
 
-    @Inject(method = "extractRenderState", at = @At("TAIL"))
-    private void yang$renderPackUtilQueue(GuiGraphicsExtractor context, DeltaTracker deltaTracker, CallbackInfo ci) {
+    @Inject(method = "render", at = @At("TAIL"), require = 0)
+    private void yang$renderPackUtilQueue(GuiGraphics context, DeltaTracker deltaTracker, CallbackInfo ci) {
+        if (MC == null) MC = Minecraft.getInstance();
+        if (MC == null) return;
         if (!isPackUtilActive()) return;
         MacroExecutor.onRender(1.0f);
         if (MC.options.hideGui) return;

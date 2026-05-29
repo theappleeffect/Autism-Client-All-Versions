@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PackUtilCustomPayloadCodecMixin {
     @Inject(method = "encode(Lnet/minecraft/network/FriendlyByteBuf;Lnet/minecraft/network/protocol/common/custom/CustomPacketPayload;)V",
             at = @At("HEAD"),
-            cancellable = true)
+            cancellable = true, require = 0)
     private void packutil$encodeRawCustomPacketPayload(FriendlyByteBuf buf, CustomPacketPayload payload, CallbackInfo ci) {
         if (!packutil$packetHooksActive()) return;
 

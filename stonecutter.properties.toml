@@ -1,0 +1,81 @@
+# Centralized + per-version properties.
+# See https://stonecutter.kikugie.dev/wiki/config/properties#centralized-properties
+mod.id = "packutil"
+mod.name = "AUTISM Client"
+mod.group = "autismclient"
+mod.version = "1.0.0"
+
+deps.fabric_loader = "0.19.2"
+loomx.loom_version = "1.16-SNAPSHOT"
+
+["1.21"]
+mod.mc_compat = "1.21"
+mod.mc_releases = ["1.21"]
+deps.fabric_api = "0.102.0+1.21"
+deps.netty = "4.1.97.Final"
+
+["1.21.1"]
+mod.mc_compat = "1.21.1"
+mod.mc_releases = ["1.21.1"]
+deps.fabric_api = "0.116.10+1.21.1"
+deps.netty = "4.1.97.Final"
+
+["1.21.2"]
+mod.mc_compat = "1.21.2"
+mod.mc_releases = ["1.21.2"]
+deps.fabric_api = "0.106.1+1.21.2"
+deps.netty = "4.1.97.Final"
+
+["1.21.3"]
+mod.mc_compat = "1.21.3"
+mod.mc_releases = ["1.21.3"]
+deps.fabric_api = "0.114.1+1.21.3"
+deps.netty = "4.1.97.Final"
+
+["1.21.4"]
+mod.mc_compat = "1.21.4"
+mod.mc_releases = ["1.21.4"]
+deps.fabric_api = "0.119.4+1.21.4"
+deps.netty = "4.1.115.Final"
+
+["1.21.5"]
+mod.mc_compat = "1.21.5"
+mod.mc_releases = ["1.21.5"]
+deps.fabric_api = "0.128.2+1.21.5"
+deps.netty = "4.1.118.Final"
+
+["1.21.6"]
+mod.mc_compat = "1.21.6"
+mod.mc_releases = ["1.21.6"]
+deps.fabric_api = "0.128.2+1.21.6"
+deps.netty = "4.1.118.Final"
+
+["1.21.7"]
+mod.mc_compat = "1.21.7"
+mod.mc_releases = ["1.21.7"]
+deps.fabric_api = "0.129.0+1.21.7"
+deps.netty = "4.1.118.Final"
+
+["1.21.8"]
+mod.mc_compat = "1.21.8"
+mod.mc_releases = ["1.21.8"]
+deps.fabric_api = "0.136.1+1.21.8"
+deps.netty = "4.1.118.Final"
+
+["1.21.9"]
+mod.mc_compat = "1.21.9"
+mod.mc_releases = ["1.21.9"]
+deps.fabric_api = "0.134.1+1.21.9"
+deps.netty = "4.1.118.Final"
+
+["1.21.10"]
+mod.mc_compat = "1.21.10"
+mod.mc_releases = ["1.21.10"]
+deps.fabric_api = "0.138.4+1.21.10"
+deps.netty = "4.1.118.Final"
+
+["1.21.11"]
+mod.mc_compat = "1.21.11"
+mod.mc_releases = ["1.21.11"]
+deps.fabric_api = "0.141.3+1.21.11"
+deps.netty = "4.2.7.Final"

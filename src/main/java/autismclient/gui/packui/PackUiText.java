@@ -1,9 +1,11 @@
 package autismclient.gui.packui;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
+//? if >=1.21.9 {
 import net.minecraft.network.chat.FontDescription;
+//?}
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 
@@ -12,7 +14,11 @@ import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class PackUiText {
+    //? if >=1.21.9 {
     private static final Map<Identifier, FontDescription> FONT_CACHE = new ConcurrentHashMap<>();
+    //?} else {
+    /*private static final Map<Identifier, Identifier> FONT_CACHE = new ConcurrentHashMap<>();
+    *///?}
     private static final int TRIM_CACHE_LIMIT = 2048;
     private static final ThreadLocal<Integer> VANILLA_RENDER_DEPTH = ThreadLocal.withInitial(() -> 0);
     private static final Map<TrimKey, String> TRIM_CACHE = java.util.Collections.synchronizedMap(new LinkedHashMap<>(256, 0.75f, true) {
@@ -30,10 +36,16 @@ public final class PackUiText {
             .setStyle(Style.EMPTY.withFont(fontSource(fontId)).withColor(color));
     }
 
+    //? if >=1.21.9 {
     private static FontDescription fontSource(Identifier fontId) {
         if (fontId == null) return FONT_CACHE.computeIfAbsent(PackUiAssets.FONT_FALLBACK, FontDescription.Resource::new);
         return FONT_CACHE.computeIfAbsent(fontId, FontDescription.Resource::new);
     }
+    //?} else {
+    /*private static Identifier fontSource(Identifier fontId) {
+        return fontId == null ? PackUiAssets.FONT_FALLBACK : fontId;
+    }
+    *///?}
 
     public static int width(Font renderer, String value, Identifier fontId, int color) {
         if (PackUiAtlasTextRenderer.supports(fontId) && PackUiAtlasTextRenderer.isReady()) {
@@ -78,32 +90,32 @@ public final class PackUiText {
         return trimmed;
     }
 
-    public static void draw(GuiGraphicsExtractor context, Font renderer, String value, Identifier fontId, int color, int x, int y, boolean shadow) {
+    public static void draw(GuiGraphics context, Font renderer, String value, Identifier fontId, int color, int x, int y, boolean shadow) {
         if (!isVanillaRenderForced() && PackUiAtlasTextRenderer.supports(fontId) && PackUiAtlasTextRenderer.isReady()) {
             PackUiAtlasTextRenderer.draw(context, value, fontId, color, x, y, shadow);
             return;
         }
 
-        context.text(renderer, literal(value, fontId, color), x, y, color, shadow);
+        context.drawString(renderer, literal(value, fontId, color), x, y, color, shadow);
     }
 
     public static void eagerInitFonts() {
         PackUiAtlasTextRenderer.eagerInit();
     }
 
-    public static void beginManagedLayer(GuiGraphicsExtractor context) {
+    public static void beginManagedLayer(GuiGraphics context) {
         PackUiAtlasTextRenderer.beginManagedLayer(context);
     }
 
-    public static void endManagedLayer(GuiGraphicsExtractor context) {
+    public static void endManagedLayer(GuiGraphics context) {
         PackUiAtlasTextRenderer.endManagedLayer(context);
     }
 
-    public static void interOverlayFlush(GuiGraphicsExtractor context) {
+    public static void interOverlayFlush(GuiGraphics context) {
         PackUiAtlasTextRenderer.interOverlayFlush(context);
     }
 
-    public static void fill(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1, int color) {
+    public static void fill(GuiGraphics context, int x0, int y0, int x1, int y1, int color) {
         if (isVanillaRenderForced()) {
             context.fill(x0, y0, x1, y1, color);
             return;
@@ -111,7 +123,7 @@ public final class PackUiText {
         PackUiAtlasTextRenderer.fill(context, x0, y0, x1, y1, color);
     }
 
-    public static void addTextOccluder(GuiGraphicsExtractor context, int x0, int y0, int x1, int y1) {
+    public static void addTextOccluder(GuiGraphics context, int x0, int y0, int x1, int y1) {
         PackUiAtlasTextRenderer.addTextOccluder(context, x0, y0, x1, y1);
     }
 

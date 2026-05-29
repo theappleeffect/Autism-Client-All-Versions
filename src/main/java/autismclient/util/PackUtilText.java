@@ -2,8 +2,10 @@ package autismclient.util;
 
 import autismclient.gui.packui.PackUiAssets;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
+//? if >=1.21.9 {
 import net.minecraft.network.chat.FontDescription;
+//?}
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.Component;
@@ -13,7 +15,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class PackUtilText {
+    //? if >=1.21.9 {
     private static final Map<Identifier, FontDescription> FONT_CACHE = new ConcurrentHashMap<>();
+    //?} else {
+    /*private static final Map<Identifier, Identifier> FONT_CACHE = new ConcurrentHashMap<>();
+    *///?}
 
     private PackUtilText() {
     }
@@ -109,11 +115,11 @@ public final class PackUtilText {
         return autismclient.gui.packui.PackUiText.trimToWidth(renderer, value, maxWidth, fontIdFor(tone), colorFor(tone));
     }
 
-    public static void draw(GuiGraphicsExtractor context, Font renderer, String value, Tone tone, int x, int y, boolean shadow) {
+    public static void draw(GuiGraphics context, Font renderer, String value, Tone tone, int x, int y, boolean shadow) {
         autismclient.gui.packui.PackUiText.draw(context, renderer, value, fontIdFor(tone), colorFor(tone), x, y, shadow);
     }
 
-    public static void draw(GuiGraphicsExtractor context, Font renderer, String value, int color, int x, int y, boolean shadow) {
+    public static void draw(GuiGraphics context, Font renderer, String value, int color, int x, int y, boolean shadow) {
         autismclient.gui.packui.PackUiText.draw(context, renderer, value, PackUiAssets.FONT_BODY, color, x, y, shadow);
     }
 
@@ -125,7 +131,13 @@ public final class PackUtilText {
         };
     }
 
+    //? if >=1.21.9 {
     private static FontDescription fontSource(Identifier fontId) {
         return FONT_CACHE.computeIfAbsent(fontId, FontDescription.Resource::new);
     }
+    //?} else {
+    /*private static Identifier fontSource(Identifier fontId) {
+        return fontId;
+    }
+    *///?}
 }

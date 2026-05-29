@@ -19,13 +19,13 @@ import java.net.InetSocketAddress;
 
 @Mixin(value = Connection.class, priority = 2000)
 public abstract class PackUtilConnectionProxyMixin {
-    @Inject(method = "configureSerialization", at = @At("HEAD"))
+    @Inject(method = "configureSerialization", at = @At("HEAD"), require = 0)
     private static void packutil$disableMeteorProxyBeforeHandlers(ChannelPipeline pipeline, PacketFlow inboundDirection, boolean local, @Nullable BandwidthDebugMonitor monitor, CallbackInfo ci) {
         if (local || inboundDirection != PacketFlow.CLIENTBOUND) return;
         packutil$disableMeteorProxy();
     }
 
-    @Inject(method = "configureSerialization", at = @At("RETURN"))
+    @Inject(method = "configureSerialization", at = @At("RETURN"), require = 0)
     private static void packutil$addProxyHandler(ChannelPipeline pipeline, PacketFlow inboundDirection, boolean local, @Nullable BandwidthDebugMonitor monitor, CallbackInfo ci) {
         if (local || inboundDirection != PacketFlow.CLIENTBOUND) return;
         PackUtilProxy proxy = PackUtilProxyManager.get().getEnabled();

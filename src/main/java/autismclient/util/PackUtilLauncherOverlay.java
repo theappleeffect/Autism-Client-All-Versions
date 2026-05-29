@@ -19,7 +19,7 @@ import autismclient.gui.packui.PackUiViewport;
 import autismclient.mixin.accessor.PackUtilHandledScreenAccessor;
 import autismclient.modules.PackUtilModule;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.network.chat.Component;
@@ -286,7 +286,7 @@ public class PackUtilLauncherOverlay extends PackUtilOverlayBase {
     }
 
     @Override
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
         PackUtilSharedState shared = PackUtilSharedState.get();
         if (sendButton != null) {

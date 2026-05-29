@@ -3,7 +3,7 @@ package autismclient.gui;
 import autismclient.util.PackUtilColors;
 import com.mojang.blaze3d.platform.Window;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.LoadingOverlay;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.resources.Identifier;
@@ -46,7 +46,12 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float a) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float a) {
+        // Pre-1.21.9 Overlay has no tick(); drive the fade-out/finish logic from render() so the
+        // loading overlay actually completes and hands off to the title screen.
+        //? if <1.21.9 {
+        /*this.tick();
+        *///?}
         int width = graphics.guiWidth();
         int height = graphics.guiHeight();
         long now = Util.getMillis();
@@ -61,9 +66,9 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
 
         if (fadeOutAnim >= 1.0F) {
             if (this.packutil$minecraft.screen != null) {
-                this.packutil$minecraft.screen.extractRenderStateWithTooltipAndSubtitles(graphics, 0, 0, a);
+                this.packutil$minecraft.screen.renderWithTooltipAndSubtitles(graphics, 0, 0, a);
             } else {
-                this.packutil$minecraft.gui.extractDeferredSubtitles();
+                ;
             }
 
             int alpha = Mth.ceil((1.0F - Mth.clamp(fadeOutAnim - 1.0F, 0.0F, 1.0F)) * 255.0F);
@@ -72,9 +77,9 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
             logoAlpha = 1.0F - Mth.clamp(fadeOutAnim - 1.0F, 0.0F, 1.0F);
         } else if (this.packutil$fadeIn) {
             if (this.packutil$minecraft.screen != null && fadeInAnim < 1.0F) {
-                this.packutil$minecraft.screen.extractRenderStateWithTooltipAndSubtitles(graphics, mouseX, mouseY, a);
+                this.packutil$minecraft.screen.renderWithTooltipAndSubtitles(graphics, mouseX, mouseY, a);
             } else {
-                this.packutil$minecraft.gui.extractDeferredSubtitles();
+                ;
             }
 
             int alpha = Mth.ceil(Mth.clamp((double) fadeInAnim, 0.15, 1.0) * 255.0);
@@ -82,7 +87,7 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
             graphics.fill(0, 0, width, height, replaceAlpha(BG_COLOR, alpha));
             logoAlpha = Mth.clamp(fadeInAnim, 0.0F, 1.0F);
         } else {
-            this.packutil$minecraft.gameRenderer.getGameRenderState().guiRenderState.clearColorOverride = BG_COLOR;
+            graphics.fill(0, 0, width, height, BG_COLOR);
             logoAlpha = 1.0F;
         }
 
@@ -102,7 +107,7 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
         }
     }
 
-    private void drawCustomLogo(GuiGraphicsExtractor graphics, int width, int height, float alpha) {
+    private void drawCustomLogo(GuiGraphics graphics, int width, int height, float alpha) {
         int centerX = width / 2;
         int centerY = height / 2;
 
@@ -128,7 +133,7 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
         );
     }
 
-    private void drawProgressBar(GuiGraphicsExtractor graphics, int width, int height, float fadeOutAnim) {
+    private void drawProgressBar(GuiGraphics graphics, int width, int height, float fadeOutAnim) {
         float barFade = 1.0F - Mth.clamp(fadeOutAnim, 0.0F, 1.0F);
 
         double maxW = width * 0.85;
@@ -164,7 +169,9 @@ public class PackUtilLoadingOverlay extends LoadingOverlay {
         return color & 0x00FFFFFF | (alpha << 24);
     }
 
+    //? if >=1.21.9 {
     @Override
+    //?}
     public void tick() {
         if (this.packutil$fadeOutStart == -1L && this.packutil$reload.isDone() && this.packutil$isReadyToFadeOut()) {
             try {

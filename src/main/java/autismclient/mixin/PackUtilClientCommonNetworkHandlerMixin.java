@@ -23,7 +23,7 @@ public abstract class PackUtilClientCommonNetworkHandlerMixin {
 
     @Shadow public abstract void send(Packet<?> packet);
 
-    @Inject(method = "handleResourcePackPush", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "handleResourcePackPush", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$onResourcePackSend(ClientboundResourcePackPushPacket packet, CallbackInfo ci) {
         if (!isPackUtilActive()) return;
 

@@ -45,7 +45,17 @@ public interface PackUtilMinecraftAccessor {
     @Accessor("profileFuture")
     void packutil$setProfileFuture(CompletableFuture<ProfileResult> future);
 
+    // The client `services` bundle (net.minecraft.server.Services) field exists only from 1.21.9.
+    //? if >=1.21.9 {
     @Mutable
     @Accessor("services")
     void packutil$setServices(Services services);
+    //?}
+
+    // Pre-1.21.9 the client holds the session service directly instead of a Services bundle.
+    //? if <1.21.9 {
+    /*@Mutable
+    @Accessor("minecraftSessionService")
+    void packutil$setMinecraftSessionService(com.mojang.authlib.minecraft.MinecraftSessionService service);
+    *///?}
 }

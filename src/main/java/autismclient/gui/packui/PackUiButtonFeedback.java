@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayDeque;
@@ -78,7 +78,7 @@ public final class PackUiButtonFeedback {
         return clickGlowProgress;
     }
 
-    public void render(GuiGraphicsExtractor context, int x, int y, int width, int height, int ringRgb, int fillRgb, float alphaScale) {
+    public void render(GuiGraphics context, int x, int y, int width, int height, int ringRgb, int fillRgb, float alphaScale) {
         if (context == null || width <= 0 || height <= 0 || alphaScale <= 0.001f || ripples.isEmpty()) return;
 
         int clipX2 = x + width;
@@ -154,7 +154,7 @@ public final class PackUiButtonFeedback {
         return (a << 24) | (rgb & 0x00FFFFFF);
     }
 
-    private static void drawDisc(GuiGraphicsExtractor context, float centerX, float centerY, float radius, int color) {
+    private static void drawDisc(GuiGraphics context, float centerX, float centerY, float radius, int color) {
         if (((color >>> 24) & 0xFF) <= 0 || radius <= 0.5f) return;
         float radiusSq = radius * radius;
         int top = (int) Math.floor(centerY - radius);
@@ -171,7 +171,7 @@ public final class PackUiButtonFeedback {
         }
     }
 
-    private static void drawRing(GuiGraphicsExtractor context, float centerX, float centerY, float innerRadius, float outerRadius, int color) {
+    private static void drawRing(GuiGraphics context, float centerX, float centerY, float innerRadius, float outerRadius, int color) {
         if (((color >>> 24) & 0xFF) <= 0 || outerRadius <= 0.5f) return;
         float outerSq = outerRadius * outerRadius;
         float innerSq = innerRadius * innerRadius;

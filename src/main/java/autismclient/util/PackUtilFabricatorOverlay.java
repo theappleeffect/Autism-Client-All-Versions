@@ -9,7 +9,7 @@ import autismclient.util.macro.CraftAction;
 import autismclient.util.macro.ItemTarget;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.input.CharacterEvent;
 import net.minecraft.client.input.KeyEvent;
 import net.minecraft.client.input.MouseButtonEvent;
@@ -262,7 +262,7 @@ public class PackUtilFabricatorOverlay extends PackUtilOverlayBase {
         return "Auto";
     }
 
-    private void drawOverlayButton(GuiGraphicsExtractor context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mouseX, int mouseY) {
+    private void drawOverlayButton(GuiGraphics context, int x, int y, int w, int h, String label, PackUiOverlayButton.Variant variant, boolean enabled, int mouseX, int mouseY) {
         PackUiOverlayButton button = PackUiOverlayButton.create(x, y, w, h, Component.literal(label), ignored -> {});
         button.setWidth(w);
         button.setVariant(variant);
@@ -1182,7 +1182,7 @@ public class PackUtilFabricatorOverlay extends PackUtilOverlayBase {
         int codepoint = (int) chr;
         if (!visible) return false;
 
-        CharacterEvent input = new CharacterEvent(codepoint);
+        CharacterEvent input = new CharacterEvent(codepoint, 0);
         for (PackUtilChatField field : textFields) {
             if (field.isFocused() && field.charTyped(input)) {
                 return true;
@@ -1192,7 +1192,7 @@ public class PackUtilFabricatorOverlay extends PackUtilOverlayBase {
         return false;
     }
 
-    public void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics context, int mouseX, int mouseY, float delta) {
         if (!visible) return;
         expireTransientStatus();
 
@@ -1540,12 +1540,12 @@ public class PackUtilFabricatorOverlay extends PackUtilOverlayBase {
         net.minecraft.world.inventory.AbstractContainerMenu handler = MC.player.containerMenu;
         if (handler == null) return null;
 
-        net.minecraft.world.inventory.ContainerInput actionType = currentAction.toPacketAction(dropWholeStack).toContainerInput();
-        return new net.minecraft.network.protocol.game.ServerboundContainerClickPacket(
+        net.minecraft.world.inventory.ClickType actionType = currentAction.toPacketAction(dropWholeStack).toContainerInput();
+        return new ServerboundContainerClickPacket(
             handler.containerId, handler.getStateId(),
             (short) slot, (byte) getEffectiveButton(), actionType,
             new it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<>(),
-            net.minecraft.network.HashedStack.EMPTY
+            HashedStack.EMPTY
         );
     }
 

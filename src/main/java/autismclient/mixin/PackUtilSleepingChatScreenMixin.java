@@ -17,7 +17,7 @@ public abstract class PackUtilSleepingChatScreenMixin extends Screen {
         super(title);
     }
 
-    @Inject(method = "init()V", at = @At("TAIL"))
+    @Inject(method = "init()V", at = @At("TAIL"), require = 0)
     private void packutil$init(CallbackInfo ci) {
         PackUtilModule module = PackUtilModule.get();
         if (module == null || !module.isActive()) return;

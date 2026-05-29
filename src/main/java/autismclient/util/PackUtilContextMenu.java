@@ -4,7 +4,7 @@ import autismclient.gui.packui.PackUiText;
 import autismclient.gui.packui.PackUiTheme;
 import autismclient.gui.packui.PackUiTone;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class PackUtilContextMenu<T> {
     private static final int PADDING_X = 4;
@@ -85,7 +85,7 @@ public class PackUtilContextMenu<T> {
         return mx >= x && mx < x + w && my >= y && my < y + h;
     }
 
-    public void render(GuiGraphicsExtractor ctx, int mx, int my) {
+    public void render(GuiGraphics ctx, int mx, int my) {
         if (!isOpen()) return;
         clampToScreen();
         String[] items = currentItems();

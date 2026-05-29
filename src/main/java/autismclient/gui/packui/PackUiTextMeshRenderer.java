@@ -68,7 +68,11 @@ final class PackUiTextMeshRenderer {
 
         pass.setPipeline(PackUiTextPipelines.UI_TEXT);
         pass.setUniform("MeshData", meshData);
+        //? if >=1.21.11 {
         pass.bindTexture("u_Texture", texture.getTextureView(), texture.getSampler());
+        //?} else {
+        /*pass.bindSampler("u_Texture", texture.getTextureView());
+        *///?}
         pass.setVertexBuffer(0, vertexBuffer);
         pass.setIndexBuffer(indexBuffer, VertexFormat.IndexType.INT);
         if (scissor != null) {

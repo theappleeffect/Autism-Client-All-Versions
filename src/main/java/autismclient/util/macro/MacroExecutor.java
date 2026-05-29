@@ -1999,7 +1999,7 @@ public class MacroExecutor {
                     if (handler == null || mc.player.containerMenu != handler) return;
                     if (slotId < 0 || slotId >= handler.slots.size()) return;
                     if (handler.slots.get(slotId).getItem().isEmpty()) return;
-                    mc.gameMode.handleContainerInput(handler.containerId, slotId, 0, net.minecraft.world.inventory.ContainerInput.QUICK_MOVE, mc.player);
+                    mc.gameMode.handleInventoryMouseClick(handler.containerId, slotId, 0, net.minecraft.world.inventory.ClickType.QUICK_MOVE, mc.player);
                 });
                 waitOneTick();
             }
@@ -2037,7 +2037,7 @@ public class MacroExecutor {
                 if (move.targetSlotId < 0 || move.targetSlotId >= handler.slots.size()) return;
                 if (handler.slots.get(move.sourceSlotId).getItem().isEmpty()) return;
                 if (!handler.slots.get(move.targetSlotId).getItem().isEmpty()) return;
-                mc.gameMode.handleContainerInput(handler.containerId, move.sourceSlotId, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, mc.player);
+                mc.gameMode.handleInventoryMouseClick(handler.containerId, move.sourceSlotId, 0, net.minecraft.world.inventory.ClickType.PICKUP, mc.player);
             });
 
             boolean pickedUp = waitForXCarryCondition(mc, 400L, () -> {
@@ -2061,7 +2061,7 @@ public class MacroExecutor {
                 if (handler.getCarried().isEmpty()) return;
                 if (move.targetSlotId < 0 || move.targetSlotId >= handler.slots.size()) return;
                 if (!handler.slots.get(move.targetSlotId).getItem().isEmpty()) return;
-                mc.gameMode.handleContainerInput(handler.containerId, move.targetSlotId, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, mc.player);
+                mc.gameMode.handleInventoryMouseClick(handler.containerId, move.targetSlotId, 0, net.minecraft.world.inventory.ClickType.PICKUP, mc.player);
             });
 
             boolean placed = waitForXCarryCondition(mc, 500L, () -> {
@@ -2110,7 +2110,7 @@ public class MacroExecutor {
             mc.player.containerMenu = handler;
             if (handler.getCarried().isEmpty()) return;
             if (sourceSlotId < 0 || sourceSlotId >= handler.slots.size()) return;
-            mc.gameMode.handleContainerInput(handler.containerId, sourceSlotId, 0, net.minecraft.world.inventory.ContainerInput.PICKUP, mc.player);
+            mc.gameMode.handleInventoryMouseClick(handler.containerId, sourceSlotId, 0, net.minecraft.world.inventory.ClickType.PICKUP, mc.player);
         });
         waitForXCarryCondition(mc, 300L, () -> mc.player != null && mc.player.inventoryMenu.getCarried().isEmpty());
     }

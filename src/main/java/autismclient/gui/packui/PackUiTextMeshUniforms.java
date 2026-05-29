@@ -1,5 +1,6 @@
 package autismclient.gui.packui;
 
+//? if >=1.21.6 {
 import com.mojang.blaze3d.buffers.GpuBufferSlice;
 import com.mojang.blaze3d.buffers.Std140Builder;
 import com.mojang.blaze3d.buffers.Std140SizeCalculator;
@@ -56,3 +57,14 @@ public final class PackUiTextMeshUniforms {
         }
     }
 }
+//?} else {
+/*public final class PackUiTextMeshUniforms {
+    private PackUiTextMeshUniforms() {
+    }
+
+    // Custom GPU text pipeline is disabled before 1.21.6 (PackUiText falls back to vanilla Font);
+    // this no-op keeps the RenderSystem flipFrame mixin compiling.
+    public static void flipFrame() {
+    }
+}
+*///?}

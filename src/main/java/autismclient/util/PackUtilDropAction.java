@@ -41,19 +41,19 @@ public enum PackUtilDropAction {
         };
     }
 
-    public net.minecraft.world.inventory.ContainerInput toContainerInput() {
+    public net.minecraft.world.inventory.ClickType toContainerInput() {
         if (isPlayerAction) {
             throw new IllegalStateException("Cannot convert PlayerAction to ContainerInput: " + this);
         }
 
         return switch(this) {
-            case PICKUP -> net.minecraft.world.inventory.ContainerInput.PICKUP;
-            case QUICK_MOVE -> net.minecraft.world.inventory.ContainerInput.QUICK_MOVE;
-            case SWAP -> net.minecraft.world.inventory.ContainerInput.SWAP;
-            case CLONE -> net.minecraft.world.inventory.ContainerInput.CLONE;
-            case THROW, DROP_ITEM, DROP_STACK -> net.minecraft.world.inventory.ContainerInput.THROW;
-            case QUICK_CRAFT -> net.minecraft.world.inventory.ContainerInput.QUICK_CRAFT;
-            case PICKUP_ALL -> net.minecraft.world.inventory.ContainerInput.PICKUP_ALL;
+            case PICKUP -> net.minecraft.world.inventory.ClickType.PICKUP;
+            case QUICK_MOVE -> net.minecraft.world.inventory.ClickType.QUICK_MOVE;
+            case SWAP -> net.minecraft.world.inventory.ClickType.SWAP;
+            case CLONE -> net.minecraft.world.inventory.ClickType.CLONE;
+            case THROW, DROP_ITEM, DROP_STACK -> net.minecraft.world.inventory.ClickType.THROW;
+            case QUICK_CRAFT -> net.minecraft.world.inventory.ClickType.QUICK_CRAFT;
+            case PICKUP_ALL -> net.minecraft.world.inventory.ClickType.PICKUP_ALL;
             default -> throw new IllegalStateException("Unknown action: " + this);
         };
     }

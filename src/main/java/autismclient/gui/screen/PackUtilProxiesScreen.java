@@ -12,7 +12,7 @@ import autismclient.util.PackUtilProxyManager;
 import autismclient.util.PackUtilProxyType;
 import autismclient.util.PackUtilUiScale;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.input.MouseButtonInfo;
@@ -333,7 +333,7 @@ public class PackUtilProxiesScreen extends Screen {
     }
 
     @Override
-    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
         int virtualMouseX = PackUtilUiScale.toVirtualInt(mouseX);
         int virtualMouseY = PackUtilUiScale.toVirtualInt(mouseY);
         PackUtilUiScale.pushOverlayScale(graphics);
@@ -371,7 +371,7 @@ public class PackUtilProxiesScreen extends Screen {
             PackUiText.endManagedLayer(graphics);
         }
 
-        super.extractRenderState(graphics, virtualMouseX, virtualMouseY, delta);
+        super.render(graphics, virtualMouseX, virtualMouseY, delta);
         } finally {
             PackUtilUiScale.popOverlayScale(graphics);
         }
@@ -383,7 +383,7 @@ public class PackUtilProxiesScreen extends Screen {
         super.removed();
     }
 
-    private void renderProxyRow(GuiGraphicsExtractor graphics, ProxyRow row, int mouseX, int mouseY) {
+    private void renderProxyRow(GuiGraphics graphics, ProxyRow row, int mouseX, int mouseY) {
         PackUtilProxy proxy = row.proxy;
         boolean selected = proxy.equals(selectedProxy);
         int x = proxyRowX();
@@ -617,7 +617,7 @@ public class PackUtilProxiesScreen extends Screen {
         this.setFocused(null);
     }
 
-    private void drawPanel(GuiGraphicsExtractor graphics, int x, int y, int w, int h, int fill) {
+    private void drawPanel(GuiGraphics graphics, int x, int y, int w, int h, int fill) {
         graphics.fill(x, y, x + w, y + h, fill);
         graphics.fill(x, y, x + w, y + 1, BORDER);
         graphics.fill(x, y + h - 1, x + w, y + h, BORDER);
@@ -625,11 +625,11 @@ public class PackUtilProxiesScreen extends Screen {
         graphics.fill(x + w - 1, y, x + w, y + h, BORDER);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean center) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean center) {
         drawText(graphics, text, x, y, color, center, Integer.MAX_VALUE);
     }
 
-    private void drawText(GuiGraphicsExtractor graphics, String text, int x, int y, int color, boolean center, int maxWidth) {
+    private void drawText(GuiGraphics graphics, String text, int x, int y, int color, boolean center, int maxWidth) {
         Font renderer = this.font;
         Identifier font = THEME.fontFor(PackUiTone.BODY);
         String value = text == null ? "" : text;

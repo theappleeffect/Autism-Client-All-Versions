@@ -1,7 +1,7 @@
 package autismclient.gui.packui;
 
 import autismclient.util.PackUtilUiScale;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
 
 import java.util.List;
@@ -167,7 +167,7 @@ public final class PackUiScrollViewport {
         return new DrawBounds(clipLeft, drawY, clipRight - clipLeft, drawHeight);
     }
 
-    public void beginRender(GuiGraphicsExtractor ctx, int borderColor, int fillColor) {
+    public void beginRender(GuiGraphics ctx, int borderColor, int fillColor) {
         this.activeBorderColor = borderColor;
 
         ctx.fill(x, y, x + width, y + height, fillColor);
@@ -175,7 +175,7 @@ public final class PackUiScrollViewport {
         PackUtilUiScale.enableOverlayScissor(ctx, clipLeft, clipTop, clipRight, clipBottom);
     }
 
-    public void renderContent(GuiGraphicsExtractor ctx, Font textRenderer,
+    public void renderContent(GuiGraphics ctx, Font textRenderer,
                               List<? extends ScrollRow> rows,
                               RowRenderer renderer) {
         int startRow = Math.max(0, getFirstVisibleRow() - 1);
@@ -191,7 +191,7 @@ public final class PackUiScrollViewport {
         }
     }
 
-    public void renderSimple(GuiGraphicsExtractor ctx, int totalRows, BiConsumer<Integer, DrawBounds> rowRenderer) {
+    public void renderSimple(GuiGraphics ctx, int totalRows, BiConsumer<Integer, DrawBounds> rowRenderer) {
         int startRow = Math.max(0, getFirstVisibleRow() - 1);
         int endRow = Math.min(totalRows, startRow + getVisibleRows() + 2);
 
@@ -204,7 +204,7 @@ public final class PackUiScrollViewport {
         }
     }
 
-    public void endRender(GuiGraphicsExtractor ctx) {
+    public void endRender(GuiGraphics ctx) {
         ctx.disableScissor();
         ctx.fill(x, y, x + width, y + 1, activeBorderColor);
         ctx.fill(x, y + height - 1, x + width, y + height, activeBorderColor);
@@ -212,7 +212,7 @@ public final class PackUiScrollViewport {
         ctx.fill(x + width - 1, y, x + width, y + height, activeBorderColor);
     }
 
-    public void renderScrollbar(GuiGraphicsExtractor ctx, double mouseX, double mouseY) {
+    public void renderScrollbar(GuiGraphics ctx, double mouseX, double mouseY) {
         if (getMaxScroll() <= 0) return;
 
         int trackX = x + width - scrollbarWidth - 2;
@@ -326,7 +326,7 @@ public final class PackUiScrollViewport {
 
     @FunctionalInterface
     public interface RowRenderer {
-        void render(GuiGraphicsExtractor ctx, Font textRenderer, ScrollRow row,
+        void render(GuiGraphics ctx, Font textRenderer, ScrollRow row,
                    int index, int x, int y, int width, int height, int originalY);
     }
 }

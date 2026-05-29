@@ -11,7 +11,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameRenderer.class)
 public abstract class PackUtilGameRendererMixin {
 
-    @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/render/GuiRenderer;endFrame()V", shift = At.Shift.AFTER))
+    // Inject at the end of the render method (after the GUI has drawn) rather than
+    // at a specific internal call site, which is renamed across versions.
+    @Inject(method = "render", at = @At("TAIL"), require = 0)
     private void packutil$afterGuiRender(DeltaTracker deltaTracker, boolean advanceGameTime, CallbackInfo ci) {
         PackUiText.flushPendingOverlayText();
     }

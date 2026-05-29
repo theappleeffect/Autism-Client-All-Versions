@@ -1,9 +1,9 @@
 package autismclient.util;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 
 public interface IPackUtilOverlay {
-    void render(GuiGraphicsExtractor context, int mouseX, int mouseY, float delta);
+    void render(GuiGraphics context, int mouseX, int mouseY, float delta);
 
     boolean mouseClicked(double mouseX, double mouseY, int button);
 

@@ -1,6 +1,6 @@
 package autismclient.gui.packui;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 
@@ -118,7 +118,7 @@ public final class PackUiScrollList<T> {
         this.disabledTextColor = disabledText;
     }
 
-    public void render(GuiGraphicsExtractor ctx, Font textRenderer, double mouseX, double mouseY) {
+    public void render(GuiGraphics ctx, Font textRenderer, double mouseX, double mouseY) {
         viewport.beginRender(ctx, borderColor, backgroundColor);
         try {
             renderContent(ctx, textRenderer, mouseX, mouseY);
@@ -128,7 +128,7 @@ public final class PackUiScrollList<T> {
         viewport.renderScrollbar(ctx, mouseX, mouseY);
     }
 
-    public void renderCustom(GuiGraphicsExtractor ctx, Font textRenderer, double mouseX, double mouseY,
+    public void renderCustom(GuiGraphics ctx, Font textRenderer, double mouseX, double mouseY,
                               CustomRowRenderer<T> customRenderer) {
         viewport.beginRender(ctx, borderColor, backgroundColor);
         try {
@@ -147,7 +147,7 @@ public final class PackUiScrollList<T> {
         viewport.renderScrollbar(ctx, mouseX, mouseY);
     }
 
-    private void renderContent(GuiGraphicsExtractor ctx, Font textRenderer, double mouseX, double mouseY) {
+    private void renderContent(GuiGraphics ctx, Font textRenderer, double mouseX, double mouseY) {
         viewport.renderSimple(ctx, items.size(), (index, bounds) -> {
             T item = items.get(index);
             boolean isSelected = index == selectedIndex;
@@ -277,7 +277,7 @@ public final class PackUiScrollList<T> {
 
     @FunctionalInterface
     public interface CustomRowRenderer<T> {
-        void render(GuiGraphicsExtractor ctx, Font textRenderer, T item, int index,
+        void render(GuiGraphics ctx, Font textRenderer, T item, int index,
                    boolean isSelected, boolean isHovered,
                    int x, int y, int width, int height, int originalY);
     }

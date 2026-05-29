@@ -323,7 +323,7 @@ public class PackUiTextField extends PackUiNode implements PackUiFocusableTextIn
 
                         if (richMetrics != null) {
                             Component lineComponent = buildRichSubstringText(value, richMetrics, line.start(), line.end());
-                            context.drawContext().text(context.textRenderer(), lineComponent,
+                            context.drawContext().drawString(context.textRenderer(), lineComponent,
                                     textX, lineY, context.applyAlpha(bodyColor), false);
                         } else {
                             String lineComponent = value.substring(line.start(), line.end());
@@ -368,7 +368,7 @@ public class PackUiTextField extends PackUiNode implements PackUiFocusableTextIn
                     Component visibleRichComponent = buildRichSubstringText(value, richMetrics, viewOffset, visibleEnd);
                     context.viewport().enableScissor(context.drawContext(), drawX + 1, drawY + 1, drawX + drawW - 1, drawY + drawH - 1);
                     try {
-                        context.drawContext().text(context.textRenderer(), visibleRichComponent, textX, textY, context.applyAlpha(bodyColor), false);
+                        context.drawContext().drawString(context.textRenderer(), visibleRichComponent, textX, textY, context.applyAlpha(bodyColor), false);
                     } finally {
                         context.viewport().disableScissor(context.drawContext());
                     }

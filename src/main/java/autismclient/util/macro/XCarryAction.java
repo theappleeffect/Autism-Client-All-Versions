@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.game.ServerboundContainerClosePacket;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +87,7 @@ public class XCarryAction implements MacroAction {
                     if (slot.getItem().isEmpty()) continue;
                     if (slot.container instanceof net.minecraft.world.entity.player.Inventory) continue;
                     if (matchesTarget(slot.getItem(), itemTarget, -1)) {
-                        mc.gameMode.handleContainerInput(containerHandler.containerId, slot.index, 0, ContainerInput.QUICK_MOVE, mc.player);
+                        mc.gameMode.handleInventoryMouseClick(containerHandler.containerId, slot.index, 0, ClickType.QUICK_MOVE, mc.player);
                         break;
                     }
                 }
@@ -128,7 +128,7 @@ public class XCarryAction implements MacroAction {
             Slot slot = handler.slots.get(slotId);
             if (slot.getItem().isEmpty()) continue;
             if (!entries.isEmpty() && !matchesCraftingSlot(slot, slotId)) continue;
-            mc.gameMode.handleContainerInput(handler.containerId, slotId, 0, ContainerInput.QUICK_MOVE, mc.player);
+            mc.gameMode.handleInventoryMouseClick(handler.containerId, slotId, 0, ClickType.QUICK_MOVE, mc.player);
         }
         updateXCarryState(handler, carryCursor);
     }
@@ -138,7 +138,7 @@ public class XCarryAction implements MacroAction {
             Slot slot = handler.slots.get(slotId);
             if (slot.getItem().isEmpty()) continue;
             if (!entries.isEmpty() && !matchesCraftingSlot(slot, slotId)) continue;
-            mc.gameMode.handleContainerInput(handler.containerId, slotId, 1, ContainerInput.THROW, mc.player);
+            mc.gameMode.handleInventoryMouseClick(handler.containerId, slotId, 1, ClickType.THROW, mc.player);
         }
         updateXCarryState(handler, carryCursor);
     }
@@ -337,16 +337,16 @@ public class XCarryAction implements MacroAction {
         if (handler.slots.get(fromSlotId).getItem().isEmpty()) return false;
         if (!handler.slots.get(toSlotId).getItem().isEmpty()) return false;
 
-        mc.gameMode.handleContainerInput(handler.containerId, fromSlotId, 0, ContainerInput.PICKUP, mc.player);
+        mc.gameMode.handleInventoryMouseClick(handler.containerId, fromSlotId, 0, ClickType.PICKUP, mc.player);
         if (handler.getCarried().isEmpty()) return false;
 
-        mc.gameMode.handleContainerInput(handler.containerId, toSlotId, 0, ContainerInput.PICKUP, mc.player);
+        mc.gameMode.handleInventoryMouseClick(handler.containerId, toSlotId, 0, ClickType.PICKUP, mc.player);
         if (handler.getCarried().isEmpty()) {
             return handler.slots.get(fromSlotId).getItem().isEmpty()
                     && !handler.slots.get(toSlotId).getItem().isEmpty();
         }
 
-        mc.gameMode.handleContainerInput(handler.containerId, fromSlotId, 0, ContainerInput.PICKUP, mc.player);
+        mc.gameMode.handleInventoryMouseClick(handler.containerId, fromSlotId, 0, ClickType.PICKUP, mc.player);
         return false;
     }
 

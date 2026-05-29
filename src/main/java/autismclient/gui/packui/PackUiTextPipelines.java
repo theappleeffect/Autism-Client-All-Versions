@@ -1,12 +1,13 @@
 package autismclient.gui.packui;
 
+import net.minecraft.server.packs.resources.ResourceManager;
+
+//? if >=1.21.6 {
 import com.mojang.blaze3d.pipeline.BlendFunction;
-import com.mojang.blaze3d.pipeline.ColorTargetState;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.shaders.UniformType;
 import net.minecraft.server.packs.resources.Resource;
-import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.resources.Identifier;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public final class PackUiTextPipelines {
         .withFragmentShader(Identifier.fromNamespaceAndPath("autismclient", "text"))
         .withSampler("u_Texture")
         .withUniform("MeshData", UniformType.UNIFORM_BUFFER)
-        .withColorTargetState(new ColorTargetState(BlendFunction.TRANSLUCENT))
+        .withBlend(BlendFunction.TRANSLUCENT)
         .withCull(true)
         .build();
 
@@ -43,3 +44,13 @@ public final class PackUiTextPipelines {
         }
     }
 }
+//?} else {
+/*public final class PackUiTextPipelines {
+    private PackUiTextPipelines() {
+    }
+
+    // Custom GPU text pipeline disabled before 1.21.6; no shaders to precompile.
+    public static void precompile(ResourceManager resources) {
+    }
+}
+*///?}

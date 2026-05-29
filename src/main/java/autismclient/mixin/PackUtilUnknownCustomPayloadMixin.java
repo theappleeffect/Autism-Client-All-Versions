@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(DiscardedPayload.class)
 public abstract class PackUtilUnknownCustomPayloadMixin {
-    @Inject(method = "codec", at = @At("RETURN"), cancellable = true)
+    @Inject(method = "codec", at = @At("RETURN"), cancellable = true, require = 0)
     private static <T extends FriendlyByteBuf> void packutil$wrapUnknownCodec(Identifier id, int maxBytes,
                                                                             CallbackInfoReturnable<StreamCodec<T, DiscardedPayload>> cir) {
         StreamCodec<T, DiscardedPayload> original = cir.getReturnValue();

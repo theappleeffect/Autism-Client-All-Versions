@@ -53,7 +53,7 @@ public abstract class PackUtilBookScreenMixin extends Screen implements PackUtil
         super(title);
     }
 
-    @Inject(method = "init", at = @At("TAIL"))
+    @Inject(method = "init", at = @At("TAIL"), require = 0)
     private void yang$init(CallbackInfo ci) {
         if (!yang$isPackUtilActive()) return;
 
@@ -106,7 +106,7 @@ public abstract class PackUtilBookScreenMixin extends Screen implements PackUtil
         manager.register(launcherOverlay);
 
         Screen screen = (Screen) (Object) this;
-        ScreenEvents.afterExtract(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
+        ScreenEvents.afterRender(screen).register((scrn, drawContext, mouseX, mouseY, tickDelta) -> {
             if (yang$isPackUtilActive()) {
                 PackUtilOverlayManager.get().renderAll(drawContext, mouseX, mouseY, tickDelta);
             }
@@ -131,7 +131,7 @@ public abstract class PackUtilBookScreenMixin extends Screen implements PackUtil
         super.removed();
     }
 
-    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "mouseClicked", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$mouseClicked(MouseButtonEvent click, boolean doubled, CallbackInfoReturnable<Boolean> cir) {
         if (!yang$isPackUtilActive()) return;
         if ((Object) this instanceof LecternScreen) {
@@ -173,7 +173,7 @@ public abstract class PackUtilBookScreenMixin extends Screen implements PackUtil
         return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
-    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "keyPressed", at = @At("HEAD"), cancellable = true, require = 0)
     private void yang$keyPressed(KeyEvent input, CallbackInfoReturnable<Boolean> cir) {
         if (!yang$isPackUtilActive()) return;
         if (PackUtilOverlayManager.get().handleKeyPressed(input.key(), input.scancode(), input.modifiers())) {

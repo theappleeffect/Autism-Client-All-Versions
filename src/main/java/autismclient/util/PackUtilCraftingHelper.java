@@ -23,7 +23,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.world.inventory.AbstractCraftingMenu;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.inventory.ContainerInput;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.network.HashedStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -400,7 +400,7 @@ public final class PackUtilCraftingHelper {
                 craftingHandler.getStateId(),
                 (short) craftingHandler.getResultSlot().index,
                 (byte) 0,
-                ContainerInput.QUICK_MOVE,
+                ClickType.QUICK_MOVE,
                 new Int2ObjectArrayMap<>(),
                 HashedStack.EMPTY
             );
@@ -616,7 +616,7 @@ public final class PackUtilCraftingHelper {
                     mc.gameMode.handlePlaceRecipe(syncId, currentOption.syncedEntry.id(), useCraftAll);
                 }
 
-                mc.gameMode.handleContainerInput(syncId, outputSlotId, 0, ContainerInput.QUICK_MOVE, mc.player);
+                mc.gameMode.handleInventoryMouseClick(syncId, outputSlotId, 0, ClickType.QUICK_MOVE, mc.player);
                 dispatchedCrafts.addAndGet(phaseCrafts);
                 remainingCrafts.addAndGet(-phaseCrafts);
             }
@@ -669,7 +669,7 @@ public final class PackUtilCraftingHelper {
                 if (mc.player == null || mc.gameMode == null) return;
                 if (!(mc.player.containerMenu instanceof AbstractCraftingMenu currentHandler)) return;
                 if (currentHandler.containerId != syncId) return;
-                mc.gameMode.handleContainerInput(syncId, outputSlotId, 0, ContainerInput.QUICK_MOVE, mc.player);
+                mc.gameMode.handleInventoryMouseClick(syncId, outputSlotId, 0, ClickType.QUICK_MOVE, mc.player);
             })) {
                 break;
             }
@@ -693,7 +693,7 @@ public final class PackUtilCraftingHelper {
                 if (mc.player == null || mc.gameMode == null) return;
                 if (!(mc.player.containerMenu instanceof AbstractCraftingMenu currentHandler)) return;
                 if (currentHandler.containerId != syncId) return;
-                mc.gameMode.handleContainerInput(syncId, inputSlot.index, 0, ContainerInput.QUICK_MOVE, mc.player);
+                mc.gameMode.handleInventoryMouseClick(syncId, inputSlot.index, 0, ClickType.QUICK_MOVE, mc.player);
             })) {
                 return false;
             }
@@ -782,16 +782,16 @@ public final class PackUtilCraftingHelper {
             int sourceCount = sourceSlot.getItem().getCount();
             int placeCount = Math.min(sourceCount, remaining);
             if (!runClientTask(mc, () -> {
-                clickSlot(mc, syncId, sourceSlotId, 0, ContainerInput.PICKUP);
+                clickSlot(mc, syncId, sourceSlotId, 0, ClickType.PICKUP);
                 if (placeCount >= sourceCount) {
-                    clickSlot(mc, syncId, targetSlotId, 0, ContainerInput.PICKUP);
+                    clickSlot(mc, syncId, targetSlotId, 0, ClickType.PICKUP);
                     return;
                 }
 
                 for (int i = 0; i < placeCount; i++) {
-                    clickSlot(mc, syncId, targetSlotId, 1, ContainerInput.PICKUP);
+                    clickSlot(mc, syncId, targetSlotId, 1, ClickType.PICKUP);
                 }
-                clickSlot(mc, syncId, sourceSlotId, 0, ContainerInput.PICKUP);
+                clickSlot(mc, syncId, sourceSlotId, 0, ClickType.PICKUP);
             })) {
                 return false;
             }
@@ -802,9 +802,9 @@ public final class PackUtilCraftingHelper {
         return waitForTargetIngredientCount(mc, syncId, targetSlotId, ingredient, requiredCount, 300L);
     }
 
-    private static void clickSlot(Minecraft mc, int syncId, int slotId, int button, ContainerInput actionType) {
+    private static void clickSlot(Minecraft mc, int syncId, int slotId, int button, ClickType actionType) {
         if (mc.player == null || mc.gameMode == null) return;
-        mc.gameMode.handleContainerInput(syncId, slotId, button, actionType, mc.player);
+        mc.gameMode.handleInventoryMouseClick(syncId, slotId, button, actionType, mc.player);
     }
 
     private static Integer findMatchingInventorySlot(
